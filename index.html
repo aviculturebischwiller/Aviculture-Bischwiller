@@ -153,6 +153,53 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
 @keyframes viewIn{from{opacity:0;transform:translateY(2rem);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes viewOut{to{opacity:0;transform:translateY(-1rem);filter:blur(6px)}}
 
+
+/* ---------- Animation d’ouverture : l’œuf qui éclate ---------- */
+#intro{position:fixed;inset:0;z-index:1000;background:var(--ink);overflow:hidden;cursor:pointer;transition:transform .95s var(--ease-io);animation:introKill 0s 9s forwards}
+#intro.out{transform:translateY(-101%)}
+@keyframes introKill{to{visibility:hidden;pointer-events:none}}
+html:has(body.intro){overflow:hidden}
+body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animation-play-state:paused}
+#intro .burst{position:absolute;left:50%;top:50%;width:8rem;height:8rem;margin:-4rem 0 0 -4rem;border-radius:50%;background:var(--yolk);transform:scale(0);animation:bst 1.1s cubic-bezier(.6,0,.2,1) 1.95s forwards;z-index:1}
+@keyframes bst{to{transform:scale(45)}}
+#intro .eg{--w:min(38vw,11rem);position:absolute;inset:0;margin:auto;width:var(--w);height:calc(var(--w)*1.2727);z-index:2;animation:egg 2s both}
+@keyframes egg{
+  0%{transform:scale(0) rotate(0)}30%{transform:scale(1.12) rotate(0)}42%{transform:scale(1) rotate(0)}
+  52%{transform:rotate(-5deg)}58%{transform:rotate(5deg)}64%{transform:rotate(-9deg) scale(1.03)}70%{transform:rotate(9deg) scale(1.03)}
+  76%{transform:rotate(-13deg) scale(1.06)}82%{transform:rotate(13deg) scale(1.06)}90%,100%{transform:rotate(0) scale(1.1)}}
+#intro .eh{position:absolute;inset:0;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(circle at 35% 28%,#fff,var(--shell) 55%,#e6d4b3);will-change:transform}
+#intro .eh.t{clip-path:polygon(0 0,100% 0,100% 52%,85% 46%,70% 56%,55% 46%,40% 56%,25% 46%,12% 54%,0 48%);animation:sT 1s cubic-bezier(.5,0,.9,.4) 2s forwards}
+#intro .eh.b{clip-path:polygon(0 48%,12% 54%,25% 46%,40% 56%,55% 46%,70% 56%,85% 46%,100% 52%,100% 100%,0 100%);animation:sB 1s cubic-bezier(.5,0,.9,.4) 2s forwards}
+@keyframes sT{to{transform:translate(-22vw,-60vh) rotate(-70deg);opacity:0}}
+@keyframes sB{to{transform:translate(18vw,70vh) rotate(50deg);opacity:0}}
+#intro .eg svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:2;animation:svgOut .05s linear 2s forwards}
+#intro .eg polyline{fill:none;stroke:var(--ink);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:170;stroke-dashoffset:170;animation:crk .7s ease-out 1.15s forwards}
+@keyframes crk{to{stroke-dashoffset:0}}
+@keyframes svgOut{to{opacity:0}}
+#intro .cf{position:absolute;left:50%;top:50%;width:1.1rem;height:1.4rem;margin:-.7rem 0 0 -.55rem;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;z-index:2;opacity:0;animation:fly 1.6s cubic-bezier(.1,.7,.3,1) both}
+@keyframes fly{0%{opacity:1;transform:scale(0)}15%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1)}}
+#intro .it{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:.5rem;text-align:center;color:var(--ink);padding:0 1rem}
+#intro .it .a{display:block;overflow:hidden;padding-bottom:.12em;font:800 clamp(2.6rem,10.5vw,8rem)/.9 var(--display);letter-spacing:-.045em}
+#intro .it .a span{display:block;transform:translateY(112%);animation:up 1s var(--ease) calc(2.5s + var(--k,0)*.15s) forwards}
+#intro .it .s{font:700 clamp(.8rem,2vw,1.1rem) var(--text);letter-spacing:.28em;text-transform:uppercase;margin-top:1rem;opacity:0;animation:fadeUp .8s var(--ease) 3.2s forwards}
+#intro .skip{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 1.4rem);z-index:4;text-align:center;font:600 .8rem var(--text);letter-spacing:.2em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;opacity:0;animation:fadeUp .8s var(--ease) .5s forwards}
+
+/* ---------- Onglet Histoire ---------- */
+.mega{font-size:clamp(4.2rem,22vw,17rem);line-height:.82;letter-spacing:-.06em;font-weight:800;margin-bottom:clamp(1.5rem,4vw,3rem)}
+.stats{display:grid;gap:2.5rem;grid-template-columns:1fr}
+@media (min-width:48rem){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat b{display:block;font:800 clamp(4.5rem,13vw,9rem)/.9 var(--display);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stat span{display:block;max-width:18rem;font-weight:600;margin-top:.7rem}
+.fine{font-size:.95rem;opacity:.75;margin:2.5rem 0 0}
+.tl{list-style:none;margin:0 0 0 .75rem;padding:0;border-left:3px solid currentColor}
+.tl li{position:relative;padding:0 0 clamp(2.2rem,5vw,3.6rem) clamp(1.2rem,3vw,2.5rem);opacity:0;transform:translateY(2rem);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.tl li.in{opacity:1;transform:none}
+.tl li::before{content:"";position:absolute;left:calc(-.75rem - 1.5px);top:.5rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent);border:3px solid var(--bg);transition:background-color .9s var(--ease-io),border-color .9s var(--ease-io)}
+.tl time{display:block;font:800 clamp(1.8rem,5vw,3.4rem)/1 var(--display);letter-spacing:-.03em;margin-bottom:.5rem}
+.tl p{margin:0;font-size:1.15rem}
+@media (max-width:30rem){a.tab{padding:.5rem .6rem;font-size:.85rem}}
+@media (prefers-reduced-motion:reduce){#intro{display:none}.tl li{opacity:1;transform:none}}
+
 /* ---------- Mouvement réduit ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -165,7 +212,21 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
 }
 </style>
 </head>
-<body data-tone="shell">
+<body data-tone="shell" class="intro">
+<noscript><style>#intro{display:none}html:has(body.intro){overflow:auto}</style></noscript>
+<div id="intro" aria-hidden="true">
+  <div class="burst"></div>
+  <div class="eg">
+    <i class="eh t"></i><i class="eh b"></i>
+    <svg viewBox="0 0 110 140"><polyline points="0,67 13.2,75.6 27.5,64.4 44,78.4 60.5,64.4 77,78.4 93.5,64.4 110,72.8"/></svg>
+  </div>
+  <div class="it">
+    <div class="a"><span>Société d’Aviculture</span></div>
+    <div class="a"><span style="--k:1">de Bischwiller</span></div>
+    <div class="s">Élevage · Passion · Transmission</div>
+  </div>
+  <div class="skip">Touchez pour entrer</div>
+</div>
 <div class="glow" aria-hidden="true"></div>
 
 <nav class="nav" aria-label="Pages">
@@ -173,6 +234,7 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
   <div class="tabs">
     <span class="ind" aria-hidden="true"></span>
     <a class="tab" href="#accueil" data-v="accueil">Accueil</a>
+    <a class="tab" href="#histoire" data-v="histoire">Histoire</a>
     <a class="tab" href="#aide" data-v="aide">Aide</a>
     <a class="tab" href="#inscription" data-v="inscription">S’inscrire</a>
   </div>
@@ -213,7 +275,7 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
         <h2>Qui sommes-nous ?</h2>
         <p class="lead reveal">La Société d’Aviculture de Bischwiller réunit des éleveurs amateurs de la région autour d’une même passion : l’élevage de volailles, de pigeons et de lapins de race.</p>
         <div class="two">
-          <p>Débutant ou éleveur confirmé, chacun trouve ici des conseils, des échanges et des gens qui aiment ce qu’ils font.</p>
+          <p>Débutant ou éleveur confirmé, chacun trouve ici des conseils, des échanges et des gens qui aiment ce qu’ils font.</p><div><a class="btn magnet" href="#histoire">Lire notre histoire</a></div>
         </div>
       </div>
     </section>
@@ -259,6 +321,49 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
           <div><dt>Téléphone</dt><dd><span class="todo">à compléter</span></dd></div>
           <div><dt>E-mail</dt><dd><span class="todo">à compléter</span></dd></div>
         </dl>
+      </div>
+    </section>
+  </div>
+
+  <div id="v-histoire" hidden>
+    <section data-tone="ink" style="padding-top:clamp(7rem,14vw,10rem)">
+      <div class="wrap">
+        <h2 class="mega">Histoire</h2>
+        <p class="lead reveal">Bischwiller a commencé comme un modeste village vivant de l’élevage. Des siècles plus tard, des passionnés perpétuent le même geste : élever, choisir, transmettre.</p>
+      </div>
+    </section>
+
+    <section data-tone="yolk">
+      <div class="wrap">
+        <h2>Nous ne sommes pas seuls</h2>
+        <div class="stats">
+          <div class="stat"><b data-n="110">110</b><span>associations d’aviculture amateur en Alsace</span></div>
+          <div class="stat"><b data-n="5000" data-from="0">5 000</b><span>éleveurs et sympathisants au plus (entre 3 000 et 5 000 selon les sources)</span></div>
+          <div class="stat"><b data-n="1912" data-from="1800" data-plain>1912</b><span>année où la Société centrale d’aviculture de France est reconnue d’utilité publique</span></div>
+        </div>
+        <p class="fine">Sources : question écrite n° 7087 à l’Assemblée nationale, Société centrale d’aviculture de France.</p>
+      </div>
+    </section>
+
+    <section data-tone="shell">
+      <div class="wrap">
+        <h2>Les grandes dates</h2>
+        <ol class="tl">
+          <li><time>XVIIe siècle</time><p>Bischwiller est alors un modeste village qui vit de l’élevage, avant de changer de visage.</p></li>
+          <li><time>1912</time><p>La Société centrale d’aviculture de France, qui rassemble les éleveurs amateurs de volailles, de pigeons et de lapins, est reconnue d’utilité publique.</p></li>
+          <li><time><span class="todo">année à compléter</span></time><p>Naissance de la Société d’Aviculture de Bischwiller et environs. Date de fondation, premiers présidents et premiers membres : à compléter.</p></li>
+          <li><time>Janvier 2024</time><p>Exposition à l’espace Adrien-Zeller : l’éleveur Éric Gross est récompensé.</p></li>
+          <li><time>Novembre 2026</time><p>L’exposition d’automne s’installe à la salle Adrien Zeller, 10 rue des Casernes.</p></li>
+          <li><time>Janvier 2027</time><p>Exposition régionale de pigeons, même salle. Inauguration le samedi 16 janvier à 18 h ; public le samedi de 15 h à 20 h et le dimanche de 10 h à 16 h.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section data-tone="comb">
+      <div class="wrap">
+        <h2>Il manque des pages</h2>
+        <p class="lead">Vieilles photos, souvenirs, diplômes, anciens présidents : tout ce qui fait notre histoire est le bienvenu.</p>
+        <a class="btn magnet" href="#aide">Nous écrire</a>
       </div>
     </section>
   </div>
@@ -314,7 +419,7 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
   var EMAIL=""; // adresse e-mail de l’association
   var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
   var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
-  var V={accueil:document.getElementById("v-accueil"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
+  var V={accueil:document.getElementById("v-accueil"),histoire:document.getElementById("v-histoire"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
   var tabs=document.querySelectorAll("a.tab"),ind=document.querySelector(".tabs .ind"),body=document.body;
   var first=true,timer;
 
@@ -342,7 +447,7 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
     first=false;lastTone=null;
   }
   function route(){
-    var h=location.hash.slice(1),v=(h==="aide"||h==="inscription")?h:"accueil";
+    var h=location.hash.slice(1),v=(h==="aide"||h==="inscription"||h==="histoire")?h:"accueil";
     var cur=current();
     clearTimeout(timer);
     if(cur&&cur!==v&&!first&&!reduce){
@@ -456,6 +561,51 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
       out.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});
     });
   });
+
+
+  /* ---- animation d’ouverture ---- */
+  var intro=document.getElementById("intro");
+  function endIntro(){
+    if(!intro||intro.classList.contains("out")){return;}
+    intro.classList.add("out");body.classList.remove("intro");
+    setTimeout(function(){if(intro){intro.remove();}},1000);
+  }
+  if(intro){
+    if(reduce){intro.remove();body.classList.remove("intro");}
+    else{
+      var cols=["#D42A1F","#101A3A","#FFF8EC"];
+      for(var ci=0;ci<18;ci++){
+        var c=document.createElement("i"),a=Math.random()*6.283,r=28+Math.random()*40;
+        c.className="cf";
+        c.style.cssText="--x:"+(Math.cos(a)*r)+"vmax;--y:"+(Math.sin(a)*r)+"vmax;--r:"+Math.round(Math.random()*720-360)+"deg;background:"+cols[ci%3]+";animation-delay:"+(2+Math.random()*.15)+"s";
+        intro.appendChild(c);
+      }
+      intro.addEventListener("click",endIntro);
+      window.addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"){endIntro();}});
+      setTimeout(endIntro,4500);
+    }
+  }
+
+  /* ---- onglet Histoire : chiffres qui montent, dates qui apparaissent ---- */
+  function fmt(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,"\u202f");}
+  function count(el){
+    var to=+el.dataset.n,from=+(el.dataset.from||0),plain=el.hasAttribute("data-plain"),t0=performance.now(),d=1800;
+    (function step(t){
+      var p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,4),v=from+(to-from)*e;
+      el.textContent=plain?Math.round(v):fmt(v);
+      if(p<1){requestAnimationFrame(step);}
+    })(t0);
+  }
+  var tlItems=[].slice.call(document.querySelectorAll(".tl li")),nums=[].slice.call(document.querySelectorAll("[data-n]"));
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(!e.isIntersecting){return;}
+      io.unobserve(e.target);
+      if(e.target.hasAttribute("data-n")){if(!reduce){count(e.target);}}else{e.target.classList.add("in");}
+    });},{threshold:.35});
+    nums.forEach(function(n){if(!reduce){n.textContent=n.hasAttribute("data-plain")?n.dataset.from:"0";}io.observe(n);});
+    tlItems.forEach(function(l){io.observe(l);});
+  }else{tlItems.forEach(function(l){l.classList.add("in");});}
 
   route();
   requestAnimationFrame(frame);
