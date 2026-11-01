@@ -216,6 +216,17 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 .wipe span{font:800 clamp(3.5rem,16vw,12rem)/.9 var(--display);letter-spacing:-.05em;padding:0 1rem;text-align:center}
 @media (prefers-reduced-motion:reduce){.wipe{display:none}}
 
+
+/* ---------- Carte, e-mail, case à cocher ---------- */
+.map{display:block;width:100%;max-width:40rem;aspect-ratio:16/10;border:3px solid currentColor;border-radius:1.2rem;overflow:hidden;margin:1.6rem 0 .6rem;background:color-mix(in srgb,currentColor 10%,transparent)}
+.map iframe{display:block;width:100%;height:100%;border:0}
+.maplink{display:inline-block;font-weight:700;margin-bottom:.4rem}
+.mailto{position:relative;display:inline-block;text-decoration:none;overflow-wrap:anywhere;padding-bottom:.08em;background:linear-gradient(currentColor,currentColor) 0 100%/100% .09em no-repeat;transition:background-size .5s var(--ease)}
+.mailto:hover,.mailto:focus-visible{background-size:0 .09em}
+.mailto .arr{display:inline-block;transition:transform .4s var(--ease)}
+.mailto:hover .arr{transform:translate(.25em,-.25em)}
+.panel .opt input[type=checkbox]{display:inline-block;flex:none;width:1.3rem;height:1.3rem;border:0;padding:0;margin:0}
+
 /* ---------- Mouvement réduit ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -316,6 +327,8 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
         <p class="bigdate" aria-hidden="true">28–29</p>
         <h3>Exposition avicole de Bischwiller</h3>
         <p>Samedi 28 et dimanche 29 novembre<br>Salle Adrien Zeller, Bischwiller<br>Restauration sur place</p>
+        <div class="map"><iframe title="Carte : salle Adrien Zeller, Bischwiller" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Salle+Adrien+Zeller,+10+rue+des+Casernes,+67240+Bischwiller&amp;output=embed"></iframe></div>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Salle+Adrien+Zeller+10+rue+des+Casernes+67240+Bischwiller" target="_blank" rel="noopener">Ouvrir dans Google Maps ↗</a><br>
         <a class="btn magnet" href="#inscription">S’inscrire à l’exposition</a>
       </div>
     </section>
@@ -337,7 +350,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
         <dl>
           <div><dt>Adresse</dt><dd><span class="todo">à compléter</span>, 67240 Bischwiller</dd></div>
           <div><dt>Téléphone</dt><dd><span class="todo">à compléter</span></dd></div>
-          <div><dt>E-mail</dt><dd><span class="todo">à compléter</span></dd></div>
+          <div><dt>E-mail</dt><dd><a class="mailto" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hattermannmichel@gmail.com&amp;su=Contact%20-%20Soci%C3%A9t%C3%A9%20d%E2%80%99Aviculture%20de%20Bischwiller" target="_blank" rel="noopener">hattermannmichel@gmail.com<span class="arr"> ↗</span></a></dd></div>
         </dl>
       </div>
     </section>
@@ -368,11 +381,9 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
         <h2>Les grandes dates</h2>
         <ol class="tl">
           <li><time>XVIIe siècle</time><p>Bischwiller est alors un modeste village qui vit de l’élevage, avant de changer de visage.</p></li>
+          <li><time>1908</time><p>Naissance de la Société d’Aviculture de Bischwiller et environs.</p></li>
           <li><time>1912</time><p>La Société centrale d’aviculture de France, qui rassemble les éleveurs amateurs de volailles, de pigeons et de lapins, est reconnue d’utilité publique.</p></li>
-          <li><time><span class="todo">année à compléter</span></time><p>Naissance de la Société d’Aviculture de Bischwiller et environs. Date de fondation, premiers présidents et premiers membres : à compléter.</p></li>
-          <li><time>Janvier 2024</time><p>Exposition à l’espace Adrien-Zeller : l’éleveur Éric Gross est récompensé.</p></li>
-          <li><time>Novembre 2026</time><p>L’exposition d’automne s’installe à la salle Adrien Zeller, 10 rue des Casernes.</p></li>
-          <li><time>Janvier 2027</time><p>Exposition régionale de pigeons, même salle. Inauguration le samedi 16 janvier à 18 h ; public le samedi de 15 h à 20 h et le dimanche de 10 h à 16 h.</p></li>
+          <li><time>Novembre 2026</time><p>L’exposition annuelle s’installe à la salle Adrien Zeller, 10 rue des Casernes.</p></li>
         </ol>
       </div>
     </section>
@@ -400,10 +411,11 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
             <label class="opt"><input type="radio" name="motif" value="Demande pour l’achat d’un animal">Demande pour l’achat d’un animal</label>
             <label class="opt"><input type="radio" name="motif" value="Autres">Autres</label>
           </fieldset>
+          <label class="opt" style="margin-top:1.6rem"><input type="checkbox" name="histoire" value="oui">J’ai de vieilles photos, souvenirs, diplômes, anciens présidents</label>
           <label for="a-contact">Téléphone ou e-mail</label><input id="a-contact" name="contact" required>
           <label for="a-msg">Votre message</label><textarea id="a-msg" name="msg"></textarea>
-          <button class="btn" type="submit">Préparer mon message</button>
-          <div class="out" hidden><p><strong>Votre message est prêt.</strong> Touchez « Envoyer par e-mail » pour l’ouvrir dans votre messagerie.</p><pre></pre><a class="btn mail">Envoyer par e-mail</a><button type="button" class="btn alt copy">Copier le message</button></div>
+          <button class="btn" type="submit">Envoyer mon message</button>
+          <div class="out" hidden><p><strong>Gmail s’ouvre avec votre message.</strong> S’il ne s’est pas ouvert, touchez « Ouvrir Gmail ».</p><pre></pre><a class="btn mail">Ouvrir Gmail</a><button type="button" class="btn alt copy">Copier le message</button></div>
         </form>
       </div>
     </section>
@@ -422,8 +434,8 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
           <label for="i-tel">Numéro de téléphone</label><input id="i-tel" name="tel" type="tel" autocomplete="tel" required>
           <label for="i-race">Race des animaux</label><input id="i-race" name="race" required>
           <label for="i-nb">Nombre d’animaux à exposer</label><input id="i-nb" name="nb" type="number" min="1" inputmode="numeric" required>
-          <button class="btn" type="submit">Préparer mon inscription</button>
-          <div class="out" hidden><p><strong>Votre inscription est prête.</strong> Touchez « Envoyer par e-mail » pour l’ouvrir dans votre messagerie.</p><pre></pre><a class="btn mail">Envoyer par e-mail</a><button type="button" class="btn alt copy">Copier le message</button></div>
+          <button class="btn" type="submit">S’inscrire</button>
+          <div class="out" hidden><p><strong>Gmail s’ouvre avec votre inscription.</strong> S’il ne s’est pas ouvert, touchez « Ouvrir Gmail ».</p><pre></pre><a class="btn mail">Ouvrir Gmail</a><button type="button" class="btn alt copy">Copier le message</button></div>
         </form>
       </div>
     </section>
@@ -434,7 +446,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 
 <script>
 (function(){
-  var EMAIL=""; // adresse e-mail de l’association
+  var EMAIL="hattermannmichel@gmail.com"; // adresse e-mail de l’association
   var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
   var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
   var V={accueil:document.getElementById("v-accueil"),histoire:document.getElementById("v-histoire"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
@@ -599,6 +611,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
       e.preventDefault();
       var lines=["Bonjour,",""];
       Array.prototype.forEach.call(f.elements,function(el){
+        if(el.type==="checkbox"){if(el.checked){lines.push(el.labels[0].textContent.trim());}return;}
         if(!el.name||!el.value.trim()){return;}
         if(el.type==="radio"){if(el.checked){lines.push("Demande : "+el.value);}return;}
         lines.push(el.labels[0].textContent+" : "+el.value.trim());
@@ -606,7 +619,9 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
       lines.push("","Cordialement");
       var text=lines.join("\n"),out=f.querySelector(".out");
       out.querySelector("pre").textContent=text;
-      out.querySelector(".mail").href="mailto:"+EMAIL+"?subject="+encodeURIComponent(f.dataset.subject)+"&body="+encodeURIComponent(text);
+      var gm="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(EMAIL)+"&su="+encodeURIComponent(f.dataset.subject)+"&body="+encodeURIComponent(text);
+      var ml=out.querySelector(".mail");ml.href=gm;ml.target="_blank";ml.rel="noopener";
+      window.open(gm,"_blank");
       out.querySelector(".copy").onclick=function(){
         try{navigator.clipboard.writeText(text);this.textContent="Message copié";}catch(err){this.textContent="Copie impossible";}
       };
