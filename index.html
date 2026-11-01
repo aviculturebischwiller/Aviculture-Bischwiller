@@ -155,7 +155,7 @@ footer{padding:2rem 0 3rem;font-size:.95rem;opacity:.8}
 
 
 /* ---------- Animation d’ouverture : l’œuf qui éclate ---------- */
-#intro{position:fixed;inset:0;z-index:1000;background:var(--ink);overflow:hidden;cursor:pointer;transition:transform .95s var(--ease-io);animation:introKill 0s 9s forwards}
+#intro{position:fixed;inset:0;z-index:1000;background:var(--ink);overflow:hidden;cursor:pointer;transition:transform .95s var(--ease-io);animation:introKill 0s 14s forwards}
 #intro.out{transform:translateY(-101%)}
 @keyframes introKill{to{visibility:hidden;pointer-events:none}}
 html:has(body.intro){overflow:hidden}
@@ -182,7 +182,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 #intro .it .a{display:block;overflow:hidden;padding-bottom:.12em;font:800 clamp(2.6rem,10.5vw,8rem)/.9 var(--display);letter-spacing:-.045em}
 #intro .it .a span{display:block;transform:translateY(112%);animation:up 1s var(--ease) calc(2.5s + var(--k,0)*.15s) forwards}
 #intro .it .s{font:700 clamp(.8rem,2vw,1.1rem) var(--text);letter-spacing:.28em;text-transform:uppercase;margin-top:1rem;opacity:0;animation:fadeUp .8s var(--ease) 3.2s forwards}
-#intro .skip{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 1.4rem);z-index:4;text-align:center;font:600 .8rem var(--text);letter-spacing:.2em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;opacity:0;animation:fadeUp .8s var(--ease) .5s forwards}
+#intro .skip{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 1.2rem);z-index:4;text-align:center;font:600 .8rem var(--text);letter-spacing:.2em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;opacity:0;animation:fadeUp .8s var(--ease) .5s forwards}
 
 /* ---------- Onglet Histoire ---------- */
 .mega{font-size:clamp(4.2rem,22vw,17rem);line-height:.82;letter-spacing:-.06em;font-weight:800;margin-bottom:clamp(1.5rem,4vw,3rem)}
@@ -199,6 +199,22 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 .tl p{margin:0;font-size:1.15rem}
 @media (max-width:30rem){a.tab{padding:.5rem .6rem;font-size:.85rem}}
 @media (prefers-reduced-motion:reduce){#intro{display:none}.tl li{opacity:1;transform:none}}
+
+
+/* ---------- Compteur de chargement ---------- */
+#intro:not(.go) *{animation-play-state:paused}
+#intro .skip{animation-play-state:running!important}
+#intro .cnt{position:absolute;left:1.25rem;bottom:calc(env(safe-area-inset-bottom,0px) + 1.2rem);z-index:4;color:#fff;mix-blend-mode:difference;transition:opacity .4s ease;pointer-events:none}
+#intro .cnt .lbl{display:block;font:600 .8rem var(--text);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem}
+#intro .cnt .pct{display:block;font:800 clamp(4rem,16vw,10rem)/.8 var(--display);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+#intro.go .cnt{opacity:0}
+
+/* ---------- Rideau de transition entre les pages ---------- */
+.wipe{position:fixed;inset:0;z-index:900;background:var(--ink);color:var(--yolk);display:grid;place-items:center;transform:translateY(101%);pointer-events:none;will-change:transform}
+.wipe.in{transform:none;transition:transform .6s var(--ease-io);pointer-events:auto}
+.wipe.out{transform:translateY(-101%);transition:transform .65s var(--ease-io)}
+.wipe span{font:800 clamp(3.5rem,16vw,12rem)/.9 var(--display);letter-spacing:-.05em;padding:0 1rem;text-align:center}
+@media (prefers-reduced-motion:reduce){.wipe{display:none}}
 
 /* ---------- Mouvement réduit ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -225,8 +241,10 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
     <div class="a"><span style="--k:1">de Bischwiller</span></div>
     <div class="s">Élevage · Passion · Transmission</div>
   </div>
-  <div class="skip">Touchez pour entrer</div>
+  <div class="cnt"><span class="lbl">Chargement en cours…</span><span class="pct">00</span></div>
+  <div class="skip">Touchez pour passer</div>
 </div>
+<div class="wipe" aria-hidden="true"><span></span></div>
 <div class="glow" aria-hidden="true"></div>
 
 <nav class="nav" aria-label="Pages">
@@ -450,12 +468,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
     var h=location.hash.slice(1),v=(h==="aide"||h==="inscription"||h==="histoire")?h:"accueil";
     var cur=current();
     clearTimeout(timer);
-    if(cur&&cur!==v&&!first&&!reduce){
-      V[cur].classList.add("view-leave");
-      timer=setTimeout(function(){show(v,h,false);},220);
-    }else{
-      show(v,h,cur===v);
-    }
+    if(cur&&cur!==v&&!first&&!reduce){wipeTo(v,h);}else{wipe.className="wipe";show(v,h,cur===v);}
   }
   window.addEventListener("hashchange",route);
 
@@ -489,6 +502,45 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
     if(t&&t!==lastTone){body.dataset.tone=t;lastTone=t;}
   }
 
+
+  /* ---- défilement doux avec inertie (souris) ---- */
+  var smooth=fine&&!reduce,target=scrollY,cur=scrollY,lastSet=scrollY;
+  function maxScroll(){return Math.max(0,document.documentElement.scrollHeight-innerHeight);}
+  if(smooth){
+    window.addEventListener("wheel",function(e){
+      if(e.ctrlKey){return;}
+      if(body.classList.contains("intro")){e.preventDefault();return;}
+      if(e.target.closest&&e.target.closest("textarea")){return;}
+      e.preventDefault();
+      var dy=e.deltaMode===1?e.deltaY*16:e.deltaY;
+      target=Math.max(0,Math.min(maxScroll(),target+dy));
+    },{passive:false});
+    window.addEventListener("scroll",function(){
+      if(Math.abs(scrollY-lastSet)>1.5){target=cur=lastSet=scrollY;}
+    },{passive:true});
+  }
+  function stepScroll(){
+    if(!smooth){return;}
+    var d=target-cur;
+    if(Math.abs(d)<.1){return;}
+    cur+=d*.085;
+    if(Math.abs(target-cur)<.3){cur=target;}
+    lastSet=cur;
+    window.scrollTo({top:cur,behavior:"instant"});
+  }
+
+  /* ---- rideau de transition entre les pages ---- */
+  var wipe=document.querySelector(".wipe"),wipeLabels={accueil:"Accueil",histoire:"Histoire",aide:"Aide",inscription:"S’inscrire"};
+  function wipeTo(v,h){
+    wipe.querySelector("span").textContent=wipeLabels[v]||"";
+    wipe.className="wipe in";
+    timer=setTimeout(function(){
+      show(v,h,false);
+      wipe.className="wipe out";
+      timer=setTimeout(function(){wipe.className="wipe";},700);
+    },620);
+  }
+
   /* ---- boucle d’animation unique ---- */
   var glow=document.querySelector(".glow"),stickers=document.querySelectorAll(".sticker"),bigdate=document.querySelector(".bigdate");
   var px=innerWidth/2,py=innerHeight/2,gx=px,gy=py,nx=0,ny=0,sx=0,sy=0;
@@ -502,6 +554,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
   }
   function lerp(a,b,t){return a+(b-a)*t;}
   function frame(){
+    stepScroll();
     var vh=innerHeight,y=scrollY;
     vel=lerp(vel,y-lastY,.12);lastY=y;
 
@@ -582,7 +635,17 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
       }
       intro.addEventListener("click",endIntro);
       window.addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"){endIntro();}});
-      setTimeout(endIntro,4500);
+      var pct=intro.querySelector(".pct"),t0=performance.now(),loaded=document.readyState==="complete",fontsOk=!(document.fonts&&document.fonts.ready);
+      window.addEventListener("load",function(){loaded=true;});
+      if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){fontsOk=true;});}
+      (function tick(t){
+        if(intro.classList.contains("out")){return;}
+        var el=t-t0,p=Math.min(1,el/1100),v=Math.round(100*(1-Math.pow(1-p,2))),ready=(loaded&&fontsOk)||el>4000;
+        if(!ready){v=Math.min(v,99);}
+        pct.textContent=(v<10?"0":"")+v;
+        if(p>=1&&ready){pct.textContent="100";intro.classList.add("go");setTimeout(endIntro,4400);return;}
+        requestAnimationFrame(tick);
+      })(t0);
     }
   }
 
