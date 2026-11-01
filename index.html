@@ -135,7 +135,7 @@ dd{margin:.2rem 0 0;font:600 clamp(1.4rem,3.4vw,2.2rem)/1.15 var(--display);lett
 .panel legend{font-weight:700;padding:0 0 .2rem}
 .panel label.opt{display:flex;align-items:center;gap:.8rem;font-weight:600;margin-top:.7rem;padding:.95rem 1.2rem;border:2px solid color-mix(in srgb,currentColor 35%,transparent);border-radius:999px;cursor:pointer;
   transition:background-color .35s ease,color .35s ease,border-color .35s ease,transform .35s var(--ease)}
-.panel label.opt:hover{transform:translateX(.35rem)}
+@media (hover:hover){.panel label.opt:hover{transform:translateX(.35rem)}}
 .panel .opt input{width:auto;margin:0;accent-color:var(--accent)}
 .panel label.opt:has(input:checked){background:var(--fg);border-color:var(--fg);color:var(--bg)}
 .panel>.btn{margin-top:2.2rem}
@@ -226,6 +226,16 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 .mailto .arr{display:inline-block;transition:transform .4s var(--ease)}
 .mailto:hover .arr{transform:translate(.25em,-.25em)}
 .panel .opt input[type=checkbox]{display:inline-block;flex:none;width:1.3rem;height:1.3rem;border:0;padding:0;margin:0}
+
+
+/* ---------- Corrections mobile ---------- */
+.panel .opt input[type=radio]{flex:none;width:1.3rem;height:1.3rem;margin:0}
+.nav{max-width:calc(100vw - 1rem)}
+@media (max-width:30rem){
+  .nav{gap:.2rem;padding:.3rem .3rem .3rem .35rem}
+  .nav .mark{height:1.8rem}
+  a.tab{padding:.5rem .5rem;font-size:.78rem}
+}
 
 /* ---------- Mouvement réduit ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -409,9 +419,9 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
             <legend>Votre demande concerne</legend>
             <label class="opt"><input type="radio" name="motif" value="Conseils sur l’élevage" checked>Conseils sur l’élevage</label>
             <label class="opt"><input type="radio" name="motif" value="Demande pour l’achat d’un animal">Demande pour l’achat d’un animal</label>
+            <label class="opt"><input type="radio" name="motif" value="J’ai de vieilles photos, souvenirs, diplômes, anciens présidents">J’ai de vieilles photos, souvenirs, diplômes, anciens présidents</label>
             <label class="opt"><input type="radio" name="motif" value="Autres">Autres</label>
           </fieldset>
-          <label class="opt" style="margin-top:1.6rem"><input type="checkbox" name="histoire" value="oui">J’ai de vieilles photos, souvenirs, diplômes, anciens présidents</label>
           <label for="a-contact">Téléphone ou e-mail</label><input id="a-contact" name="contact" required>
           <label for="a-msg">Votre message</label><textarea id="a-msg" name="msg"></textarea>
           <button class="btn" type="submit">Envoyer mon message</button>
@@ -605,6 +615,30 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
     });
   }
 
+
+  /* ---- ouvrir l’application Gmail (iPhone), l’app de messagerie (Android) ou Gmail web (ordinateur) ---- */
+  function openGmail(to,su,body){
+    var ua=navigator.userAgent,enc=encodeURIComponent,b=body||"";
+    var ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+    var android=/Android/.test(ua);
+    var web="https://mail.google.com/mail/?view=cm&fs=1&to="+enc(to)+"&su="+enc(su)+"&body="+enc(b);
+    if(ios){
+      var left=false,onv=function(){if(document.hidden){left=true;}};
+      document.addEventListener("visibilitychange",onv);
+      location.href="googlegmail:///co?to="+enc(to)+"&subject="+enc(su)+"&body="+enc(b);
+      setTimeout(function(){document.removeEventListener("visibilitychange",onv);if(!left&&!document.hidden){location.href=web;}},1800);
+    }else if(android){
+      location.href="mailto:"+to+"?subject="+enc(su)+"&body="+enc(b);
+    }else{
+      window.open(web,"_blank");
+    }
+  }
+  document.querySelectorAll(".mailto").forEach(function(a){
+    a.addEventListener("click",function(e){
+      if(!fine){e.preventDefault();openGmail(EMAIL,"Contact - Société d’Aviculture de Bischwiller","");}
+    });
+  });
+
   /* ---- formulaires ---- */
   document.querySelectorAll("form.panel").forEach(function(f){
     f.addEventListener("submit",function(e){
@@ -619,9 +653,9 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
       lines.push("","Cordialement");
       var text=lines.join("\n"),out=f.querySelector(".out");
       out.querySelector("pre").textContent=text;
-      var gm="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(EMAIL)+"&su="+encodeURIComponent(f.dataset.subject)+"&body="+encodeURIComponent(text);
-      var ml=out.querySelector(".mail");ml.href=gm;ml.target="_blank";ml.rel="noopener";
-      window.open(gm,"_blank");
+      var su=f.dataset.subject,ml=out.querySelector(".mail");
+      ml.href="#";ml.removeAttribute("target");ml.onclick=function(ev){ev.preventDefault();openGmail(EMAIL,su,text);};
+      openGmail(EMAIL,su,text);
       out.querySelector(".copy").onclick=function(){
         try{navigator.clipboard.writeText(text);this.textContent="Message copié";}catch(err){this.textContent="Copie impossible";}
       };
