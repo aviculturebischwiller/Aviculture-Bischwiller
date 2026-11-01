@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Société d’Aviculture de Bischwiller</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f5f0; --surface:#e6ebe2; --ink:#1e2a2f; --muted:#506068;
+  --green:#2f5d50; --red:#b3262e; --straw:#e8b84a; --on-green:#f3f5f0;
+  --line:#c9d2c5;
+  --serif:"Young Serif",Georgia,"Times New Roman",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141c1f; --surface:#1d2a2c; --ink:#eef1ea; --muted:#a9b6b0;
+    --green:#7fb5a2; --red:#e8636a; --straw:#e8b84a; --on-green:#141c1f;
+    --line:#2f3f3f; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141c1f; --surface:#1d2a2c; --ink:#eef1ea; --muted:#a9b6b0;
+  --green:#7fb5a2; --red:#e8636a; --straw:#e8b84a; --on-green:#141c1f;
+  --line:#2f3f3f; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.65 var(--sans)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.15;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1.25rem}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.25rem;max-width:46rem;margin:0 auto}
+header strong{font-family:var(--serif);font-weight:400;font-size:1.05rem}
+header a.nav{font-weight:600;text-decoration:none;border-bottom:2px solid var(--straw)}
+
+.hero{padding:2.5rem 0 0}
+.hero h1{font-size:clamp(2.4rem,9vw,4rem);max-width:12ch}
+.hero p{max-width:34rem;color:var(--muted);font-size:1.15rem;margin:1.25rem 0 1.75rem}
+.btn{display:inline-block;background:var(--red);color:#fff;font-weight:600;text-decoration:none;padding:.85rem 1.4rem;border-radius:.4rem}
+.btn.alt{background:none;color:var(--ink);border:2px solid var(--ink);margin-left:.5rem}
+.barring{height:3.5rem;margin-top:3rem;
+  background:repeating-linear-gradient(100deg,var(--ink) 0 .6rem,var(--surface) .6rem 1.4rem,var(--green) 1.4rem 2rem,var(--surface) 2rem 2.8rem)}
+
+section{padding:3.5rem 0 0}
+h2{font-size:1.9rem;margin-bottom:1rem}
+p{margin:0 0 1rem;max-width:38rem}
+
+.list{list-style:none;margin:1.5rem 0 0;padding:0;max-width:38rem}
+.list li{padding:1rem 0;border-top:1px solid var(--line)}
+.list li:last-child{border-bottom:1px solid var(--line)}
+.list h3{font-size:1.2rem;margin-bottom:.25rem}
+.list p{margin:0;color:var(--muted)}
+
+.event{background:var(--green);color:var(--on-green);padding:1.5rem;border-radius:.4rem;max-width:38rem}
+.event h3{font-size:1.4rem;margin-bottom:.5rem}
+.event p{margin:0}
+
+dl{margin:0;max-width:38rem}
+dt{font-weight:600;margin-top:1rem}
+dd{margin:0;color:var(--muted)}
+.todo{background:var(--straw);color:#1e2a2f;padding:0 .3rem;border-radius:.2rem}
+
+[hidden]{display:none!important}
+.tabs{display:flex;gap:1.1rem}
+a.tab{font-weight:600;text-decoration:none;padding:.3rem 0;border-bottom:2px solid transparent}
+a.tab[aria-current="page"]{border-color:var(--straw)}
+header{flex-wrap:wrap}
+.event a.cta{display:inline-block;margin-top:1rem;background:var(--straw);color:#1e2a2f;font-weight:600;text-decoration:none;padding:.6rem 1rem;border-radius:.4rem}
+.barring.thin{height:1.25rem;margin-top:1.5rem}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1.5rem 0 .5rem;max-width:38rem}
+button.choice{text-align:left;font:inherit;padding:1rem;border:2px solid var(--line);border-radius:.4rem;background:var(--surface);color:var(--ink);cursor:pointer}
+.choice strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.1rem;line-height:1.2;margin-bottom:.25rem}
+.choice span{color:var(--muted);font-size:.9rem;line-height:1.3;display:block}
+.choice[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--on-green)}
+.choice[aria-pressed="true"] span{color:inherit}
+.panel{max-width:38rem;margin-top:1rem}
+.panel label{display:block;font-weight:600;margin-top:1.1rem}
+.panel input,.panel select,.panel textarea{width:100%;font:inherit;padding:.75rem .8rem;margin-top:.3rem;border:2px solid var(--line);border-radius:.4rem;background:var(--bg);color:var(--ink)}
+.panel textarea{min-height:7rem}
+.panel button.btn{margin-top:1.5rem}
+button.btn{font:600 1rem var(--sans);border:0;cursor:pointer}
+.out{margin-top:1.5rem;padding:1.25rem;background:var(--surface);border-left:6px solid var(--green);border-radius:.4rem}
+.out pre{white-space:pre-wrap;font:inherit;margin:0 0 1rem;padding:.8rem;background:var(--bg);border-radius:.3rem;color:var(--muted)}
+.back{display:inline-block;margin-bottom:1rem;font-weight:600}
+.panel fieldset{border:0;padding:0;margin:1.3rem 0 0}
+.panel legend{font-weight:600;padding:0}
+.panel label.opt{display:flex;align-items:center;gap:.8rem;font-weight:500;margin-top:.6rem;padding:.9rem 1rem;border:2px solid var(--line);border-radius:.4rem;background:var(--surface);cursor:pointer}
+.panel .opt input{width:auto;margin:0;accent-color:var(--red)}
+.panel label.opt:has(input:checked){background:var(--green);border-color:var(--green);color:var(--on-green)}
+footer{margin-top:4rem;padding:1.5rem 0 2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media (max-width:30rem){.btn.alt{margin:.75rem 0 0 0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <strong>Aviculture Bischwiller</strong>
+  <nav class="tabs" aria-label="Pages">
+    <a class="tab" href="#accueil" data-v="accueil">Accueil</a>
+    <a class="tab" href="#aide" data-v="aide">Aide</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div id="v-accueil">
+  <div class="hero">
+    <h1>Société d’Aviculture de Bischwiller</h1>
+    <p>Une association d’éleveurs et de passionnés : on partage nos conseils, nos animaux et le plaisir de bien élever.</p>
+    <a class="btn" href="#exposition">Voir l’exposition</a>
+  </div>
+  <div class="barring" role="presentation"></div>
+
+  <section id="association">
+    <h2>Qui sommes-nous ?</h2>
+    <p>La Société d’Aviculture de Bischwiller réunit des éleveurs amateurs de la région autour d’une même passion : l’élevage de volailles, de pigeons et de lapins de race.</p>
+    <p>Débutant ou éleveur confirmé, chacun trouve ici des conseils, des échanges et des gens qui aiment ce qu’ils font.</p>
+  </section>
+
+  <section id="activites">
+    <h2>Ce que nous faisons</h2>
+    <ul class="list">
+      <li><h3>Exposition annuelle</h3><p>Les éleveurs présentent leurs plus beaux sujets au public et à un jury.</p></li>
+      <li><h3>Conseils d’élevage</h3><p>Alimentation, soins, reproduction : les anciens partagent leur expérience.</p></li>
+      <li><h3>Rencontres entre membres</h3><p>Des moments pour échanger, comparer ses races et se retrouver.</p></li>
+      <li><h3>Sauvegarde des races</h3><p>Nous faisons vivre les races locales et traditionnelles.</p></li>
+    </ul>
+  </section>
+
+  <section id="exposition">
+    <h2>Prochaine exposition</h2>
+    <div class="event">
+      <h3>Exposition avicole de Bischwiller</h3>
+      <p>Samedi 28 et dimanche 29 novembre<br>Salle Adrien Zeller, Bischwiller<br>Restauration sur place</p>
+      <a class="cta" href="#inscription">S’inscrire à l’exposition</a>
+    </div>
+  </section>
+
+  <section id="rejoindre">
+    <h2>Devenir membre</h2>
+    <p>Pas besoin d’être expert. Si vous aimez les animaux de basse-cour et l’élevage, venez nous rencontrer : on vous accueillera avec plaisir.</p>
+    <p>Contactez-nous pour connaître le montant de la cotisation et la date de la prochaine réunion.</p>
+    <a class="btn" href="#contact">Nous écrire</a>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <dl>
+      <dt>Adresse</dt><dd><span class="todo">à compléter</span>, 67240 Bischwiller</dd>
+      <dt>Téléphone</dt><dd><span class="todo">à compléter</span></dd>
+      <dt>E-mail</dt><dd><span class="todo">à compléter</span></dd>
+    </dl>
+  </section>
+
+  </div>
+
+  <div id="v-aide" hidden>
+    <div class="barring thin" role="presentation"></div>
+    <section>
+      <h2>Besoin d’aide ?</h2>
+      <p>Dites-nous qui vous êtes et ce que vous cherchez. Votre message est préparé, il ne reste qu’à l’envoyer par e-mail.</p>
+      <form id="f-aide" class="panel" data-subject="Demande d’aide">
+        <label for="a-nom">Nom</label><input id="a-nom" name="nom" autocomplete="family-name" required>
+        <label for="a-prenom">Prénom</label><input id="a-prenom" name="prenom" autocomplete="given-name" required>
+        <fieldset>
+          <legend>Votre demande concerne</legend>
+          <label class="opt"><input type="radio" name="motif" value="Conseils sur l’élevage" checked>Conseils sur l’élevage</label>
+          <label class="opt"><input type="radio" name="motif" value="Demande pour l’achat d’un animal">Demande pour l’achat d’un animal</label>
+          <label class="opt"><input type="radio" name="motif" value="Autres">Autres</label>
+        </fieldset>
+        <label for="a-contact">Téléphone ou e-mail</label><input id="a-contact" name="contact" required>
+        <label for="a-msg">Votre message</label><textarea id="a-msg" name="msg"></textarea>
+        <button class="btn" type="submit">Préparer mon message</button>
+        <div class="out" hidden><p><strong>Votre message est prêt.</strong> Touchez « Envoyer par e-mail » pour l’ouvrir dans votre messagerie.</p><pre></pre><a class="btn mail">Envoyer par e-mail</a> <button type="button" class="btn alt copy">Copier le message</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div id="v-inscription" hidden>
+    <div class="barring thin" role="presentation"></div>
+    <section>
+      <a class="back" href="#accueil">Retour à l’accueil</a>
+      <h2>Inscription à l’exposition</h2>
+      <p>Samedi 28 et dimanche 29 novembre, salle Adrien Zeller à Bischwiller. Remplissez ce formulaire pour inscrire vos animaux.</p>
+      <form id="f-inscription" class="panel" data-subject="Inscription à l’exposition">
+        <label for="i-nom">Nom</label><input id="i-nom" name="nom" autocomplete="family-name" required>
+        <label for="i-prenom">Prénom</label><input id="i-prenom" name="prenom" autocomplete="given-name" required>
+        <label for="i-adresse">Adresse</label><input id="i-adresse" name="adresse" autocomplete="street-address" required>
+        <label for="i-tel">Numéro de téléphone</label><input id="i-tel" name="tel" type="tel" autocomplete="tel" required>
+        <label for="i-race">Race des animaux</label><input id="i-race" name="race" required>
+        <label for="i-nb">Nombre d’animaux à exposer</label><input id="i-nb" name="nb" type="number" min="1" inputmode="numeric" required>
+        <button class="btn" type="submit">Préparer mon inscription</button>
+        <div class="out" hidden><p><strong>Votre inscription est prête.</strong> Touchez « Envoyer par e-mail » pour l’ouvrir dans votre messagerie.</p><pre></pre><a class="btn mail">Envoyer par e-mail</a> <button type="button" class="btn alt copy">Copier le message</button></div>
+      </form>
+    </section>
+  </div>
+
+  <footer>© Société d’Aviculture de Bischwiller</footer>
+</main>
+<script>
+(function(){
+  var EMAIL=""; // adresse e-mail de l’association
+  var V={accueil:document.getElementById("v-accueil"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
+  var tabs=document.querySelectorAll("a.tab");
+  function route(){
+    var h=location.hash.slice(1),v=(h==="aide"||h==="inscription")?h:"accueil";
+    Object.keys(V).forEach(function(k){V[k].hidden=k!==v;});
+    tabs.forEach(function(t){
+      if(t.dataset.v===v){t.setAttribute("aria-current","page");}else{t.removeAttribute("aria-current");}
+    });
+    var el=v==="accueil"&&h&&h!=="accueil"?document.getElementById(h):null;
+    if(el){el.scrollIntoView();}else{window.scrollTo(0,0);}
+  }
+  window.addEventListener("hashchange",route);
+  route();
+  document.querySelectorAll("form.panel").forEach(function(f){
+    f.addEventListener("submit",function(e){
+      e.preventDefault();
+      var lines=["Bonjour,",""];
+      Array.prototype.forEach.call(f.elements,function(el){
+        if(!el.name||!el.value.trim()){return;}
+        if(el.type==="radio"){if(el.checked){lines.push("Demande : "+el.value);}return;}
+        lines.push(el.labels[0].textContent+" : "+el.value.trim());
+      });
+      lines.push("","Cordialement");
+      var text=lines.join("\n"),out=f.querySelector(".out");
+      out.querySelector("pre").textContent=text;
+      out.querySelector(".mail").href="mailto:"+EMAIL+"?subject="+encodeURIComponent(f.dataset.subject)+"&body="+encodeURIComponent(text);
+      out.querySelector(".copy").onclick=function(){
+        try{navigator.clipboard.writeText(text);this.textContent="Message copié";}catch(err){this.textContent="Copie impossible";}
+      };
+      out.hidden=false;
+      out.scrollIntoView({block:"nearest"});
+    });
+  });
+})();
+</script>
+</body>
+</html>
