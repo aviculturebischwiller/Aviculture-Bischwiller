@@ -1012,55 +1012,32 @@ html:has(body.gaming){overflow:hidden}
     var r;try{r=new T.WebGLRenderer({canvas:cv,alpha:true,antialias:true});}catch(e){cv.remove();return;}
     r.setPixelRatio(Math.min(devicePixelRatio||1,2));
     var sc=new T.Scene(),cam=new T.PerspectiveCamera(32,1,.1,50);cam.position.set(0,1.2,8.2);cam.lookAt(0,1.1,0);
-    sc.add(new T.HemisphereLight(0xfff4e0,0x8a7a6a,.8));
-    var dl=new T.DirectionalLight(0xffffff,.7);dl.position.set(3,5,4);sc.add(dl);
-    function M(c){return new T.MeshStandardMaterial({color:c,roughness:.8,metalness:0});}
+    sc.add(new T.HemisphereLight(0xfff4e0,0x6a4a2a,.95));
+    var dl=new T.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);sc.add(dl);
+    function M(c){return new T.MeshStandardMaterial({color:c,roughness:.7,metalness:.05});}
     function mesh(g,c,x,y,z,sx,sy,sz){var m=new T.Mesh(g,M(c));m.position.set(x,y,z);if(sx)m.scale.set(sx,sy,sz);return m;}
-    var W=0xeeeae4,P=0x4b4442,PK=0xe3a39b,DK=0x2f2a2a,S=new T.SphereGeometry(1,28,20);
-    var dog=new T.Group(),body=new T.Group(),eyes=[];dog.add(body);
-    // ombre douce au sol
-    var c=document.createElement("canvas");c.width=c.height=64;var g=c.getContext("2d"),gr=g.createRadialGradient(32,32,2,32,32,32);
-    gr.addColorStop(0,"rgba(0,0,0,.35)");gr.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=gr;g.fillRect(0,0,64,64);
-    var sh=new T.Mesh(new T.PlaneGeometry(3.8,3.8),new T.MeshBasicMaterial({map:new T.CanvasTexture(c),transparent:true,depthWrite:false}));
-    sh.rotation.x=-Math.PI/2;sh.position.set(0,.01,-.2);dog.add(sh);
-    // corps (chien assis)
-    body.add(mesh(S,W,0,.8,-.4,.75,.8,.85));
-    body.add(mesh(S,W,0,1.3,.3,.78,.9,.7));
-    body.add(mesh(S,W,0,1.8,.4,.55,.7,.55));
-    body.add(mesh(S,P,-.6,1.05,-.05,.1,.5,.5));
-    var leg=new T.CylinderGeometry(.17,.14,1.25,14);
+    var S=new T.SphereGeometry(1,24,18),coq=new T.Group();
+    var body=new T.Group();coq.add(body);
+    body.add(mesh(S,0xb5541c,0,1.1,0,1,.88,1.35));
+    body.add(mesh(S,0xd9822b,0,.95,.55,.85,.8,.8));
+    [-1,1].forEach(function(k){var w=mesh(S,0x8a3a12,k*.92,1.15,-.05,.22,.6,.95);w.rotation.z=k*-.12;body.add(w);});
+    var tail=new T.Group();tail.position.set(0,1.45,-1.15);body.add(tail);
+    [[0x1d6b4a,-.5,0],[0x127a6d,0,.12],[0xd9a21b,.5,0],[0x1d6b4a,.25,-.1],[0x7a2a10,-.25,-.1]].forEach(function(p){
+      var f=mesh(S,p[0],0,.55,-.1,.14,.85,.32);f.position.x=p[1]*.5;f.rotation.z=-p[1]*.55;f.rotation.x=-.45+p[2];tail.add(f);});
+    var neck=new T.Group();neck.position.set(0,1.55,.95);body.add(neck);
+    neck.add(mesh(new T.CylinderGeometry(.34,.5,.9,16),0xd9822b,0,.35,0));
+    var head=new T.Group();head.position.set(0,.95,.12);neck.add(head);
+    head.add(mesh(S,0xe9a23a,0,0,0,.42,.42,.46));
+    var beak=mesh(new T.ConeGeometry(.15,.5,12),0xffc21a,0,-.04,.56);beak.rotation.x=Math.PI/2;head.add(beak);
+    [-1,1].forEach(function(k){head.add(mesh(S,0x101a3a,k*.3,.1,.26,.06,.06,.06));});
+    [[0,.5,.0,.14],[0,.62,-.17,.18],[0,.5,-.34,.14]].forEach(function(p){head.add(mesh(S,0xd42a1f,0,p[1],p[2],.1,p[3]*2.2,.17));});
+    head.add(mesh(S,0xd42a1f,0,-.38,.3,.12,.2,.1));
     [-1,1].forEach(function(k){
-      body.add(mesh(S,W,k*.6,.55,-.3,.5,.55,.7));
-      body.add(mesh(S,W,k*.7,.1,.15,.2,.11,.35));
-      body.add(mesh(leg,W,k*.3,.66,.55));
-      body.add(mesh(S,W,k*.3,.08,.72,.2,.11,.3));
+      var leg=new T.Group();leg.position.set(k*.42,.55,.1);coq.add(leg);
+      leg.add(mesh(new T.CylinderGeometry(.07,.07,.9,10),0xe0a21a,0,-.2,0));
+      [-.18,0,.18].forEach(function(a){var t=mesh(new T.BoxGeometry(.07,.06,.4),0xe0a21a,a*.8,-.65,.15);t.rotation.y=a;leg.add(t);});
     });
-    // queue : base foncée, bout blanc
-    var tail=new T.Group();tail.position.set(0,.35,-1.15);body.add(tail);
-    tail.add(mesh(S,P,0,0,-.28,.13,.13,.36));
-    tail.add(mesh(S,P,0,-.04,-.6,.1,.1,.3));
-    tail.add(mesh(S,W,0,-.08,-.86,.08,.08,.2));
-    // tête
-    var head=new T.Group();head.position.set(0,2.3,.55);body.add(head);
-    head.add(mesh(S,W,0,0,0,.62,.55,.6));
-    head.add(mesh(S,W,0,-.12,.45,.34,.27,.38));
-    head.add(mesh(S,W,0,-.3,.43,.26,.14,.3));
-    head.add(mesh(S,DK,0,0,.8,.15,.11,.1));
-    head.add(mesh(S,DK,0,-.2,.76,.18,.02,.1));
-    [-1,1].forEach(function(k){
-      head.add(mesh(S,W,k*.38,-.15,.25,.3,.28,.3));
-      var e=new T.Group();e.position.set(k*.27,.12,.5);
-      e.add(mesh(S,0x140d0c,0,0,0,.075,.075,.075),mesh(S,0xffffff,.025,.025,.065,.02,.02,.02));
-      head.add(e);eyes.push(e);
-    });
-    // oreille dressée + oreille pliée
-    var cone=new T.ConeGeometry(.22,.62,10);cone.translate(0,.31,0);
-    var earA=new T.Group();earA.position.set(-.36,.4,-.1);earA.rotation.set(-.2,0,.25);earA.scale.z=.45;
-    earA.add(mesh(cone,W,0,0,0),mesh(cone,PK,0,.02,.16,.7,.8,.5));
-    var earB=new T.Group();earB.position.set(.28,.5,-.12);earB.rotation.set(-.2,-.35,-.55);
-    earB.add(mesh(S,W,.2,0,0,.3,.15,.09),mesh(S,PK,.19,0,.05,.2,.1,.05));
-    head.add(earA,earB);
-    dog.position.y=-.55;sc.add(dog);
+    coq.position.y=-.35;sc.add(coq);
     function size(){var w=cv.clientWidth||200,h=cv.clientHeight||200;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
     size();addEventListener("resize",size);
     var t0=performance.now(),sm=scrollY;
@@ -1068,15 +1045,11 @@ html:has(body.gaming){overflow:hidden}
       var t=(now-t0)/1000;
       sm+=(scrollY-sm)*.08;
       var mx=Math.max(1,document.documentElement.scrollHeight-innerHeight),p=sm/mx;
-      dog.rotation.y=sm*.0045+(reduce?0:Math.sin(t*.8)*.25)+.5;
-      dog.position.y=-.55+Math.sin(p*Math.PI*2)*.1;
-      if(!reduce){
-        tail.rotation.y=Math.sin(t*9)*.55*(.4+.6*(.5+.5*Math.sin(t*.5)));
-        body.scale.y=1+Math.sin(t*2)*.012;
-        head.rotation.set(Math.sin(t*.9)*.04,Math.sin(t*.4)*.15,Math.sin(t*.6)*.12);
-        earA.rotation.z=.25+Math.max(0,Math.sin(t*1.7)-.9)*1.5;
-        var b=(t%4.3)<.12?.1:1;eyes.forEach(function(e){e.scale.y=b;});
-      }
+      coq.rotation.y=sm*.0045+(reduce?0:Math.sin(t*.8)*.25)+.5;
+      coq.position.y=-.35+(reduce?0:Math.abs(Math.sin(t*2.2))*.06)+Math.sin(p*Math.PI*2)*.1;
+      var peck=reduce?0:Math.max(0,Math.sin(t*3.2))*(Math.sin(t*.7)>.3?1:0);
+      neck.rotation.x=.15+peck*.55;head.rotation.x=peck*.3;
+      tail.rotation.x=Math.sin(t*1.5)*.06;
       r.render(sc,cam);requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
