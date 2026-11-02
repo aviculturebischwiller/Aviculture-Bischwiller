@@ -240,6 +240,7 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
   .nav .mark{height:1.8rem}
   a.tab{padding:.5rem .5rem;font-size:.78rem}
 }
+@media (max-width:24rem){a.tab{padding:.45rem .32rem;font-size:.7rem}.nav .mark{height:1.6rem}}
 
 
 /* ---------- Jeu : le concours de la basse-cour ---------- */
@@ -283,6 +284,36 @@ html:has(body.gaming){overflow:hidden}
 
 #coq{position:fixed;right:.5rem;bottom:.5rem;width:clamp(120px,22vw,250px);height:clamp(120px,22vw,250px);z-index:40;pointer-events:none;opacity:0;transition:opacity .8s}
 #coq.on{opacity:1}body.intro #coq{opacity:0}
+
+.news-h{font:800 clamp(3.2rem,15vw,11rem)/.85 var(--display);letter-spacing:-.05em;margin:0 0 1.2rem;max-width:none}
+.news-h span{display:inline-block;opacity:0;transform:translateY(110%) rotate(8deg);animation:letIn .9s var(--ease) forwards;animation-delay:calc(var(--i)*.06s + .15s)}
+@keyframes letIn{to{opacity:1;transform:none}}
+.news-sub{font-size:1.25rem;max-width:34rem}
+.pulse{display:inline-flex;align-items:center;gap:.6rem;font:700 .95rem var(--text);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem}
+.pulse i{width:.8rem;height:.8rem;border-radius:50%;background:var(--accent);position:relative}
+.pulse i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent);animation:ping 1.8s ease-out infinite}
+@keyframes ping{to{transform:scale(3.4);opacity:0}}
+.ticker{overflow:hidden;white-space:nowrap;border-block:3px solid currentColor;padding:.7rem 0;margin-top:clamp(2rem,5vw,3.5rem)}
+.ticker div{display:inline-block;animation:tick 22s linear infinite;font:800 clamp(1.2rem,3vw,2rem) var(--display);text-transform:uppercase;letter-spacing:-.01em}
+@keyframes tick{to{transform:translateX(-50%)}}
+.card{display:grid;gap:clamp(1.5rem,4vw,3.5rem);align-items:center;grid-template-columns:1fr}
+@media (min-width:52rem){.card{grid-template-columns:1.1fr .9fr}}
+.rv{opacity:0;transform:translateY(3rem) scale(.97);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--d,0)*1s)}
+.rv.in{opacity:1;transform:none}
+.badge{display:inline-block;background:var(--accent);color:var(--accent-fg);font:800 .95rem var(--text);letter-spacing:.1em;text-transform:uppercase;padding:.45rem 1rem;border-radius:999px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-.4rem) rotate(-2deg)}}
+.card h3{font:800 clamp(2rem,5.5vw,4rem)/1 var(--display);letter-spacing:-.03em;margin:1rem 0}
+.card p{font-size:1.2rem;margin:0 0 .8rem}
+.days{display:flex;gap:1rem;margin:1.4rem 0}
+.days div{font:800 clamp(3rem,10vw,6rem)/.9 var(--display);letter-spacing:-.05em;text-align:center}
+.days small{display:block;font:700 .85rem var(--text);letter-spacing:.14em;text-transform:uppercase;margin-top:.3rem}
+.poster{perspective:900px}
+.poster a{display:block;transform-style:preserve-3d;transition:transform .25s ease-out,box-shadow .4s;box-shadow:0 1.6rem 3.5rem -1rem rgba(0,0,0,.5);border-radius:.7rem;position:relative;overflow:hidden;animation:floaty 5s ease-in-out infinite}
+@keyframes floaty{50%{translate:0 -.7rem}}
+.poster a::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-120%);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{55%,100%{transform:translateX(120%)}}
+.poster img{display:block;width:100%;height:auto}
+@media (prefers-reduced-motion:reduce){.news-h span,.rv{opacity:1;transform:none;animation:none;transition:none}.badge,.poster a,.poster a::after,.ticker div,.pulse i::after{animation:none}}
 </style>
 </head>
 <body data-tone="shell" class="intro">
@@ -316,6 +347,7 @@ html:has(body.gaming){overflow:hidden}
   <div class="tabs">
     <span class="ind" aria-hidden="true"></span>
     <a class="tab" href="#accueil" data-v="accueil">Accueil</a>
+    <a class="tab" href="#actualite" data-v="actualite">Actualité</a>
     <a class="tab" href="#histoire" data-v="histoire">Histoire</a>
     <a class="tab" href="#aide" data-v="aide">Aide</a>
     <a class="tab" href="#inscription" data-v="inscription">S’inscrire</a>
@@ -395,7 +427,35 @@ html:has(body.gaming){overflow:hidden}
           <div><dt>Adresse</dt><dd><span class="todo">à compléter</span>, 67240 Bischwiller</dd></div>
           <div><dt>Téléphone</dt><dd><span class="todo">à compléter</span></dd></div>
           <div><dt>E-mail</dt><dd><a class="mailto" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hattermannmichel@gmail.com&amp;su=Contact%20-%20Soci%C3%A9t%C3%A9%20d%E2%80%99Aviculture%20de%20Bischwiller" target="_blank" rel="noopener">hattermannmichel@gmail.com<span class="arr"> ↗</span></a></dd></div>
+          <div><dt>Facebook</dt><dd><a class="mailto" href="https://www.facebook.com/share/g/18Lyp25KPT/?mibextid=wwXIfr" target="_blank" rel="noopener">Rejoindre le groupe<span class="arr"> ↗</span></a></dd></div>
         </dl>
+      </div>
+    </section>
+  </div>
+
+  <div id="v-actualite" hidden>
+    <section data-tone="ink" style="padding-top:clamp(7rem,14vw,10rem)">
+      <div class="wrap">
+        <div class="pulse"><i></i>À la une</div>
+        <h2 class="news-h" aria-label="Actualité"><span aria-hidden="true" style="--i:0">A</span><span aria-hidden="true" style="--i:1">c</span><span aria-hidden="true" style="--i:2">t</span><span aria-hidden="true" style="--i:3">u</span><span aria-hidden="true" style="--i:4">a</span><span aria-hidden="true" style="--i:5">l</span><span aria-hidden="true" style="--i:6">i</span><span aria-hidden="true" style="--i:7">t</span><span aria-hidden="true" style="--i:8">é</span></h2>
+        <p class="news-sub rv" style="--d:.5">Les nouvelles de la Société d’Aviculture de Bischwiller et environs.</p>
+        <div class="ticker" aria-hidden="true"><div>Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ </div></div>
+      </div>
+    </section>
+    <section data-tone="yolk">
+      <div class="wrap card">
+        <div class="rv">
+          <span class="badge">Novembre 2026</span>
+          <h3>Exposition locale et régionale de Wyandotte</h3>
+          <div class="days" aria-hidden="true"><div>14<small>Samedi</small></div><div>15<small>Dimanche</small></div></div>
+          <p>Salle Adrien Zeller, 10 rue des Casernes, Bischwiller.</p>
+          <p>Samedi 14 h à 20 h (inauguration à 18 h), dimanche 9 h à 16 h 30.</p>
+          <p>Entrée libre · Restauration sur place.</p>
+          <a class="btn magnet" href="#inscription">S’inscrire à l’exposition</a>
+        </div>
+        <div class="poster rv" style="--d:.2">
+          <a href="https://www.ville-bischwiller.fr/agenda/aviculture/" target="_blank" rel="noopener" aria-label="Voir l’agenda de l’exposition sur le site de la ville de Bischwiller"><img data-from=".affiche img" alt="Affiche de l’exposition locale et régionale de Wyandotte, samedi 14 et dimanche 15 novembre 2026" width="1055" height="1491"></a>
+        </div>
       </div>
     </section>
   </div>
@@ -493,7 +553,7 @@ html:has(body.gaming){overflow:hidden}
   var EMAIL="hattermannmichel@gmail.com"; // adresse e-mail de l’association
   var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
   var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
-  var V={accueil:document.getElementById("v-accueil"),histoire:document.getElementById("v-histoire"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
+  var V={accueil:document.getElementById("v-accueil"),actualite:document.getElementById("v-actualite"),histoire:document.getElementById("v-histoire"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
   var tabs=document.querySelectorAll("a.tab"),ind=document.querySelector(".tabs .ind"),body=document.body;
   var first=true,timer;
 
@@ -521,7 +581,7 @@ html:has(body.gaming){overflow:hidden}
     first=false;lastTone=null;
   }
   function route(){
-    var h=location.hash.slice(1),v=(h==="aide"||h==="inscription"||h==="histoire")?h:"accueil";
+    var h=location.hash.slice(1),v=(h==="aide"||h==="inscription"||h==="histoire"||h==="actualite")?h:"accueil";
     var cur=current();
     clearTimeout(timer);
     if(cur&&cur!==v&&!first&&!reduce){wipeTo(v,h);}else{wipe.className="wipe";show(v,h,cur===v);}
@@ -587,7 +647,7 @@ html:has(body.gaming){overflow:hidden}
   }
 
   /* ---- rideau de transition entre les pages ---- */
-  var wipe=document.querySelector(".wipe"),wipeLabels={accueil:"Accueil",histoire:"Histoire",aide:"Aide",inscription:"S’inscrire"};
+  var wipe=document.querySelector(".wipe"),wipeLabels={accueil:"Accueil",histoire:"Histoire",actualite:"Actualité",aide:"Aide",inscription:"S’inscrire"};
   function wipeTo(v,h){
     wipe.querySelector("span").textContent=wipeLabels[v]||"";
     wipe.className="wipe in";
@@ -887,6 +947,22 @@ html:has(body.gaming){overflow:hidden}
     cv.classList.add("on");
   }
   if(document.readyState==="complete")init();else addEventListener("load",init);
+})();
+</script>
+
+<script>
+(function(){
+  var src=document.querySelector(".affiche img"),im=document.querySelector("#v-actualite img[data-from]");
+  if(src&&im){im.src=src.src;}
+  var rv=[].slice.call(document.querySelectorAll("#v-actualite .rv"));
+  function check(){var vh=innerHeight;rv.forEach(function(e){if(e.classList.contains("in"))return;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.9){e.classList.add("in");}});}
+  addEventListener("scroll",check,{passive:true});addEventListener("resize",check);addEventListener("hashchange",function(){setTimeout(check,700);});
+  setInterval(check,400);
+  var a=document.querySelector("#v-actualite .poster a");
+  if(a&&matchMedia("(hover:hover)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
+    a.addEventListener("mousemove",function(e){var r=a.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;a.style.transform="rotateY("+x*14+"deg) rotateX("+(-y*14)+"deg) scale(1.03)";});
+    a.addEventListener("mouseleave",function(){a.style.transform="";});
+  }
 })();
 </script>
 </body>
