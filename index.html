@@ -293,22 +293,67 @@ html:has(body.gaming){overflow:hidden}
 
 #coq{position:fixed;right:.5rem;bottom:.5rem;width:clamp(120px,22vw,250px);height:clamp(120px,22vw,250px);z-index:40;pointer-events:none;opacity:0;transition:opacity .8s}
 #coq.on{opacity:1}body.intro #coq{opacity:0}
-/* Poule : clic = ponte d'un œuf qui explose sur l'écran */
-.egg-fly{position:fixed;left:0;top:0;width:34px;height:44px;margin:-22px 0 0 -17px;z-index:1500;pointer-events:none;border-radius:50% 50% 50% 50%/60% 60% 42% 42%;
-  background:radial-gradient(ellipse at 35% 28%,#fff 0 12%,#fff6e4 40%,#ecd7b0 100%);box-shadow:inset -4px -6px 8px rgba(120,80,30,.25),0 6px 14px rgba(0,0,0,.35);will-change:transform}
-.splat{position:fixed;inset:0;z-index:1500;pointer-events:none;overflow:hidden}
-.splat svg{position:absolute;inset:0;width:100%;height:100%}
-.splat .flash{position:absolute;inset:0;background:#fff;opacity:0;animation:splFlash .35s ease-out}
-@keyframes splFlash{0%{opacity:.85}100%{opacity:0}}
-.splat .sg{transform-origin:50% 50%;animation:splBoom .38s cubic-bezier(.1,.9,.2,1) both}
-@keyframes splBoom{0%{transform:scale(.15);opacity:0}25%{opacity:1}100%{transform:scale(1);opacity:1}}
-.splat .drip{transform-box:fill-box;transform-origin:50% 0;animation:splDrip var(--d,3s) cubic-bezier(.3,.1,.4,1) var(--dl,.3s) both}
-@keyframes splDrip{from{transform:scaleY(.05)}to{transform:scaleY(1)}}
-.splat .shell{position:absolute;left:50%;top:50%;width:var(--s,16px);height:var(--s,16px);background:#f3e6c8;border:1px solid #cdb68a;clip-path:polygon(10% 0,100% 25%,70% 100%,0 70%);
-  animation:splShell 1.1s cubic-bezier(.15,.7,.3,1) both}
-@keyframes splShell{0%{transform:translate(0,0) rotate(0) scale(.3);opacity:1}70%{opacity:1}100%{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1);opacity:0}}
-.splat.slide{transform-origin:50% 0;animation:splSlide 6s cubic-bezier(.4,0,.85,.55) both}
-@keyframes splSlide{0%{transform:translateY(0) scaleY(1);opacity:1}75%{opacity:1}100%{transform:translateY(108vh) scaleY(1.2);opacity:0}}
+/* Poule intelligente : bulle + fenêtre de discussion */
+.hen-bubble,.hen-chat{--hs:clamp(120px,22vw,250px)}
+.hen-bubble{position:fixed;right:.9rem;bottom:calc(.5rem + var(--hs)*.8);z-index:41;max-width:min(15.5rem,calc(100vw - 1.8rem));
+  display:flex;align-items:flex-start;gap:.35rem;padding:.7rem .8rem .7rem 1rem;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:1.1rem;
+  font:700 .98rem/1.3 var(--text);cursor:pointer;box-shadow:4px 4px 0 var(--ink);animation:henBob 3.2s ease-in-out infinite;transform-origin:90% 100%}
+.hen-bubble[hidden]{display:none}
+.hen-bubble::after{content:"";position:absolute;right:calc(var(--hs)*.26);bottom:-.62rem;width:1rem;height:1rem;background:#fff;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.hen-bubble:focus-visible{outline:3px solid var(--comb);outline-offset:3px}
+.hen-bubble .hb-x{flex:none;border:0;background:transparent;color:var(--ink);font:700 1.25rem/1 var(--text);padding:0 .2rem;cursor:pointer;opacity:.55;border-radius:.4rem}
+.hen-bubble .hb-x:hover,.hen-bubble .hb-x:focus-visible{opacity:1}
+@keyframes henBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+body.intro .hen-bubble,body.gaming .hen-bubble,body.intro .hen-chat,body.gaming .hen-chat{display:none}
+
+.hen-chat{position:fixed;right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom));z-index:60;
+  width:min(26rem,calc(100vw - 1.5rem));height:min(34rem,calc(100dvh - 1.5rem));display:flex;flex-direction:column;overflow:hidden;
+  background:var(--shell);color:var(--ink);border:2px solid var(--ink);border-radius:1.4rem;box-shadow:6px 6px 0 var(--ink),0 24px 60px rgba(16,26,58,.3);
+  font:400 1rem/1.45 var(--text);opacity:0;visibility:hidden;transform:translateY(14px) scale(.96);transform-origin:100% 100%;
+  transition:opacity .25s ease,transform .3s var(--ease),visibility 0s linear .3s}
+.hen-chat.open{opacity:1;visibility:visible;transform:none;transition:opacity .25s ease,transform .3s var(--ease),visibility 0s}
+@media (min-width:900px){.hen-chat{bottom:calc(var(--hs) + .9rem);height:min(34rem,calc(100dvh - var(--hs) - 6.5rem))}}
+.hc-head{display:flex;align-items:center;gap:.7rem;padding:.7rem .8rem;background:var(--yolk);border-bottom:2px solid var(--ink)}
+.hc-av{flex:none;width:2.5rem;height:2.5rem;border-radius:50%;background:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-size:1.4rem;line-height:1}
+.hc-ti{flex:1;min-width:0}
+.hc-ti b{display:block;font:800 1.05rem/1.1 var(--display)}
+.hc-ti small{display:block;font:500 .78rem/1.2 var(--text);opacity:.8}
+.hc-ib{flex:none;width:2.4rem;height:2.4rem;border-radius:50%;border:2px solid var(--ink);background:#fff;color:var(--ink);font:700 1.05rem/1 var(--text);cursor:pointer;display:grid;place-items:center;padding:0}
+.hc-ib:hover{background:var(--ink);color:var(--yolk)}
+.hc-ib:focus-visible,.hc-form button:focus-visible,.hc-chip:focus-visible,.hc-act:focus-visible{outline:3px solid var(--comb);outline-offset:2px}
+.hc-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:.9rem .8rem;display:flex;flex-direction:column;gap:.6rem;scroll-behavior:smooth}
+.hc-msg{max-width:90%;padding:.6rem .8rem;border:1.5px solid var(--ink);border-radius:1rem;word-wrap:break-word;overflow-wrap:anywhere}
+.hc-msg p{margin:0 0 .45rem;font-size:.98rem}
+.hc-msg p:last-child{margin-bottom:0}
+.hc-bot{align-self:flex-start;background:#fff;border-bottom-left-radius:.3rem}
+.hc-me{align-self:flex-end;background:var(--yolk);border-bottom-right-radius:.3rem;font-weight:500}
+.hc-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem}
+.hc-act{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem .8rem;border-radius:99px;background:var(--ink);color:var(--yolk);font:700 .85rem/1.1 var(--text);text-decoration:none;border:2px solid var(--ink)}
+.hc-act:hover{background:var(--comb);border-color:var(--comb);color:#fff}
+.hc-act.alt{background:#fff;color:var(--ink)}
+.hc-act.alt:hover{background:var(--yolk);color:var(--ink);border-color:var(--ink)}
+.hc-src{margin-top:.55rem;padding-top:.45rem;border-top:1px dashed rgba(16,26,58,.35);font-size:.82rem;line-height:1.35}
+.hc-src b{display:block;font:700 .74rem/1 var(--text);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;opacity:.7}
+.hc-src a{display:block;color:var(--ink);text-decoration:underline;text-underline-offset:2px;margin:.15rem 0}
+.hc-src a:hover{color:var(--comb)}
+.hc-chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 .8rem .6rem}
+.hc-chip{padding:.4rem .75rem;border-radius:99px;background:#fff;border:1.5px solid var(--ink);color:var(--ink);font:600 .85rem/1.15 var(--text);cursor:pointer}
+.hc-chip:hover{background:var(--yolk)}
+.hc-typing{display:inline-flex;gap:.28rem;align-items:center;padding:.2rem 0}
+.hc-typing i{width:.5rem;height:.5rem;border-radius:50%;background:var(--ink);opacity:.35;animation:hcDot 1s infinite ease-in-out}
+.hc-typing i:nth-child(2){animation-delay:.15s}.hc-typing i:nth-child(3){animation-delay:.3s}
+@keyframes hcDot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.hc-form{display:flex;gap:.5rem;padding:.65rem .8rem;border-top:2px solid var(--ink);background:#fff}
+.hc-form input{flex:1;min-width:0;padding:.65rem .85rem;border:2px solid var(--ink);border-radius:99px;background:var(--shell);color:var(--ink);font:500 1rem/1.2 var(--text)}
+.hc-form input:focus{outline:3px solid var(--yolk);outline-offset:1px}
+.hc-form button{flex:none;padding:0 1.05rem;border:2px solid var(--ink);border-radius:99px;background:var(--comb);color:#fff;font:800 .95rem/1 var(--text);cursor:pointer}
+.hc-form button:hover{background:var(--ink)}
+.hc-foot{padding:.35rem .8rem .55rem;background:#fff;font:500 .72rem/1.3 var(--text);opacity:.7}
+@media (max-width:899px){
+  .hen-chat{left:.5rem;right:.5rem;width:auto;bottom:max(.5rem,env(safe-area-inset-bottom));height:min(36rem,calc(100dvh - 5.5rem));border-radius:1.2rem}
+}
+@media (prefers-reduced-motion:reduce){.hen-bubble{animation:none}.hen-chat,.hen-chat.open{transition:opacity .01s}.hc-log{scroll-behavior:auto}.hc-typing i{animation:none;opacity:.6}}
+
 body.hen-hover{cursor:pointer}
 
 
@@ -1058,6 +1103,20 @@ body.hen-hover{cursor:pointer}
     head.add(mesh(S,0xe9a23a,0,0,0,.42,.42,.46));
     var beak=mesh(new T.ConeGeometry(.15,.5,12),0xffc21a,0,-.04,.56);beak.rotation.x=Math.PI/2;head.add(beak);
     [-1,1].forEach(function(k){head.add(mesh(S,0x101a3a,k*.3,.1,.26,.06,.06,.06));});
+    /* lunettes de poule savante */
+    (function(){
+      var gm=new T.MeshStandardMaterial({color:0x101a3a,roughness:.4,metalness:.25});
+      [-1,1].forEach(function(k){
+        var n=new T.Vector3(k*.743,.248,.625).normalize();
+        var c=new T.Vector3(k*.3,.1,.303).add(n.clone().multiplyScalar(.045));
+        var ring=new T.Mesh(new T.TorusGeometry(.095,.02,8,22),gm);
+        ring.position.copy(c);ring.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),n);head.add(ring);
+        var arm=new T.Mesh(new T.CylinderGeometry(.012,.012,.31,6),gm);
+        arm.rotation.x=Math.PI/2;arm.position.set(k*.393,.12,.105);head.add(arm);
+      });
+      var br=new T.Mesh(new T.TubeGeometry(new T.QuadraticBezierCurve3(new T.Vector3(-.27,.11,.395),new T.Vector3(0,.13,.56),new T.Vector3(.27,.11,.395)),10,.014,6,false),gm);
+      head.add(br);
+    })();
     [[0,.5,.0,.14],[0,.62,-.17,.18],[0,.5,-.34,.14]].forEach(function(p){head.add(mesh(S,0xd42a1f,0,p[1],p[2],.1,p[3]*2.2,.17));});
     head.add(mesh(S,0xd42a1f,0,-.38,.3,.12,.2,.1));
     [-1,1].forEach(function(k){
@@ -1066,68 +1125,18 @@ body.hen-hover{cursor:pointer}
       [-.18,0,.18].forEach(function(a){var t=mesh(new T.BoxGeometry(.07,.06,.4),0xe0a21a,a*.8,-.65,.15);t.rotation.y=a;leg.add(t);});
     });
     coq.position.y=-.35;sc.add(coq);
-    var egg=new T.Mesh(new T.SphereGeometry(1,20,16),new T.MeshStandardMaterial({color:0xfff1d6,roughness:.45,metalness:0}));
-    egg.scale.set(.0001,.0001,.0001);egg.visible=false;coq.add(egg);
-    var LAY=null,EASE=function(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;};
+    var TALK=null;
     function size(){var w=cv.clientWidth||200,h=cv.clientHeight||200;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
     size();addEventListener("resize",size);
 
-    /* --- ponte + explosion --- */
-    function rnd(a,b){return a+Math.random()*(b-a);}
-    function blobPath(cx,cy,r,n,jit,spikes){
-      var pts=[];
-      for(var i=0;i<n;i++){var a=i/n*Math.PI*2,k=1+(Math.random()-.5)*jit;
-        if(spikes&&Math.random()<.28)k*=rnd(1.25,1.7);
-        pts.push([cx+Math.cos(a)*r*k,cy+Math.sin(a)*r*k*.92]);}
-      function mid(a,b){return [(a[0]+b[0])/2,(a[1]+b[1])/2];}
-      var m0=mid(pts[0],pts[1]),d="M"+m0[0].toFixed(2)+" "+m0[1].toFixed(2);
-      for(var j=1;j<=n;j++){var p=pts[j%n],q=mid(p,pts[(j+1)%n]);d+="Q"+p[0].toFixed(2)+" "+p[1].toFixed(2)+" "+q[0].toFixed(2)+" "+q[1].toFixed(2);}
-      return d+"Z";
-    }
-    function splat(){
-      var cx=rnd(46,54),cy=rnd(44,52),h='';
-      h+='<g class="sg">';
-      h+='<path d="'+blobPath(cx,cy,rnd(34,40),30,.55,true)+'" fill="#fffdf4" fill-opacity=".94" stroke="#efe2bd" stroke-width=".5"/>';
-      for(var i=0;i<16;i++){var a=Math.random()*Math.PI*2,d=rnd(34,60);
-        h+='<circle cx="'+(cx+Math.cos(a)*d).toFixed(1)+'" cy="'+(cy+Math.sin(a)*d*.9).toFixed(1)+'" r="'+rnd(.6,2.6).toFixed(2)+'" fill="#fffdf4" fill-opacity=".94"/>';}
-      h+='<path d="'+blobPath(cx+rnd(-2,2),cy+rnd(-2,2),rnd(11,14),16,.35,false)+'" fill="#ffb300"/>';
-      h+='<path d="'+blobPath(cx-2.5,cy-2.8,rnd(4,5),10,.3,false)+'" fill="#ffd966" fill-opacity=".9"/>';
-      h+='<ellipse cx="'+(cx-4).toFixed(1)+'" cy="'+(cy-5).toFixed(1)+'" rx="2.4" ry="1.2" fill="#fff" fill-opacity=".75" transform="rotate(-30 '+(cx-4).toFixed(1)+' '+(cy-5).toFixed(1)+')"/>';
-      for(var k=0;k<4;k++){var a2=Math.random()*Math.PI*2,d2=rnd(15,24);
-        h+='<circle cx="'+(cx+Math.cos(a2)*d2).toFixed(1)+'" cy="'+(cy+Math.sin(a2)*d2).toFixed(1)+'" r="'+rnd(.8,1.8).toFixed(2)+'" fill="#ffb300"/>';}
-      h+='</g>';
-      for(var q=0;q<9;q++){var x=rnd(cx-30,cx+30),y0=cy+rnd(10,28),w=rnd(1.1,2.4),len=rnd(18,52),y=y0;
-        var yolk=Math.random()<.25,col=yolk?'#ffb300':'#fffdf4';
-        h+='<g class="drip" style="--d:'+rnd(2.6,4.6).toFixed(2)+'s;--dl:'+rnd(.35,1).toFixed(2)+'s"><rect x="'+(x-w/2).toFixed(2)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(2)+'" height="'+len.toFixed(1)+'" rx="'+(w/2).toFixed(2)+'" fill="'+col+'" fill-opacity=".94"/><circle cx="'+x.toFixed(2)+'" cy="'+(y+len).toFixed(1)+'" r="'+(w*.95).toFixed(2)+'" fill="'+col+'" fill-opacity=".94"/></g>';}
-      if(document.querySelector(".splat"))return;
-      var el=document.createElement("div");el.className="splat";
-      el.innerHTML='<div class="flash"></div><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+h+'</svg>';
-      for(var c=0;c<14;c++){var sh=document.createElement("i");sh.className="shell";
-        sh.style.cssText='--s:'+rnd(10,26).toFixed(0)+'px;--x:'+rnd(-48,48).toFixed(0)+'vw;--y:'+rnd(-45,45).toFixed(0)+'vh;--r:'+rnd(-540,540).toFixed(0)+'deg';el.appendChild(sh);}
-      document.body.appendChild(el);
-      var gone=false;
-      function finish(){if(gone)return;gone=true;el.remove();LAYBUSY=false;}
-      setTimeout(function(){el.classList.add("slide");},1800);
-      el.addEventListener("animationend",function(ev){if(ev.target===el&&ev.animationName==="splSlide")finish();});
-      setTimeout(finish,1800+6000+400);
-    }
-    var LAYBUSY=false;
-    function launch(x,y,k){
-      if(document.querySelector(".egg-fly"))return;
-      var d=document.createElement("div");d.className="egg-fly";document.body.appendChild(d);
-      var cx=innerWidth/2,cy=innerHeight/2,big=Math.max(innerWidth,innerHeight)/34*.55;
-      var a=d.animate([
-        {transform:"translate("+x+"px,"+y+"px) scale("+(k*.9)+") rotate(0deg)",offset:0},
-        {transform:"translate("+(x-(x-cx)*.25)+"px,"+(y-90)+"px) scale("+(k*1.3)+") rotate(120deg)",offset:.35,easing:"cubic-bezier(.5,0,.9,.6)"},
-        {transform:"translate("+cx+"px,"+cy+"px) scale("+big+") rotate(380deg)",offset:1}
-      ],{duration:850,easing:"cubic-bezier(.3,0,.5,1)",fill:"forwards"});
-      var done=false;
-      a.onfinish=function(){if(done)return;done=true;d.remove();splat();};
-    }
-    function lay(){
-      if(LAYBUSY)return;LAYBUSY=true;LAY={t0:performance.now(),sent:false};
+    /* --- la poule parle : cot-cot + petits mouvements de tête --- */
+    function henClick(){
+      var sch=(window.HenChat&&window.HenChat.speak&&window.HenChat.speak())||[];
+      var last=sch.length?sch[sch.length-1][0]+sch[sch.length-1][1]:1;
+      TALK={t0:performance.now(),sch:sch,end:last+.3};
     }
     function overHen(e){
+      if(e.target&&e.target.closest&&e.target.closest(".hen-chat,.hen-bubble"))return false;
       if(document.body.classList.contains("intro")||document.body.classList.contains("gaming")||!cv.classList.contains("on"))return false;
       var rc=cv.getBoundingClientRect();
       if(e.clientX<rc.left||e.clientX>rc.right||e.clientY<rc.top||e.clientY>rc.bottom)return false;
@@ -1136,7 +1145,7 @@ body.hen-hover{cursor:pointer}
       return rc2.intersectObject(coq,true).length>0;
     }
     addEventListener("pointermove",function(e){if(e.pointerType==="touch")return;document.body.classList.toggle("hen-hover",overHen(e));},{passive:true});
-    addEventListener("click",function(e){if(overHen(e)){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();lay();}},true);
+    addEventListener("click",function(e){if(overHen(e)){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();henClick();}},true);
     var t0=performance.now(),sm=scrollY;
     function frame(now){
       var t=(now-t0)/1000;
@@ -1148,22 +1157,11 @@ body.hen-hover{cursor:pointer}
       neck.rotation.x=.15+peck*.55;head.rotation.x=peck*.3;
       tail.rotation.x=Math.sin(t*1.5)*.06;
       body.position.set(0,0,0);body.rotation.x=0;
-      if(LAY){
-        var lt=(now-LAY.t0)/1000;
-        var sq=Math.min(1,lt/.6)*(lt>1.35?Math.max(0,1-(lt-1.35)/.3):1);
-        body.position.y=-.2*sq;body.rotation.x=-.12*sq;
-        tail.rotation.x=-.55*sq;
-        if(!reduce&&lt<1.2){coq.position.x=Math.sin(lt*70)*.03*Math.min(1,lt/.3);}else{coq.position.x=0;}
-        if(lt>.55&&lt<1.15){
-          var e=Math.min(1,(lt-.55)/.35);egg.visible=true;
-          egg.scale.set(.3*e,.4*e,.3*e);egg.position.set(0,1.3-.55*EASE(Math.min(1,(lt-.55)/.6)),-1.55);
-        }
-        if(lt>=1.15&&!LAY.sent){
-          LAY.sent=true;egg.visible=false;
-          var v=egg.getWorldPosition(new T.Vector3()).project(cam),rc=cv.getBoundingClientRect();
-          launch(rc.left+(v.x+1)/2*rc.width,rc.top+(1-v.y)/2*rc.height,rc.width/200);
-        }
-        if(lt>1.7){LAY=null;coq.position.x=0;}
+      if(TALK){
+        var tt=(now-TALK.t0)/1000,pulse=0;
+        for(var ti=0;ti<TALK.sch.length;ti++){var cc=TALK.sch[ti],uu=(tt-cc[0])/cc[1];if(uu>=0&&uu<=1){pulse=Math.max(pulse,Math.sin(uu*Math.PI));}}
+        if(!reduce){neck.rotation.x+=pulse*.5;head.rotation.x+=pulse*.22;body.position.y=-.05*pulse;}
+        if(tt>TALK.end){TALK=null;}
       }
       r.render(sc,cam);requestAnimationFrame(frame);
     }
@@ -1171,6 +1169,371 @@ body.hen-hover{cursor:pointer}
     cv.classList.add("on");
   }
   if(document.readyState==="complete")init();else addEventListener("load",init);
+})();
+</script>
+
+<script>
+/* ===== Poule intelligente : bulle, cot-cot, discussion ===== */
+(function(){
+  "use strict";
+  var cv=document.getElementById("coq");
+  if(!cv)return;
+
+  /* Optionnel : adresse d'un petit serveur qui appelle une IA (Claude, ChatGPT…)
+     Il doit répondre en JSON : {"answer":"texte","sources":[{"title":"…","url":"https://…"}]}
+     Laisser vide pour utiliser les réponses intégrées + Wikipédia + liens Google. */
+  var HEN_API="";
+
+  var EXPO={start:new Date("2026-11-14T14:00:00+01:00").getTime(),end:new Date("2026-11-15T16:30:00+01:00").getTime()};
+  var AGENDA="https://www.ville-bischwiller.fr/agenda/aviculture/";
+  var MAPS="https://www.google.com/maps/search/?api=1&query=Salle+Adrien+Zeller+10+rue+des+Casernes+67240+Bischwiller";
+  var MAIL="hattermannmichel@gmail.com";
+
+  var body=document.body,isOpen=false,muted=false,greeted=false,busy=false,history=[],lastFocus=null;
+  try{muted=localStorage.getItem("henMute")==="1";}catch(e){}
+
+  /* ---------- outils texte ---------- */
+  function norm(s){
+    return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[’'`]/g," ").replace(/œ/g,"oe").replace(/[^a-z0-9]+/g," ").trim();
+  }
+  function re(p){return new RegExp(p);}
+  var STOP=("le la les un une des du de en est sont ce ces cet cette que qui quoi quel quelle quels quelles comment pourquoi quand combien pour par sur sous dans avec sans mon ma mes ton ta tes son sa ses notre votre leur leurs je tu il elle on nous vous ils elles me te se ne pas plus peut peux puis faut faire fait dois doit tres bien aussi mais donc car ainsi alors etre avoir ete avez avons ont aux ou et").split(" ");
+  function keywords(q){
+    return norm(q).split(" ").filter(function(w){return w.length>2&&STOP.indexOf(w)<0;}).join(" ");
+  }
+  function enc(s){return encodeURIComponent(s);}
+  function gsearch(q){return "https://www.google.com/search?q="+enc(q);}
+  function wsearch(q){return "https://fr.wikipedia.org/w/index.php?search="+enc(q);}
+
+  /* ---------- sons : cot-cot synthétisés (aucun fichier) ---------- */
+  var AC=window.AudioContext||window.webkitAudioContext,ctx=null,noiseBuf=null;
+  var SCHEDULE=[[0,.11,520],[.2,.11,500],[.4,.12,540],[.72,.1,570],[.84,.1,530],[.98,.5,440],
+                [1.85,.1,540],[2.05,.1,520],[2.25,.11,550],[2.5,.34,430]];
+  function cluck(t,dur,f0,vol){
+    var o=ctx.createOscillator(),o2=ctx.createOscillator(),m=ctx.createGain(),bp=ctx.createBiquadFilter(),g=ctx.createGain();
+    o.type="sawtooth";o2.type="square";
+    o.frequency.setValueAtTime(f0*1.25,t);o.frequency.exponentialRampToValueAtTime(f0*.6,t+dur);
+    o2.frequency.setValueAtTime(f0*2,t);o2.frequency.exponentialRampToValueAtTime(f0*1.05,t+dur);
+    m.gain.value=.35;
+    bp.type="bandpass";bp.Q.value=2.4;
+    bp.frequency.setValueAtTime(950,t);bp.frequency.linearRampToValueAtTime(1900,t+dur*.45);bp.frequency.linearRampToValueAtTime(1100,t+dur);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.014);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(bp);o2.connect(m);m.connect(bp);bp.connect(g);g.connect(ctx.destination);
+    o.start(t);o2.start(t);o.stop(t+dur+.03);o2.stop(t+dur+.03);
+    /* petit « k » au début */
+    if(noiseBuf){
+      var n=ctx.createBufferSource(),hp=ctx.createBiquadFilter(),ng=ctx.createGain();
+      n.buffer=noiseBuf;hp.type="highpass";hp.frequency.value=1800;
+      ng.gain.setValueAtTime(vol*.7,t);ng.gain.exponentialRampToValueAtTime(.0001,t+.03);
+      n.connect(hp);hp.connect(ng);ng.connect(ctx.destination);n.start(t);n.stop(t+.04);
+    }
+  }
+  function playClucks(){
+    if(muted||!AC)return;
+    try{
+      if(!ctx){
+        ctx=new AC();
+        noiseBuf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.05),ctx.sampleRate);
+        var d=noiseBuf.getChannelData(0);for(var i=0;i<d.length;i++){d[i]=Math.random()*2-1;}
+      }
+      if(ctx.state==="suspended")ctx.resume();
+      var t0=ctx.currentTime+.04;
+      SCHEDULE.forEach(function(c,i){cluck(t0+c[0],c[1],c[2]*(1+(Math.random()-.5)*.06),i===5||i===9?.2:.15);});
+    }catch(e){}
+  }
+
+  /* ---------- construction de l'interface ---------- */
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+
+  var bubble=el("div","hen-bubble");
+  bubble.setAttribute("role","button");bubble.tabIndex=0;
+  bubble.setAttribute("aria-label","Ouvrir l’assistante : Qu’est-ce que je peux faire pour vous ?");
+  bubble.appendChild(el("span",null,"Qu’est-ce que je peux faire pour vous ?"));
+  var bx=el("button","hb-x","×");bx.type="button";bx.setAttribute("aria-label","Masquer la bulle");bubble.appendChild(bx);
+  bubble.hidden=true;
+
+  var chat=el("div","hen-chat");
+  chat.setAttribute("role","dialog");chat.setAttribute("aria-label","La poule savante : posez vos questions");
+  var head=el("div","hc-head");
+  head.appendChild(el("div","hc-av","🐔"));
+  var ti=el("div","hc-ti");ti.appendChild(el("b",null,"La poule savante"));ti.appendChild(el("small",null,"Aviculture · Société de Bischwiller"));head.appendChild(ti);
+  var bMute=el("button","hc-ib");bMute.type="button";head.appendChild(bMute);
+  var bClose=el("button","hc-ib","✕");bClose.type="button";bClose.setAttribute("aria-label","Fermer la discussion");head.appendChild(bClose);
+  var log=el("div","hc-log");log.setAttribute("role","log");log.setAttribute("aria-live","polite");
+  var chips=el("div","hc-chips");
+  var form=el("form","hc-form");form.setAttribute("autocomplete","off");
+  var input=el("input");input.type="text";input.name="q";input.placeholder="Posez votre question…";input.setAttribute("aria-label","Votre question");input.maxLength=300;input.enterKeyHint="send";
+  var send=el("button",null,"Envoyer");send.type="submit";
+  form.appendChild(input);form.appendChild(send);
+  var foot=el("div","hc-foot","Réponses indicatives. Pour un animal malade, consultez un vétérinaire ; pour le reste, écrivez à l’association (page Aide).");
+  [head,log,chips,form,foot].forEach(function(n){chat.appendChild(n);});
+  body.appendChild(bubble);body.appendChild(chat);
+
+  function paintMute(){
+    bMute.textContent=muted?"🔇":"🔊";
+    bMute.setAttribute("aria-label",muted?"Activer les cot-cot":"Couper les cot-cot");
+    bMute.setAttribute("aria-pressed",muted?"true":"false");
+  }
+  paintMute();
+
+  /* la molette appartient à la fenêtre, pas au défilement doux de la page */
+  [chat,bubble].forEach(function(n){n.addEventListener("wheel",function(e){e.stopPropagation();},{passive:true});});
+
+  /* ---------- affichage des messages ---------- */
+  function scrollEnd(){log.scrollTop=log.scrollHeight;}
+  function addMe(text){var m=el("div","hc-msg hc-me",text);log.appendChild(m);scrollEnd();}
+  function addBot(r){
+    var m=el("div","hc-msg hc-bot");
+    (r.paras||[]).forEach(function(p){m.appendChild(el("p",null,p));});
+    if(r.actions&&r.actions.length){
+      var a=el("div","hc-acts");
+      r.actions.forEach(function(x){
+        var l=el("a","hc-act"+(x.alt?" alt":""),x.t+(x.ext?" ↗":""));
+        l.href=x.href;
+        if(x.ext){l.target="_blank";l.rel="noopener";}
+        else{l.setAttribute("data-go",x.href.replace("#",""));}
+        a.appendChild(l);
+      });
+      m.appendChild(a);
+    }
+    if(r.sources&&r.sources.length){
+      var s=el("div","hc-src");s.appendChild(el("b",null,"Sources"));
+      r.sources.forEach(function(x){var l=el("a",null,x.t);l.href=x.u;l.target="_blank";l.rel="noopener";s.appendChild(l);});
+      m.appendChild(s);
+    }
+    log.appendChild(m);scrollEnd();
+  }
+  function typing(){
+    var m=el("div","hc-msg hc-bot");m.setAttribute("aria-label","La poule réfléchit");
+    var t=el("div","hc-typing");t.appendChild(el("i"));t.appendChild(el("i"));t.appendChild(el("i"));m.appendChild(t);
+    log.appendChild(m);scrollEnd();return m;
+  }
+
+  /* navigation interne : le site gère les pages avec le « # » */
+  function go(id){
+    if(location.hash==="#"+id){
+      var t=document.getElementById(id);
+      if(t)t.scrollIntoView({behavior:"smooth"});
+    }else{location.hash=id;}
+    if(matchMedia("(max-width:899px)").matches)closeChat();
+  }
+  log.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest("a[data-go]");
+    if(!a)return;e.preventDefault();go(a.getAttribute("data-go"));
+  });
+
+  /* ---------- réponses sur le site ---------- */
+  function expoStatus(){
+    var now=Date.now(),left=EXPO.start-now;
+    if(left>0){
+      var d=Math.floor(left/864e5);
+      if(d>=2)return "C’est dans "+d+" jours !";
+      if(left>=864e5)return "C’est dans moins de 2 jours !";
+      return "Ça commence dans "+Math.max(1,Math.ceil(left/36e5))+" h !";
+    }
+    if(now<EXPO.end)return "L’exposition est en cours en ce moment, venez nombreux !";
+    return "Cette exposition est terminée, merci à tous les visiteurs ! La page Actualité annoncera la suivante.";
+  }
+  var A_EXPO=[{t:"Voir la prochaine exposition",href:"#exposition"},{t:"Page Actualité",href:"#actualite",alt:true},{t:"S’inscrire",href:"#inscription",alt:true}];
+
+  var SITE=[
+    {id:"hello",rx:/^(bonjour|salut|coucou|hello|bonsoir|hey|cot cot)\b/,
+     r:function(){return {paras:["Cot cot ! Bonjour 🐔 Je peux vous renseigner sur l’exposition, la Société d’Aviculture ou l’élevage (poules, pigeons, lapins…)."]};}},
+    {id:"thanks",rx:/^(merci|super|genial|parfait|bravo)\b/,
+     r:function(){return {paras:["Avec plaisir ! Cot cot cot. N’hésitez pas si vous avez d’autres questions."]};}},
+    {id:"inscr",rx:/\binscri|\bexposant|\bengager|\bengagement|\bparticiper|\bexposer\b/,
+     r:function(){return {paras:["Pour exposer vos sujets, remplissez le formulaire d’inscription du site. L’exposition a lieu les 14 et 15 novembre 2026 à Bischwiller. "+expoStatus()],
+       actions:[{t:"S’inscrire à l’exposition",href:"#inscription"},{t:"Infos exposition",href:"#exposition",alt:true}]};}},
+    {id:"lieu",rx:/\badresse\b|\bou (se trouve|est|a lieu|se passe|se deroule)|\blieu\b|\bsalle\b|\bplan\b|\bacces\b|\bitineraire\b|\bparking\b|\bzeller\b|\bcomment (y )?aller\b|\bvenir\b/,
+     r:function(){return {paras:["L’exposition se tient à la salle Adrien Zeller, 10 rue des Casernes, 67240 Bischwiller."],
+       actions:[{t:"Ouvrir dans Google Maps",href:MAPS,ext:true},{t:"Voir l’exposition",href:"#exposition",alt:true}]};}},
+    {id:"horaires",rx:/\bhoraires?\b|\ba quelle heure\b|\bouverture\b|\bouvert\b|\binauguration\b|\bentree\b|\bgratuit\b|\brestauration\b/,
+     r:function(){return {paras:["Samedi 14 novembre 2026 : de 14 h à 20 h (inauguration à 18 h). Dimanche 15 novembre : de 9 h à 16 h 30. Entrée libre, avec restauration sur place. "+expoStatus()],
+       actions:A_EXPO,sources:[{t:"Agenda de la ville de Bischwiller",u:AGENDA}]};}},
+    {id:"expo",rx:/\bexpo(sition|sitions|s)?\b|\bsalon\b|\bconcours\b|\bmanifestation\b|\bevenements?\b|\bagenda\b|\bprochaine?s?\b|\ba venir\b/,
+     r:function(){return {paras:["La prochaine exposition (locale et régionale de Wyandotte) a lieu le samedi 14 et le dimanche 15 novembre 2026, salle Adrien Zeller, 10 rue des Casernes à Bischwiller. Samedi de 14 h à 20 h (inauguration à 18 h), dimanche de 9 h à 16 h 30. Entrée libre, restauration sur place.",expoStatus()],
+       actions:A_EXPO,sources:[{t:"Agenda de la ville de Bischwiller",u:AGENDA}]};}},
+    {id:"contact",rx:/\bcontact\b|\bmail\b|\bcourriel\b|\btelephone\b|\bappeler\b|\bjoindre\b|\bfacebook\b|\becrire\b|\bpresident\b/,
+     r:function(){return {paras:["Vous pouvez écrire à l’association à "+MAIL+" ou rejoindre le groupe Facebook. Le formulaire de la page Aide transmet aussi votre message directement."],
+       actions:[{t:"Page Aide",href:"#aide"},{t:"Section Contact",href:"#contact",alt:true}]};}},
+    {id:"histoire",rx:/\bhistoire\b|\bassociation\b|\bsociete\b|\bfondee\b|\bfondation\b|\bcreee\b|\bdepuis quand\b|\banciens presidents\b/,
+     r:function(){return {paras:["La page Histoire raconte la vie de la Société d’Aviculture de Bischwiller : ses expositions, ses anniversaires et ses grands moments."],
+       actions:[{t:"Lire l’histoire",href:"#histoire"}]};}},
+    {id:"aide",rx:/\bacheter\b|\bachat\b|\bvendre\b|\bvente\b|\badopter\b|\bphotos?\b|\bsouvenirs?\b|\bdiplomes?\b|\baide\b/,
+     r:function(){return {paras:["Pour acheter un animal, partager de vieilles photos ou demander conseil à nos éleveurs, passez par la page Aide : votre message est transmis directement à l’association."],
+       actions:[{t:"Aller à la page Aide",href:"#aide"}]};}}
+  ];
+
+  /* ---------- connaissances aviculture (réponses courtes + sources) ---------- */
+  function src(term,extra){
+    var l=[{t:"Wikipédia : "+term,u:wsearch(term)},{t:"Google : "+term,u:gsearch(term)}];
+    return extra?extra.concat(l):l;
+  }
+  var KB=[
+    {rx:/grippe|influenza|h5n1|h5n8|confinement|claustration/,term:"influenza aviaire",
+     paras:["L’influenza aviaire (grippe aviaire) est une maladie réglementée. Les mesures (confinement des volailles, rassemblements, expositions) sont fixées par arrêtés et changent selon le niveau de risque : il faut donc toujours vérifier la situation du moment auprès des services de l’État.","En cas de mortalité inhabituelle dans votre basse-cour, ne touchez pas aux animaux sans précaution et contactez rapidement un vétérinaire ou la direction départementale de la protection des populations. Une détention de volailles, même petite, doit être déclarée : renseignez-vous auprès de votre mairie."],
+     extra:[{t:"Ministère de l’Agriculture",u:"https://agriculture.gouv.fr/"},{t:"ANSES",u:"https://www.anses.fr/"}]},
+    {rx:/incub|\bcouv(er|ee|aison|euse|eur)\b|couveuse|\beclo(s|r|t)|\beclor/,term:"incubation oeuf poule",
+     paras:["Un œuf de poule met environ 21 jours à éclore. Repères usuels en couveuse : 37,5 °C, humidité d’environ 50 % puis 65–70 % les 3 derniers jours, avec retournements réguliers jusqu’au 18ᵉ jour.","Autres espèces (ordres de grandeur) : caille et pigeon 17–18 jours, canard 28 jours, oie 28–30 jours, canard de Barbarie 35 jours."]},
+    {rx:/\bponte\b|\bpondre\b|\bpond\b|\bpondeuses?\b|\bcombien d oeufs\b|\boeufs par\b/,term:"poule pondeuse",
+     paras:["Une poule pondeuse moderne peut donner 250 à 300 œufs par an ; les races de collection ou d’ornement pondent souvent moins (environ 100 à 200). La ponte diminue en hiver (jours courts), pendant la mue et avec l’âge. Une alimentation adaptée, du calcium (coquilles d’huîtres) et environ 14 h de lumière par jour aident à la maintenir.","Un coq n’est pas nécessaire pour avoir des œufs : seulement pour qu’ils soient fécondés."]},
+    {rx:/nourr|alimen|\bmanger\b|\bmange\b|\bgrains?\b|\bgranules?\b|\bcroquettes?\b|\brestes\b/,term:"alimentation poule",
+     paras:["Base : un aliment complet adapté à l’âge (démarrage pour les poussins, croissance, puis pondeuses), de l’eau propre à volonté, et du grit ou des coquilles d’huîtres pour le calcium. Les grains et les restes de cuisine ne doivent rester qu’un complément.","À éviter : aliments salés, avocat, oignon et ail en quantité, pommes de terre crues ou verdies, aliments moisis."]},
+    {rx:/poulailler|\babri\b|\bloger\b|\blogement\b|\bperchoir|\bnichoir|\bespace\b|\bsurface\b|\bm2\b|\bparcours\b/,term:"poulailler",
+     paras:["Repères courants pour des poules : environ 3 à 4 poules par m² dans l’abri (moins pour les grandes races), 20 à 25 cm de perchoir par poule, 1 nichoir pour 4 à 5 poules, bonne aération sans courant d’air, litière sèche, protection contre le renard et les rongeurs, et un parcours extérieur le plus spacieux possible."]},
+    {rx:/malad|soigner|\bpoux\b|acarien|\bvermifug|coccid|marek|newcastle|variole|coryza|diarrhee|boite|boiter|prostr|parasit/,term:"maladies des poules",
+     paras:["Signes d’alerte : oiseau prostré ou isolé, plumes ébouriffées, baisse d’appétit ou de ponte, diarrhée, éternuements, crête pâle. Isolez l’animal, nettoyez et désinfectez, puis faites appel à un vétérinaire : je ne peux pas poser de diagnostic.","Prévention : litière sèche, propreté, quarantaine de 3 à 4 semaines pour tout nouvel arrivant, surveillance des poux rouges et des vers."]},
+    {rx:/\bpoussins?\b|eleveuse|lampe chauffante/,term:"poussin élevage",
+     paras:["Les poussins ont besoin d’une source de chaleur (environ 35 °C la première semaine, puis on baisse d’environ 3 °C par semaine), d’un aliment démarrage, d’eau propre et d’une litière sèche et propre. S’ils se serrent les uns contre les autres, ils ont froid ; s’ils s’écartent en haletant, c’est trop chaud."]},
+    {rx:/\bcoqs?\b|\bcocorico\b|\bchante\b|\bchanter\b/,term:"coq",
+     paras:["Un coq est utile pour obtenir des œufs fécondés (comptez un coq pour 8 à 10 poules environ). Il chante surtout à l’aube mais aussi tout au long de la journée : pensez à vos voisins et au règlement local."]},
+    {rx:/pigeon|colombe|colombier|pigeonnier|voliere/,term:"pigeon domestique",
+     paras:["Le pigeon pond 2 œufs, couvés par les deux parents pendant 17 à 18 jours. Il lui faut un pigeonnier ou une volière propre, sèche, bien ventilée, avec de l’eau fraîche et un mélange de grains adapté. Les pigeons de race ont une belle place dans les expositions de la Société."]},
+    {rx:/\blapins?\b|\bclapiers?\b|lievre/,term:"lapin domestique",
+     paras:["Pour un lapin de race : foin à volonté, granulés en quantité adaptée, eau propre et clapier abrité, spacieux et sec. La gestation dure environ 31 jours et le sevrage a lieu vers 6 à 8 semaines."]},
+    {rx:/wyandotte/,term:"Wyandotte poule",
+     paras:["La Wyandotte est une race de poule d’origine américaine (fin du XIXᵉ siècle), rustique, calme, bonne pondeuse, reconnaissable à sa crête en rose et à son plumage arrondi. Elle existe en grande race et en naine, dans de nombreuses variétés de couleurs, dont la célèbre variété lacée."]},
+    {rx:/\braces?\b|choisir une poule|quelle poule/,term:"race de poule",
+     paras:["Le choix dépend de votre objectif : ponte, ornement, couvaison ou exposition. Pour une basse-cour familiale, on conseille des races rustiques et calmes. Les éleveurs de la Société seront ravis de vous guider : passez par la page Aide ou venez les rencontrer à l’exposition."],
+     actions:[{t:"Demander conseil",href:"#aide"}]}
+  ];
+
+  function kbAnswer(nq){
+    for(var i=0;i<KB.length;i++){
+      if(KB[i].rx.test(nq)){
+        var k=KB[i];
+        return {paras:k.paras,actions:(k.actions||[]).concat([{t:"Autres sources sur Google",href:gsearch(k.term),ext:true,alt:true}]),sources:src(k.term,k.extra)};
+      }
+    }
+    return null;
+  }
+
+  /* ---------- recherche de sources sur Wikipédia ---------- */
+  function wiki(q){
+    var kw=keywords(q);
+    if(!kw)return Promise.resolve(null);
+    var url="https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&gsrsearch="+enc(kw)+
+      "&prop=extracts%7Cinfo&exintro=1&explaintext=1&exsentences=3&exlimit=3&inprop=url";
+    return fetch(url).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(j){
+      var p=j&&j.query&&j.query.pages;if(!p)return [];
+      return Object.keys(p).map(function(k){return p[k];}).sort(function(a,b){return a.index-b.index;});
+    });
+  }
+  function cut(s,n){
+    s=(s||"").replace(/\s+/g," ").trim();
+    if(s.length<=n)return s;
+    var c=s.slice(0,n),i=Math.max(c.lastIndexOf(". "),c.lastIndexOf("; "));
+    return (i>n*.5?c.slice(0,i+1):c.replace(/\s+\S*$/,"")+"…");
+  }
+  function fallback(q){
+    var base={actions:[{t:"Chercher sur Google",href:gsearch(q+" aviculture"),ext:true},{t:"Demander aux éleveurs",href:"#aide",alt:true}]};
+    return wiki(q).then(function(list){
+      if(!list||!list.length||!list[0].extract){
+        return {paras:["Hmm, je n’ai rien trouvé de fiable à ce sujet. Essayez avec d’autres mots, ou regardez directement sur Google ; nos éleveurs peuvent aussi vous répondre via la page Aide."],actions:base.actions};
+      }
+      var top=list[0];
+      return {paras:["Voici ce que j’ai trouvé sur Wikipédia à propos de « "+top.title+" » :",cut(top.extract,380)],
+        actions:base.actions,
+        sources:list.filter(function(x){return x.fullurl;}).map(function(x){return {t:"Wikipédia : "+x.title,u:x.fullurl};}).concat([{t:"Google : "+q,u:gsearch(q)}])};
+    }).catch(function(){
+      return {paras:["Je n’arrive pas à consulter mes sources en ligne pour le moment. Vous pouvez tenter une recherche Google ou poser la question à nos éleveurs."],actions:base.actions};
+    });
+  }
+
+  function viaApi(q){
+    return fetch(HEN_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q,history:history.slice(-6)})})
+      .then(function(r){if(!r.ok)throw new Error("http");return r.json();})
+      .then(function(j){
+        if(!j||!j.answer)throw new Error("vide");
+        return {paras:String(j.answer).split(/\n{1,}/).filter(Boolean),
+          sources:(j.sources||[]).filter(function(s){return s&&/^https?:\/\//.test(s.url);}).map(function(s){return {t:s.title||s.url,u:s.url};})};
+      });
+  }
+
+  function answer(q){
+    var nq=norm(q);
+    for(var i=0;i<SITE.length;i++){if(SITE[i].rx.test(nq))return Promise.resolve(SITE[i].r());}
+    var kb=kbAnswer(nq);
+    if(kb)return Promise.resolve(kb);
+    if(HEN_API)return viaApi(q).catch(function(){return fallback(q);});
+    return fallback(q);
+  }
+
+  /* ---------- envoi d'une question ---------- */
+  function ask(q){
+    q=(q||"").trim();
+    if(!q||busy)return;
+    busy=true;chips.hidden=true;
+    addMe(q);history.push({role:"user",content:q});
+    var tp=typing(),t0=Date.now();
+    answer(q).then(function(r){
+      var wait=Math.max(0,550-(Date.now()-t0));
+      setTimeout(function(){
+        tp.remove();addBot(r);busy=false;
+        history.push({role:"assistant",content:(r.paras||[]).join(" ")});
+      },wait);
+    }).catch(function(){
+      tp.remove();addBot({paras:["Oups, quelque chose s’est mal passé. Pouvez-vous reformuler votre question ?"]});busy=false;
+    });
+  }
+  form.addEventListener("submit",function(e){e.preventDefault();var v=input.value;input.value="";ask(v);input.focus();});
+
+  var SUGG=["Quand est la prochaine exposition ?","Combien de jours dure l’incubation ?","Comment loger mes poules ?","Grippe aviaire : que faire ?"];
+  SUGG.forEach(function(s){
+    var c=el("button","hc-chip",s);c.type="button";
+    c.addEventListener("click",function(){ask(s);});
+    chips.appendChild(c);
+  });
+
+  /* ---------- ouverture / fermeture ---------- */
+  function openChat(){
+    if(isOpen)return;
+    isOpen=true;lastFocus=document.activeElement;
+    chat.classList.add("open");bubble.hidden=true;
+    if(!greeted){
+      greeted=true;
+      addBot({paras:["Cot cot ! Je suis la poule savante de la Société d’Aviculture de Bischwiller 🐔","Posez-moi vos questions sur l’aviculture (poules, pigeons, lapins, incubation, alimentation…) ou sur l’exposition : je cherche pour vous et je cite mes sources."]});
+    }
+    setTimeout(function(){input.focus({preventScroll:true});},320);
+  }
+  function closeChat(){
+    if(!isOpen)return;
+    isOpen=false;chat.classList.remove("open");
+    if(lastFocus&&lastFocus.focus&&document.contains(lastFocus)&&lastFocus!==body){try{lastFocus.focus({preventScroll:true});}catch(e){}}
+  }
+  bClose.addEventListener("click",closeChat);
+  bMute.addEventListener("click",function(){
+    muted=!muted;try{localStorage.setItem("henMute",muted?"1":"0");}catch(e){}
+    paintMute();
+  });
+  chat.addEventListener("keydown",function(e){if(e.key==="Escape"){e.stopPropagation();closeChat();}});
+
+  var dismissed=false;
+  try{dismissed=sessionStorage.getItem("henBubbleOff")==="1";}catch(e){}
+  bubble.addEventListener("click",function(e){
+    if(e.target.closest&&e.target.closest(".hb-x")){
+      dismissed=true;try{sessionStorage.setItem("henBubbleOff","1");}catch(x){}
+      bubble.hidden=true;return;
+    }
+    playClucks();openChat();
+  });
+  bubble.addEventListener("keydown",function(e){
+    if(e.target===bubble&&(e.key==="Enter"||e.key===" ")){e.preventDefault();playClucks();openChat();}
+  });
+
+  /* la bulle n'apparaît que lorsque la poule 3D est affichée */
+  function sync(){
+    var ready=cv.isConnected&&cv.classList.contains("on")&&!body.classList.contains("intro")&&!body.classList.contains("gaming");
+    if(!ready&&isOpen&&(body.classList.contains("gaming")))closeChat();
+    bubble.hidden=!(ready&&!isOpen&&!dismissed);
+  }
+  setInterval(sync,500);sync();
+
+  /* appelé par la poule 3D quand on clique dessus */
+  window.HenChat={
+    speak:function(){playClucks();dismissed=false;openChat();input.focus({preventScroll:true});return SCHEDULE.map(function(c){return [c[0],c[1]];});},
+    isOpen:function(){return isOpen;}
+  };
 })();
 </script>
 
