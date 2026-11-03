@@ -223,10 +223,9 @@ body.intro .ln span,body.intro .fade,body.intro .sticker,body.intro .nav{animati
 #intro.go .cnt{opacity:0}
 
 /* ---------- Rideau de transition entre les pages ---------- */
-.wipe{position:fixed;inset:0;z-index:900;background:var(--ink);color:var(--yolk);display:grid;place-items:center;transform:translateY(101%);pointer-events:none;will-change:transform}
-.wipe.in{transform:none;transition:transform .6s var(--ease-io);pointer-events:auto}
-.wipe.out{transform:translateY(-101%);transition:transform .65s var(--ease-io)}
-.wipe span{font:800 clamp(3.5rem,16vw,12rem)/.9 var(--display);letter-spacing:-.05em;padding:0 1rem;text-align:center}
+.wipe{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:var(--wbg,#101A3A);color:var(--wfg,#FFC21A);
+  clip-path:circle(0px at 50% 0);visibility:hidden;pointer-events:none;will-change:clip-path,opacity}
+.wipe span{font:800 clamp(3.5rem,16vw,12rem)/.9 var(--display);letter-spacing:-.05em;padding:0 1rem;text-align:center;will-change:transform,opacity}
 @media (prefers-reduced-motion:reduce){.wipe{display:none}}
 
 
@@ -297,7 +296,7 @@ html:has(body.gaming){overflow:hidden}
 .hen-bubble,.hen-chat{--hs:clamp(120px,22vw,250px)}
 .hen-bubble{position:fixed;right:.9rem;bottom:calc(.5rem + var(--hs)*.8);z-index:41;max-width:min(15.5rem,calc(100vw - 1.8rem));
   display:flex;align-items:flex-start;gap:.35rem;padding:.7rem .8rem .7rem 1rem;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:1.1rem;
-  font:700 .98rem/1.3 var(--text);cursor:pointer;box-shadow:4px 4px 0 var(--ink);animation:henBob 3.2s ease-in-out infinite;transform-origin:90% 100%}
+  font:700 .98rem/1.3 var(--text);cursor:pointer;box-shadow:4px 4px 0 var(--ink);animation:henPop .55s var(--ease) both,henBob 3.2s ease-in-out .55s infinite;transform-origin:90% 100%}
 .hen-bubble[hidden]{display:none}
 .hen-bubble::after{content:"";position:absolute;right:calc(var(--hs)*.26);bottom:-.62rem;width:1rem;height:1rem;background:#fff;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
 .hen-bubble:focus-visible{outline:3px solid var(--comb);outline-offset:3px}
@@ -455,6 +454,60 @@ body.hen-hover{cursor:pointer}
 .cd-g>div::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:color-mix(in srgb,currentColor 16%,transparent)}
 .cd-g b{font-size:clamp(2rem,9vw,3.2rem)}
 .cd-g small{font-size:.8rem;letter-spacing:0;text-transform:none;margin-top:.3rem}
+/* ---------- Onglet Actualité (refait) ---------- */
+.nw-top{padding-top:clamp(7rem,14vw,10rem);padding-bottom:clamp(2.5rem,6vw,4.5rem)}
+.nw-title{font:800 clamp(3.2rem,13vw,9.5rem)/.88 var(--display);letter-spacing:-.05em;margin:0 0 1.4rem}
+.nw-title .ln{padding-bottom:.12em}
+.nw-feat{padding-top:clamp(2.5rem,6vw,4.5rem)}
+.ticket{--fg:var(--shell);--accent:var(--yolk);--accent-fg:var(--ink);position:relative;display:grid;grid-template-columns:1fr;overflow:hidden;
+  background:var(--ink);color:var(--shell);border-radius:2rem;box-shadow:0 2.2rem 4rem -2rem rgba(16,26,58,.6)}
+.tk-main{padding:clamp(1.4rem,4.5vw,3.2rem)}
+.tk-main h3{font:800 clamp(1.9rem,5vw,3.5rem)/1 var(--display);letter-spacing:-.03em;margin:1.1rem 0 .7rem}
+.tk-where{margin:0;font-weight:600;opacity:.85}
+.tk-days{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.6rem 0 .4rem;max-width:30rem}
+.tk-day{padding:1rem 1.1rem 1.1rem;border:2px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:1.3rem}
+.tk-day b{display:block;font:800 clamp(3.2rem,10vw,5.4rem)/.82 var(--display);letter-spacing:-.05em}
+.tk-day span{display:block;font-weight:700;margin-top:.6rem;font-size:1rem;line-height:1.2}
+.tk-day small{display:block;font:600 1rem var(--text);margin-top:.5rem}
+.tk-day em{display:block;font:500 .9rem var(--text);font-style:normal;opacity:.75}
+.tk-main .cd{margin:1.4rem 0 .6rem}
+.tk-note{margin:.2rem 0 0;font-weight:600;opacity:.85}
+.tk-act{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
+.ticket .btn.alt:hover{background:var(--shell);color:var(--ink)}
+.tk-stub{position:relative;display:grid;place-items:center;padding:clamp(1.6rem,4vw,2.4rem);border-top:2px dashed color-mix(in srgb,var(--shell) 35%,transparent)}
+.tk-stub::before,.tk-stub::after{content:"";position:absolute;top:-1rem;width:2rem;height:2rem;border-radius:50%;background:var(--bg);transition:background-color .9s var(--ease-io)}
+.tk-stub::before{left:-1rem}.tk-stub::after{right:-1rem}
+.tk-stub a{width:min(100%,19rem)}
+@media (min-width:52rem){
+  .ticket{grid-template-columns:1fr minmax(17rem,24rem)}
+  .tk-stub{border-top:0;border-left:2px dashed color-mix(in srgb,var(--shell) 35%,transparent)}
+  .tk-stub::before,.tk-stub::after{left:-1rem;right:auto}
+  .tk-stub::before{top:-1rem}.tk-stub::after{top:auto;bottom:-1rem}
+}
+.nw-feed h2{margin-bottom:clamp(1.2rem,3vw,2rem)}
+.feed{list-style:none;margin:0;padding:0}
+.fi{position:relative;isolation:isolate;overflow:hidden;display:grid;gap:.35rem 2rem;width:100%;padding:clamp(1.3rem,3vw,2.1rem) 1rem;
+  border:0;border-top:2px solid color-mix(in srgb,currentColor 28%,transparent);background:none;color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;transition:color .45s ease}
+.feed li:last-child .fi{border-bottom:2px solid color-mix(in srgb,currentColor 28%,transparent)}
+.fi::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--accent);transform:translateY(101%);transition:transform .6s var(--ease-io)}
+.fi h3{font:800 clamp(1.5rem,3.6vw,2.4rem)/1.05 var(--display);letter-spacing:-.03em}
+.fi p{margin:0;opacity:.85;font-size:1.05rem}
+.fi-tag{font:700 1rem var(--text);opacity:.7}
+.fi-go{font:800 1.8rem/1 var(--display);justify-self:end;transition:transform .45s var(--ease)}
+@media (hover:hover){
+  .fi:hover::before{transform:none}
+  .fi:hover{color:var(--accent-fg)}
+  .fi:hover .fi-go{transform:translate(.2em,-.2em)}
+}
+.fi:focus-visible::before{transform:none}.fi:focus-visible{color:var(--accent-fg)}
+@media (min-width:52rem){.fi{grid-template-columns:11rem 1.2fr 1fr 2rem;align-items:center}}
+.nw-end .lead{margin-bottom:0}
+@media (prefers-reduced-motion:reduce){.nw-title .ln span{transform:none}}
+
+/* ---------- Poule : la bulle apparaît puis s’efface ---------- */
+@keyframes henPop{from{opacity:0;transform:translateY(10px) scale(.88)}to{opacity:1;transform:none}}
+@keyframes henBye{to{opacity:0;transform:translateY(10px) scale(.9)}}
+.hen-bubble.bye{animation:henBye .45s ease forwards;pointer-events:none}
 </style>
 </head>
 <body data-tone="shell" class="intro">
@@ -582,28 +635,58 @@ body.hen-hover{cursor:pointer}
   </div>
 
   <div id="v-actualite" hidden>
-    <section data-tone="ink" style="padding-top:clamp(7rem,14vw,10rem)">
+    <section class="nw-top" data-tone="ink">
       <div class="wrap">
         <div class="pulse"><i></i>À la une</div>
-        <h2 class="news-h" aria-label="Actualité"><span aria-hidden="true" style="--i:0">A</span><span aria-hidden="true" style="--i:1">c</span><span aria-hidden="true" style="--i:2">t</span><span aria-hidden="true" style="--i:3">u</span><span aria-hidden="true" style="--i:4">a</span><span aria-hidden="true" style="--i:5">l</span><span aria-hidden="true" style="--i:6">i</span><span aria-hidden="true" style="--i:7">t</span><span aria-hidden="true" style="--i:8">é</span></h2>
-        <p class="news-sub rv" style="--d:.5">Les nouvelles de la Société d’Aviculture de Bischwiller et environs.</p>
-        <div class="ticker" aria-hidden="true"><div>Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ Exposition de Wyandotte ✦ 14 &amp; 15 novembre 2026 ✦ Entrée libre ✦ </div></div>
+        <h2 class="nw-title" aria-label="L’actualité de la société"><span class="ln" aria-hidden="true"><span style="--i:0">L’actualité</span></span><span class="ln" aria-hidden="true"><span style="--i:1">de la société</span></span></h2>
+        <p class="news-sub rv" style="--d:.25">Les nouvelles de la Société d’Aviculture de Bischwiller et environs.</p>
       </div>
     </section>
-    <section data-tone="yolk">
-      <div class="wrap card">
-        <div class="rv">
-          <span class="badge">Novembre 2026</span>
-          <h3>Exposition locale et régionale de Wyandotte</h3>
-          <div class="days" aria-hidden="true"><div>14<small>Samedi</small></div><div>15<small>Dimanche</small></div></div>
-          <div class="cd" data-cd role="timer" aria-live="off"><div class="cd-t">Ouverture dans</div><div class="cd-g"><div><b data-u="d">00</b><small>jours</small></div><div><b data-u="h">00</b><small>heures</small></div><div><b data-u="m">00</b><small>min</small></div><div><b data-u="s">00</b><small>sec</small></div></div></div>
-          <p>Salle Adrien Zeller, 10 rue des Casernes, Bischwiller.</p>
-          <p>Samedi 14 h à 20 h (inauguration à 18 h), dimanche 9 h à 16 h 30.</p>
-          <p>Entrée libre · Restauration sur place.</p>
-          <a class="btn magnet" href="#inscription">S’inscrire à l’exposition</a>
-        </div>
-        <div class="poster rv" style="--d:.2">
-          <a href="https://www.ville-bischwiller.fr/agenda/aviculture/" target="_blank" rel="noopener" aria-label="Voir l’agenda de l’exposition sur le site de la ville de Bischwiller"><img data-from=".affiche img" alt="Affiche de l’exposition locale et régionale de Wyandotte, samedi 14 et dimanche 15 novembre 2026" width="1055" height="1491"></a>
+
+    <section class="nw-feat" data-tone="yolk">
+      <div class="wrap">
+        <article class="ticket rv">
+          <div class="tk-main">
+            <span class="badge">À ne pas manquer</span>
+            <h3>Exposition locale et régionale de Wyandotte</h3>
+            <p class="tk-where">Novembre 2026, salle Adrien Zeller, 10 rue des Casernes, Bischwiller</p>
+            <div class="tk-days">
+              <div class="tk-day"><b>14</b><span>Samedi</span><small>14 h à 20 h</small><em>Inauguration à 18 h</em></div>
+              <div class="tk-day"><b>15</b><span>Dimanche</span><small>9 h à 16 h 30</small><em>Entrée libre</em></div>
+            </div>
+            <div class="cd" data-cd role="timer" aria-live="off"><div class="cd-t">Ouverture dans</div><div class="cd-g"><div><b data-u="d">00</b><small>jours</small></div><div><b data-u="h">00</b><small>heures</small></div><div><b data-u="m">00</b><small>min</small></div><div><b data-u="s">00</b><small>sec</small></div></div></div>
+            <p class="tk-note">Restauration sur place.</p>
+            <div class="tk-act">
+              <a class="btn magnet" href="#inscription">S’inscrire à l’exposition</a>
+              <a class="btn alt magnet" href="https://www.google.com/maps/search/?api=1&amp;query=Salle+Adrien+Zeller+10+rue+des+Casernes+67240+Bischwiller" target="_blank" rel="noopener">Itinéraire ↗</a>
+            </div>
+          </div>
+          <div class="tk-stub poster">
+            <a href="https://www.ville-bischwiller.fr/agenda/aviculture/" target="_blank" rel="noopener" aria-label="Voir l’agenda de l’exposition sur le site de la ville de Bischwiller"><img data-from=".affiche img" alt="Affiche de l’exposition locale et régionale de Wyandotte, samedi 14 et dimanche 15 novembre 2026" width="1055" height="1491"></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="nw-feed" data-tone="shell">
+      <div class="wrap">
+        <h2>En bref</h2>
+        <ul class="feed">
+          <li class="rv"><a class="fi" href="#exposition"><span class="fi-tag">Exposition</span><h3>Entrée libre et restauration sur place</h3><p>Samedi de 14 h à 20 h, dimanche de 9 h à 16 h 30 : venez rencontrer les éleveurs.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
+          <li class="rv" style="--d:.06"><a class="fi" href="#inscription"><span class="fi-tag">Inscriptions</span><h3>Exposez vos plus beaux sujets</h3><p>Un formulaire suffit : nom, adresse, race et nombre d’animaux.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
+          <li class="rv" style="--d:.12"><button class="fi" type="button" data-hen><span class="fi-tag">Poule savante</span><h3>Une question sur l’élevage ?</h3><p>Elle répond sur l’exposition, l’incubation, l’alimentation, le poulailler…</p><span class="fi-go" aria-hidden="true">↗</span></button></li>
+          <li class="rv" style="--d:.18"><a class="fi" href="#aide"><span class="fi-tag">Histoire</span><h3>Des pages manquent à notre histoire</h3><p>Vieilles photos, souvenirs, diplômes : écrivez-nous.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="nw-end" data-tone="comb">
+      <div class="wrap">
+        <h2>Restez au courant</h2>
+        <p class="lead">Rejoignez le groupe Facebook de la société et retrouvez l’agenda de la ville de Bischwiller.</p>
+        <div class="tk-act">
+          <a class="btn magnet" href="https://www.facebook.com/share/g/18Lyp25KPT/?mibextid=wwXIfr" target="_blank" rel="noopener">Rejoindre le groupe ↗</a>
+          <a class="btn alt magnet" href="https://www.ville-bischwiller.fr/agenda/aviculture/" target="_blank" rel="noopener">Agenda de la ville ↗</a>
         </div>
       </div>
     </section>
@@ -721,7 +804,7 @@ body.hen-hover{cursor:pointer}
   var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
   var V={accueil:document.getElementById("v-accueil"),actualite:document.getElementById("v-actualite"),histoire:document.getElementById("v-histoire"),aide:document.getElementById("v-aide"),inscription:document.getElementById("v-inscription")};
   var tabs=document.querySelectorAll("a.tab"),ind=document.querySelector(".tabs .ind"),body=document.body;
-  var first=true,timer;
+  var first=true;
 
   /* ---- indicateur de l’onglet actif ---- */
   function placeInd(){
@@ -734,25 +817,38 @@ body.hen-hover{cursor:pointer}
   if(document.fonts&&document.fonts.ready){document.fonts.ready.then(placeInd);}
 
   /* ---- routage ---- */
+  var busyT=false,pendingRoute=false,lastPtr={x:0,y:0,t:0};
+  document.addEventListener("pointerdown",function(e){lastPtr={x:e.clientX,y:e.clientY,t:Date.now()};},true);
   function current(){for(var k in V){if(!V[k].hidden){return k;}}return null;}
-  function show(v,h,smooth){
-    var same=current()===v;
-    Object.keys(V).forEach(function(k){V[k].classList.remove("view-leave","view-enter");V[k].hidden=k!==v;});
+  function markTab(v){
     tabs.forEach(function(t){if(t.dataset.v===v){t.setAttribute("aria-current","page");}else{t.removeAttribute("aria-current");}});
     placeInd();
-    if(!first&&!same){void V[v].offsetWidth;V[v].classList.add("view-enter");}
-    var el=v==="accueil"&&h&&h!=="accueil"?document.getElementById(h):null;
-    if(el){el.scrollIntoView({behavior:smooth&&!reduce?"smooth":"auto"});}
-    else{window.scrollTo({top:0,behavior:smooth&&!reduce?"smooth":"auto"});}
-    first=false;lastTone=null;
+  }
+  /* saut immédiat, sans le défilement doux du CSS */
+  function jump(fn){
+    var d=document.documentElement;d.style.scrollBehavior="auto";
+    try{fn();}finally{d.style.scrollBehavior="";}
+    target=cur=lastSet=window.scrollY;
+  }
+  function show(v,h,smooth){
+    Object.keys(V).forEach(function(k){V[k].hidden=k!==v;});
+    markTab(v);
+    var el=v==="accueil"&&h&&h!=="accueil"?document.getElementById(h):null,soft=smooth&&!reduce;
+    if(soft){
+      if(el){el.scrollIntoView({behavior:"smooth"});}else{window.scrollTo({top:0,behavior:"smooth"});}
+    }else{
+      jump(function(){if(el){el.scrollIntoView();}else{window.scrollTo(0,0);}});
+    }
+    first=false;lastTone=null;updateTone();
   }
   function route(){
+    if(busyT){pendingRoute=true;return;}
     var h=location.hash.slice(1),v=(h==="aide"||h==="inscription"||h==="histoire"||h==="actualite")?h:"accueil";
-    var cur=current();
-    clearTimeout(timer);
-    if(cur&&cur!==v&&!first&&!reduce){wipeTo(v,h);}else{wipe.className="wipe";show(v,h,cur===v);}
+    var c=current();
+    if(c&&c!==v&&!first&&!reduce){wipeTo(v,h);}else{show(v,h,c===v);}
   }
   window.addEventListener("hashchange",route);
+
 
   /* ---- mots qui s’allument au défilement ---- */
   var reveals=[].slice.call(document.querySelectorAll(".reveal")).map(function(el){
@@ -792,7 +888,7 @@ body.hen-hover{cursor:pointer}
     window.addEventListener("wheel",function(e){
       if(e.ctrlKey){return;}
       if(body.classList.contains("gaming")){e.preventDefault();return;}
-      if(body.classList.contains("intro")){e.preventDefault();return;}
+      if(body.classList.contains("intro")||busyT){e.preventDefault();return;}
       if(e.target.closest&&e.target.closest("textarea")){return;}
       e.preventDefault();
       var dy=e.deltaMode===1?e.deltaY*16:e.deltaY;
@@ -812,16 +908,39 @@ body.hen-hover{cursor:pointer}
     window.scrollTo({top:cur,behavior:"instant"});
   }
 
-  /* ---- rideau de transition entre les pages ---- */
-  var wipe=document.querySelector(".wipe"),wipeLabels={accueil:"Accueil",histoire:"Histoire",actualite:"Actualité",aide:"Aide",inscription:"S’inscrire"};
+  /* ---- transition entre les pages : un disque de couleur part de l’endroit touché,
+         la page change dessous, puis le disque se dissout pendant que la page monte ---- */
+  var wipe=document.querySelector(".wipe"),wlabel=wipe.querySelector("span"),
+      wipeLabels={accueil:"Accueil",histoire:"Histoire",actualite:"Actualité",aide:"Aide",inscription:"S’inscrire"},
+      wipeTheme={accueil:["#FFF8EC","#101A3A"],actualite:["#101A3A","#FFC21A"],histoire:["#101A3A","#FFC21A"],aide:["#B9D4AE","#101A3A"],inscription:["#FFC21A","#101A3A"]};
   function wipeTo(v,h){
-    wipe.querySelector("span").textContent=wipeLabels[v]||"";
-    wipe.className="wipe in";
-    timer=setTimeout(function(){
+    if(!wipe.animate){show(v,h,false);return;}
+    busyT=true;
+    var th=wipeTheme[v]||wipeTheme.accueil,fresh=Date.now()-lastPtr.t<1500;
+    var ox=fresh?lastPtr.x:innerWidth/2,oy=fresh?lastPtr.y:40;
+    var R=Math.hypot(Math.max(ox,innerWidth-ox),Math.max(oy,innerHeight-oy))+24;
+    wipe.style.setProperty("--wbg",th[0]);wipe.style.setProperty("--wfg",th[1]);
+    wlabel.textContent=wipeLabels[v]||"";
+    wipe.style.visibility="visible";wipe.style.pointerEvents="auto";
+    markTab(v);
+    var anims=[],done=false;
+    function add(el,kf,opt){var a=el.animate(kf,opt);anims.push(a);return a;}
+    function finish(){
+      if(done)return;done=true;
+      anims.forEach(function(a){try{a.cancel();}catch(e){}});
+      wipe.style.visibility="hidden";wipe.style.pointerEvents="none";
+      busyT=false;
+      if(pendingRoute){pendingRoute=false;route();}
+    }
+    var EASE="cubic-bezier(.65,0,.35,1)",OUT="cubic-bezier(.2,.8,.2,1)";
+    var a1=add(wipe,[{clipPath:"circle(0px at "+ox+"px "+oy+"px)"},{clipPath:"circle("+R+"px at "+ox+"px "+oy+"px)"}],{duration:560,easing:EASE,fill:"forwards"});
+    add(wlabel,[{opacity:0,transform:"translateY(1.4rem)"},{opacity:1,transform:"none"}],{duration:420,delay:240,easing:OUT,fill:"both"});
+    a1.finished.then(function(){
       show(v,h,false);
-      wipe.className="wipe out";
-      timer=setTimeout(function(){wipe.className="wipe";},700);
-    },620);
+      add(V[v],[{opacity:0,transform:"translateY(2.2rem)"},{opacity:1,transform:"none"}],{duration:720,delay:140,easing:OUT,fill:"backwards"});
+      add(wlabel,[{opacity:1,transform:"none"},{opacity:0,transform:"translateY(-1rem)"}],{duration:260,easing:"ease-in",fill:"forwards"});
+      return add(wipe,[{opacity:1},{opacity:0}],{duration:520,delay:200,easing:"ease-out",fill:"forwards"}).finished;
+    }).then(finish,finish);
   }
 
   /* ---- boucle d’animation unique ---- */
@@ -1140,6 +1259,8 @@ body.hen-hover{cursor:pointer}
       if(document.body.classList.contains("intro")||document.body.classList.contains("gaming")||!cv.classList.contains("on"))return false;
       var rc=cv.getBoundingClientRect();
       if(e.clientX<rc.left||e.clientX>rc.right||e.clientY<rc.top||e.clientY>rc.bottom)return false;
+      var ux=((e.clientX-rc.left)/rc.width-.5)/.44,uy=((e.clientY-rc.top)/rc.height-.55)/.5;
+      if(ux*ux+uy*uy<=1)return true;
       var nd=new T.Vector2((e.clientX-rc.left)/rc.width*2-1,-((e.clientY-rc.top)/rc.height*2-1));
       var rc2=new T.Raycaster();rc2.setFromCamera(nd,cam);coq.updateMatrixWorld(true);
       return rc2.intersectObject(coq,true).length>0;
@@ -1335,89 +1456,306 @@ body.hen-hover{cursor:pointer}
     return "Cette exposition est terminée, merci à tous les visiteurs ! La page Actualité annoncera la suivante.";
   }
   var A_EXPO=[{t:"Voir la prochaine exposition",href:"#exposition"},{t:"Page Actualité",href:"#actualite",alt:true},{t:"S’inscrire",href:"#inscription",alt:true}];
+  var SRC_AGENDA=[{t:"Agenda de la ville de Bischwiller",u:AGENDA}];
 
-  var SITE=[
-    {id:"hello",rx:/^(bonjour|salut|coucou|hello|bonsoir|hey|cot cot)\b/,
-     r:function(){return {paras:["Cot cot ! Bonjour 🐔 Je peux vous renseigner sur l’exposition, la Société d’Aviculture ou l’élevage (poules, pigeons, lapins…)."]};}},
-    {id:"thanks",rx:/^(merci|super|genial|parfait|bravo)\b/,
-     r:function(){return {paras:["Avec plaisir ! Cot cot cot. N’hésitez pas si vous avez d’autres questions."]};}},
-    {id:"inscr",rx:/\binscri|\bexposant|\bengager|\bengagement|\bparticiper|\bexposer\b/,
-     r:function(){return {paras:["Pour exposer vos sujets, remplissez le formulaire d’inscription du site. L’exposition a lieu les 14 et 15 novembre 2026 à Bischwiller. "+expoStatus()],
-       actions:[{t:"S’inscrire à l’exposition",href:"#inscription"},{t:"Infos exposition",href:"#exposition",alt:true}]};}},
-    {id:"lieu",rx:/\badresse\b|\bou (se trouve|est|a lieu|se passe|se deroule)|\blieu\b|\bsalle\b|\bplan\b|\bacces\b|\bitineraire\b|\bparking\b|\bzeller\b|\bcomment (y )?aller\b|\bvenir\b/,
-     r:function(){return {paras:["L’exposition se tient à la salle Adrien Zeller, 10 rue des Casernes, 67240 Bischwiller."],
-       actions:[{t:"Ouvrir dans Google Maps",href:MAPS,ext:true},{t:"Voir l’exposition",href:"#exposition",alt:true}]};}},
-    {id:"horaires",rx:/\bhoraires?\b|\ba quelle heure\b|\bouverture\b|\bouvert\b|\binauguration\b|\bentree\b|\bgratuit\b|\brestauration\b/,
-     r:function(){return {paras:["Samedi 14 novembre 2026 : de 14 h à 20 h (inauguration à 18 h). Dimanche 15 novembre : de 9 h à 16 h 30. Entrée libre, avec restauration sur place. "+expoStatus()],
-       actions:A_EXPO,sources:[{t:"Agenda de la ville de Bischwiller",u:AGENDA}]};}},
-    {id:"expo",rx:/\bexpo(sition|sitions|s)?\b|\bsalon\b|\bconcours\b|\bmanifestation\b|\bevenements?\b|\bagenda\b|\bprochaine?s?\b|\ba venir\b/,
-     r:function(){return {paras:["La prochaine exposition (locale et régionale de Wyandotte) a lieu le samedi 14 et le dimanche 15 novembre 2026, salle Adrien Zeller, 10 rue des Casernes à Bischwiller. Samedi de 14 h à 20 h (inauguration à 18 h), dimanche de 9 h à 16 h 30. Entrée libre, restauration sur place.",expoStatus()],
-       actions:A_EXPO,sources:[{t:"Agenda de la ville de Bischwiller",u:AGENDA}]};}},
-    {id:"contact",rx:/\bcontact\b|\bmail\b|\bcourriel\b|\btelephone\b|\bappeler\b|\bjoindre\b|\bfacebook\b|\becrire\b|\bpresident\b/,
-     r:function(){return {paras:["Vous pouvez écrire à l’association à "+MAIL+" ou rejoindre le groupe Facebook. Le formulaire de la page Aide transmet aussi votre message directement."],
-       actions:[{t:"Page Aide",href:"#aide"},{t:"Section Contact",href:"#contact",alt:true}]};}},
-    {id:"histoire",rx:/\bhistoire\b|\bassociation\b|\bsociete\b|\bfondee\b|\bfondation\b|\bcreee\b|\bdepuis quand\b|\banciens presidents\b/,
-     r:function(){return {paras:["La page Histoire raconte la vie de la Société d’Aviculture de Bischwiller : ses expositions, ses anniversaires et ses grands moments."],
-       actions:[{t:"Lire l’histoire",href:"#histoire"}]};}},
-    {id:"aide",rx:/\bacheter\b|\bachat\b|\bvendre\b|\bvente\b|\badopter\b|\bphotos?\b|\bsouvenirs?\b|\bdiplomes?\b|\baide\b/,
-     r:function(){return {paras:["Pour acheter un animal, partager de vieilles photos ou demander conseil à nos éleveurs, passez par la page Aide : votre message est transmis directement à l’association."],
-       actions:[{t:"Aller à la page Aide",href:"#aide"}]};}}
-  ];
-
-  /* ---------- connaissances aviculture (réponses courtes + sources) ---------- */
   function src(term,extra){
     var l=[{t:"Wikipédia : "+term,u:wsearch(term)},{t:"Google : "+term,u:gsearch(term)}];
     return extra?extra.concat(l):l;
   }
-  var KB=[
-    {rx:/grippe|influenza|h5n1|h5n8|confinement|claustration/,term:"influenza aviaire",
-     paras:["L’influenza aviaire (grippe aviaire) est une maladie réglementée. Les mesures (confinement des volailles, rassemblements, expositions) sont fixées par arrêtés et changent selon le niveau de risque : il faut donc toujours vérifier la situation du moment auprès des services de l’État.","En cas de mortalité inhabituelle dans votre basse-cour, ne touchez pas aux animaux sans précaution et contactez rapidement un vétérinaire ou la direction départementale de la protection des populations. Une détention de volailles, même petite, doit être déclarée : renseignez-vous auprès de votre mairie."],
-     extra:[{t:"Ministère de l’Agriculture",u:"https://agriculture.gouv.fr/"},{t:"ANSES",u:"https://www.anses.fr/"}]},
-    {rx:/incub|\bcouv(er|ee|aison|euse|eur)\b|couveuse|\beclo(s|r|t)|\beclor/,term:"incubation oeuf poule",
-     paras:["Un œuf de poule met environ 21 jours à éclore. Repères usuels en couveuse : 37,5 °C, humidité d’environ 50 % puis 65–70 % les 3 derniers jours, avec retournements réguliers jusqu’au 18ᵉ jour.","Autres espèces (ordres de grandeur) : caille et pigeon 17–18 jours, canard 28 jours, oie 28–30 jours, canard de Barbarie 35 jours."]},
-    {rx:/\bponte\b|\bpondre\b|\bpond\b|\bpondeuses?\b|\bcombien d oeufs\b|\boeufs par\b/,term:"poule pondeuse",
-     paras:["Une poule pondeuse moderne peut donner 250 à 300 œufs par an ; les races de collection ou d’ornement pondent souvent moins (environ 100 à 200). La ponte diminue en hiver (jours courts), pendant la mue et avec l’âge. Une alimentation adaptée, du calcium (coquilles d’huîtres) et environ 14 h de lumière par jour aident à la maintenir.","Un coq n’est pas nécessaire pour avoir des œufs : seulement pour qu’ils soient fécondés."]},
-    {rx:/nourr|alimen|\bmanger\b|\bmange\b|\bgrains?\b|\bgranules?\b|\bcroquettes?\b|\brestes\b/,term:"alimentation poule",
-     paras:["Base : un aliment complet adapté à l’âge (démarrage pour les poussins, croissance, puis pondeuses), de l’eau propre à volonté, et du grit ou des coquilles d’huîtres pour le calcium. Les grains et les restes de cuisine ne doivent rester qu’un complément.","À éviter : aliments salés, avocat, oignon et ail en quantité, pommes de terre crues ou verdies, aliments moisis."]},
-    {rx:/poulailler|\babri\b|\bloger\b|\blogement\b|\bperchoir|\bnichoir|\bespace\b|\bsurface\b|\bm2\b|\bparcours\b/,term:"poulailler",
-     paras:["Repères courants pour des poules : environ 3 à 4 poules par m² dans l’abri (moins pour les grandes races), 20 à 25 cm de perchoir par poule, 1 nichoir pour 4 à 5 poules, bonne aération sans courant d’air, litière sèche, protection contre le renard et les rongeurs, et un parcours extérieur le plus spacieux possible."]},
-    {rx:/malad|soigner|\bpoux\b|acarien|\bvermifug|coccid|marek|newcastle|variole|coryza|diarrhee|boite|boiter|prostr|parasit/,term:"maladies des poules",
-     paras:["Signes d’alerte : oiseau prostré ou isolé, plumes ébouriffées, baisse d’appétit ou de ponte, diarrhée, éternuements, crête pâle. Isolez l’animal, nettoyez et désinfectez, puis faites appel à un vétérinaire : je ne peux pas poser de diagnostic.","Prévention : litière sèche, propreté, quarantaine de 3 à 4 semaines pour tout nouvel arrivant, surveillance des poux rouges et des vers."]},
-    {rx:/\bpoussins?\b|eleveuse|lampe chauffante/,term:"poussin élevage",
-     paras:["Les poussins ont besoin d’une source de chaleur (environ 35 °C la première semaine, puis on baisse d’environ 3 °C par semaine), d’un aliment démarrage, d’eau propre et d’une litière sèche et propre. S’ils se serrent les uns contre les autres, ils ont froid ; s’ils s’écartent en haletant, c’est trop chaud."]},
-    {rx:/\bcoqs?\b|\bcocorico\b|\bchante\b|\bchanter\b/,term:"coq",
-     paras:["Un coq est utile pour obtenir des œufs fécondés (comptez un coq pour 8 à 10 poules environ). Il chante surtout à l’aube mais aussi tout au long de la journée : pensez à vos voisins et au règlement local."]},
-    {rx:/pigeon|colombe|colombier|pigeonnier|voliere/,term:"pigeon domestique",
-     paras:["Le pigeon pond 2 œufs, couvés par les deux parents pendant 17 à 18 jours. Il lui faut un pigeonnier ou une volière propre, sèche, bien ventilée, avec de l’eau fraîche et un mélange de grains adapté. Les pigeons de race ont une belle place dans les expositions de la Société."]},
-    {rx:/\blapins?\b|\bclapiers?\b|lievre/,term:"lapin domestique",
-     paras:["Pour un lapin de race : foin à volonté, granulés en quantité adaptée, eau propre et clapier abrité, spacieux et sec. La gestation dure environ 31 jours et le sevrage a lieu vers 6 à 8 semaines."]},
-    {rx:/wyandotte/,term:"Wyandotte poule",
-     paras:["La Wyandotte est une race de poule d’origine américaine (fin du XIXᵉ siècle), rustique, calme, bonne pondeuse, reconnaissable à sa crête en rose et à son plumage arrondi. Elle existe en grande race et en naine, dans de nombreuses variétés de couleurs, dont la célèbre variété lacée."]},
-    {rx:/\braces?\b|choisir une poule|quelle poule/,term:"race de poule",
-     paras:["Le choix dépend de votre objectif : ponte, ornement, couvaison ou exposition. Pour une basse-cour familiale, on conseille des races rustiques et calmes. Les éleveurs de la Société seront ravis de vous guider : passez par la page Aide ou venez les rencontrer à l’exposition."],
-     actions:[{t:"Demander conseil",href:"#aide"}]}
+
+  /* ---------- compréhension de la question ----------
+     Chaque sujet a des mots-clés pondérés. On additionne les points de
+     chaque sujet et on répond au meilleur : plus de réponse « à côté ». */
+  function tk(q){return norm(q).split(" ").filter(Boolean);}
+  function hasTok(T,k){
+    var pre=k.charAt(k.length-1)==="*",s=pre?k.slice(0,-1):k;
+    for(var i=0;i<T.length;i++){
+      var t=T[i];
+      if(t===s||(!pre&&(t===s+"s"||t===s+"x"))||(pre&&t.indexOf(s)===0))return true;
+    }
+    return false;
+  }
+  function scoreOf(t,T,nq){
+    var s=0,k;
+    for(k in t.kw){if(hasTok(T,k))s+=t.kw[k];}
+    (t.rx||[]).forEach(function(p){if(p[0].test(nq))s+=p[1];});
+    if(t.fn)s+=t.fn(T,nq);
+    return s;
+  }
+  function bestTopic(T,nq){
+    var b=null,bs=0;
+    TOPICS.forEach(function(t){var s=scoreOf(t,T,nq);if(s>bs){bs=s;b=t;}});
+    return {t:b,s:bs};
+  }
+  var SPECIES=/\b(poules?|poulets?|cailles?|pigeons?|canards?|canes?|oies?|dindes?|dindons?|pintades?|barbarie)\b/;
+  var INC=[
+    {id:"barbarie",n:"le canard de Barbarie",rx:/barbarie/,d:"35 jours"},
+    {id:"canard",n:"le canard",rx:/\bcanards?\b|\bcanes?\b/,d:"28 jours"},
+    {id:"oie",n:"l’oie",rx:/\boies?\b/,d:"28 à 30 jours"},
+    {id:"caille",n:"la caille",rx:/\bcailles?\b/,d:"17 à 18 jours"},
+    {id:"pigeon",n:"le pigeon",rx:/\bpigeons?\b/,d:"17 à 18 jours"},
+    {id:"dinde",n:"la dinde",rx:/\bdind(e|es|on|ons)\b/,d:"28 jours"},
+    {id:"pintade",n:"la pintade",rx:/\bpintades?\b/,d:"26 à 28 jours"},
+    {id:"poule",n:"la poule",rx:/\bpoules?\b|\bpoulets?\b/,d:"21 jours"}
+  ];
+  var FOODS=[
+    [/avocat|chocolat/,"À éviter absolument : l’avocat et le chocolat sont toxiques pour les volailles."],
+    [/haricot/,"Les haricots secs crus sont toxiques : il faut les cuire, et mieux vaut les éviter."],
+    [/pommes? de terre|patates?/,"Pommes de terre : seulement cuites, sans épluchures. Crues ou verdies, elles contiennent de la solanine, toxique."],
+    [/oignons?|\bail\b/,"Oignon et ail sont à éviter en quantité : ils sont mal tolérés et donnent mauvais goût aux œufs."],
+    [/\bpain\b|brioche|biscuit/,"Un peu de pain sec de temps en temps ne fait pas de mal, mais cela remplit sans nourrir : à garder très occasionnel."],
+    [/\briz\b|\bpates?\b|semoule/,"Riz et pâtes cuits et nature : oui, en petite quantité, comme petit extra."],
+    [/salade|legumes?|carottes?|courgettes?|\bchou\b|epinards?|concombre/,"Légumes verts, salade, courgettes, carottes… : oui, ce sont d’excellents compléments."],
+    [/fruits?|\bpommes?\b|poires?|raisins?|fraises?|melon|pasteque/,"Les fruits sont acceptés en petite quantité et de temps en temps (pomme sans pépins, raisin, fraises…)."],
+    [/\bviande|\bpoisson|\bfromage|\blait\b/,"Mieux vaut éviter : les volailles se nourrissent surtout de grains, de végétaux et d’insectes. Les produits laitiers et la viande ne sont pas faits pour elles."]
+  ];
+  var JOKES=[
+    "Pourquoi la poule a-t-elle traversé la route ? Pour aller de l’autre côté ! 🐔",
+    "Que dit une poule qui a perdu ses lunettes ? « Cot cot… je n’y vois plus rien ! » 🤓",
+    "Pourquoi le coq est-il toujours à l’heure ? Parce qu’il a un réveil intégré ! ⏰"
+  ];
+  var jokeI=Math.floor(Math.random()*JOKES.length);
+
+  var TOPICS=[
+    /* ===== la poule elle-même ===== */
+    {id:"hen",kw:{},rx:[[/\bqui es tu\b|\btu es qui\b|\bt es qui\b|\bton nom\b|\bcomment tu t appelles?\b|\bcomment t appelles tu\b|\bpresente toi\b|\btu sers a quoi\b|\bque (sais|peux|fais) tu\b|\bqu est ce que tu (sais|peux|fais)\b|\bsavante\b/,6]],
+     r:function(){return {paras:["Je suis la poule savante de la Société d’Aviculture de Bischwiller 🐔 Je réponds à vos questions sur l’exposition, la société et l’élevage : poules, pigeons, lapins, incubation, alimentation, poulailler…","Pour un animal malade, mieux vaut consulter un vétérinaire : je ne pose pas de diagnostic."]};}},
+    {id:"blague",kw:{blague:5,drole:3,devinette:4,rigoler:4},
+     r:function(){var j=JOKES[jokeI%JOKES.length];jokeI++;return {paras:[j]};}},
+    {id:"jeu",kw:{jeu:4,jeux:4,jouer:4,amuser:3,game:3,score:2,record:2},rx:[[/basse cour/,2]],
+     r:function(){return {paras:["Un petit jeu ? Touchez le logo de la société, en haut de l’écran : c’est le « concours de la basse-cour ». Attrapez les poules, pigeons et lapins avant qu’ils se cachent… mais gare au renard 🦊 !"]};}},
+
+    /* ===== l’exposition : on répond seulement à ce qui est demandé ===== */
+    {id:"expo",
+     kw:{expo:4,exposition:4,salon:2,zeller:4,salle:2,inauguration:4,horaire:3,ouverture:2,ouvert:2,fermeture:2,entree:2,"gratuit*":3,"payant*":3,billet:3,enfant:2,famille:2,venir:1,restauration:3,buvette:3,samedi:2,dimanche:2,novembre:3,prochain:2,prochaine:2,parking:3,stationner:3,adresse:3,itineraire:3,lieu:2,agenda:3,manifestation:3,affiche:3,programme:2,evenement:2},
+     rx:[[/\bou (a lieu|se trouve|se passe|se deroule|se tient)\b/,4],[/\ba quelle heure\b/,4],[/\bsur place\b/,4],[/\bprix\b.*\bentree\b|\bentree\b.*\bprix\b/,3],[/\bcomment (y )?(venir|aller)\b/,3]],
+     f:["Quels sont les horaires ?","Où se trouve la salle ?","Comment exposer mes animaux ?"],
+     r:function(T,nq){
+       var f={
+         date:/\b(quand|date|jours?|samedi|dimanche|novembre|decompte)\b|dans combien|combien de temps|il reste/.test(nq),
+         heures:/\b(horaires?|heures?|ouvert|ouvre|ouverture|ferme|fermeture|inauguration|jusqu)\b/.test(nq),
+         lieu:/\b(adresse|lieu|salle|zeller|plan|acces|itineraire|parking|garer|stationner|rue)\b|comment (y )?(venir|aller)|\by aller\b|^ou\b|\bou (a lieu|se trouve|se passe|se deroule|se tient|est)\b/.test(nq),
+         park:/\b(parking|garer|stationner|stationnement)\b/.test(nq),
+         fam:/\b(enfants?|famille|gamins|bebes?)\b/.test(nq),
+         prix:/\b(entree|prix|tarifs?|gratuit|gratuite|payant|payante|billets?|coute|couter|cout)\b/.test(nq),
+         resto:/\b(restauration|buvette|boire|repas|manger|dejeuner|diner|sandwichs?|snacks?|restaurant|faim)\b/.test(nq),
+         quoi:/\b(wyandotte|programme)\b|que voir|quoi voir|quels animaux|quelles? races?/.test(nq),
+         inscr:/\b(inscri\w*|exposants?|exposer|engager|participer|presenter)\b/.test(nq),
+         vente:/\b(acheter|achat|vendre|vente|adopter)\b/.test(nq)
+       };
+       var sat=/samedi/.test(nq),sun=/dimanche/.test(nq),P=[],acts=[],srcs=[],any=false,k;
+       if((sat||sun)&&!/\b(quand|date)\b/.test(nq))f.heures=true;
+       for(k in f){if(f[k])any=true;}
+       if(!any){
+         P.push("La prochaine exposition (locale et régionale de Wyandotte) a lieu le samedi 14 et le dimanche 15 novembre 2026, salle Adrien Zeller, 10 rue des Casernes à Bischwiller. Samedi de 14 h à 20 h (inauguration à 18 h), dimanche de 9 h à 16 h 30. Entrée libre, restauration sur place.",expoStatus());
+         return {paras:P,actions:A_EXPO,sources:SRC_AGENDA};
+       }
+       if(f.date&&(!f.heures||/\b(quand|date)\b/.test(nq))){P.push("L’exposition a lieu le samedi 14 et le dimanche 15 novembre 2026. "+expoStatus());srcs=SRC_AGENDA;}
+       if(f.heures){
+         if(sat&&!sun)P.push("Samedi 14 novembre : de 14 h à 20 h, avec l’inauguration à 18 h.");
+         else if(sun&&!sat)P.push("Dimanche 15 novembre : de 9 h à 16 h 30.");
+         else P.push("Samedi 14 novembre : de 14 h à 20 h (inauguration à 18 h). Dimanche 15 novembre : de 9 h à 16 h 30.");
+         srcs=SRC_AGENDA;
+       }
+       if(f.lieu){P.push("L’exposition se tient à la salle Adrien Zeller, 10 rue des Casernes, 67240 Bischwiller.");acts.push({t:"Ouvrir dans Google Maps",href:MAPS,ext:true});}
+       if(f.park)P.push("Je n’ai pas le détail du stationnement autour de la salle : consultez le plan, et écrivez à l’association si besoin.");
+       if(f.fam)P.push("L’exposition est ouverte au public et l’entrée est libre : vous pouvez venir en famille.");
+       if(f.prix&&f.resto){P.push("L’entrée est libre, et il y a de la restauration sur place.");srcs=SRC_AGENDA;}
+       else{
+         if(f.prix){P.push("L’entrée est libre.");srcs=SRC_AGENDA;}
+         if(f.resto){P.push("Oui, il y a de la restauration sur place.");srcs=SRC_AGENDA;}
+       }
+       if(f.quoi)P.push("Il s’agit de l’exposition locale et régionale de Wyandotte : les éleveurs y présentent leurs plus beaux sujets au public et à un jury.");
+       if(f.inscr){P.push("Pour exposer vos animaux, remplissez le formulaire d’inscription du site (nom, adresse, téléphone, race et nombre d’animaux).");acts.push({t:"S’inscrire à l’exposition",href:"#inscription"});}
+       if(f.vente)P.push("Je n’ai pas d’information sur la vente d’animaux pendant l’exposition : posez la question aux éleveurs via la page Aide.");
+       if(f.vente)acts.push({t:"Page Aide",href:"#aide",alt:true});
+       if(!acts.length)acts=A_EXPO;else acts.push({t:"Voir l’exposition",href:"#exposition",alt:true});
+       var more=[["heures","Quels sont les horaires ?"],["lieu","Où se trouve la salle ?"],["inscr","Comment exposer mes animaux ?"],["prix","L’entrée est-elle payante ?"]].filter(function(x){return !f[x[0]];}).map(function(x){return x[1];});
+       return {paras:P,actions:acts,sources:srcs,follow:more.slice(0,3)};
+     }},
+    {id:"inscr",kw:{"inscri*":5,exposant:4,engager:3,engagement:3,participer:2,exposer:3},
+     f:["Quand est l’exposition ?","Où se trouve la salle ?"],
+     r:function(){return {paras:["Pour exposer vos sujets, remplissez le formulaire d’inscription du site (nom, adresse, téléphone, race et nombre d’animaux). L’exposition a lieu les 14 et 15 novembre 2026 à Bischwiller. "+expoStatus()],
+       actions:[{t:"S’inscrire à l’exposition",href:"#inscription"},{t:"Infos exposition",href:"#exposition",alt:true}]};}},
+
+    /* ===== la société ===== */
+    {id:"contact",kw:{"contact*":4,mail:3,courriel:3,email:3,telephone:3,appeler:3,joindre:3,facebook:4,ecrire:3,coordonnees:4,numero:2},
+     r:function(){return {paras:["Vous pouvez écrire à l’association à "+MAIL+" ou rejoindre le groupe Facebook. Le formulaire de la page Aide transmet aussi votre message directement."],
+       actions:[{t:"Page Aide",href:"#aide"},{t:"Section Contact",href:"#contact",alt:true}]};}},
+    {id:"president",kw:{president:4,responsable:3,dirigeant:3,bureau:3,comite:3},rx:[[/\bqui (est|dirige)\b/,1]],
+     r:function(){return {paras:["Je n’ai pas le nom des responsables de la société. Pour les joindre, écrivez à l’association : votre message lui est transmis directement."],actions:[{t:"Page Aide",href:"#aide"},{t:"Section Contact",href:"#contact",alt:true}]};}},
+    {id:"histoire",kw:{histoire:4,fondee:4,fonde:3,fondation:4,creee:3,creation:3,naissance:3,origine:3,origines:3,anciennete:3,historique:4,"1908":5,"1912":3,"110":3},rx:[[/\bdepuis quand\b/,4],[/\ben quelle annee\b/,2]],
+     r:function(){return {paras:["La Société d’Aviculture de Bischwiller et environs a été fondée en 1908 : elle a fêté ses 110 ans en 2018. La page Histoire raconte ses expositions, ses anniversaires et ses grands moments."],actions:[{t:"Lire l’histoire",href:"#histoire"}]};}},
+    {id:"asso",kw:{adherer:4,adhesion:4,adherent:3,cotisation:4,membre:3,rejoindre:3,association:3,societe:2},rx:[[/\bdevenir membre\b/,5],[/\bqui etes vous\b|\bque faites vous\b|\bc est quoi la societe\b/,4]],
+     r:function(){return {paras:["La Société d’Aviculture de Bischwiller réunit des éleveurs amateurs de la région autour de l’élevage de volailles, de pigeons et de lapins de race : exposition annuelle, conseils d’élevage, rencontres entre membres et sauvegarde des races locales.","Pour adhérer, je n’ai pas les détails (cotisation, conditions) : écrivez à l’association via la page Aide."],actions:[{t:"Page Aide",href:"#aide"},{t:"Notre histoire",href:"#histoire",alt:true}]};}},
+    {id:"souvenirs",kw:{photo:3,souvenir:3,diplome:3,archive:3},rx:[[/\banciens? presidents?\b/,5]],
+     r:function(){return {paras:["Vieilles photos, souvenirs, diplômes, anciens présidents : tout ce qui fait notre histoire est le bienvenu ! Écrivez-nous via la page Aide, en choisissant la demande qui correspond."],actions:[{t:"Aller à la page Aide",href:"#aide"}]};}},
+    {id:"achat",kw:{acheter:4,achat:4,vendre:3,vente:3,vendeur:3,adopter:3,adoption:3},
+     r:function(){return {paras:["Pour acheter un animal ou demander conseil à nos éleveurs, passez par la page Aide : votre message est transmis directement à l’association."],actions:[{t:"Aller à la page Aide",href:"#aide"}]};}},
+    {id:"aide",kw:{aide:3,aider:3,formulaire:3,conseil:2},
+     r:function(){return {paras:["Pour poser une question à l’association ou demander conseil à nos éleveurs, utilisez la page Aide : votre message est transmis directement."],actions:[{t:"Aller à la page Aide",href:"#aide"}]};}},
+
+    /* ===== l’élevage (espèces d’abord, puis sujets généraux) ===== */
+    {id:"grippe",term:"influenza aviaire",kw:{grippe:4,influenza:4,h5n1:4,h5n8:4,confinement:3,claustration:4,epizootie:3,aviaire:4},rx:[[/mise a l abri/,4]],
+     extra:[{t:"Ministère de l’Agriculture",u:"https://agriculture.gouv.fr/"},{t:"ANSES",u:"https://www.anses.fr/"}],
+     f:["Comment loger mes poules ?","Mes poules sont malades"],
+     r:function(){return {paras:["L’influenza aviaire (grippe aviaire) est une maladie réglementée. Les mesures (confinement des volailles, rassemblements, expositions) sont fixées par arrêtés et changent selon le niveau de risque : il faut donc toujours vérifier la situation du moment auprès des services de l’État.","En cas de mortalité inhabituelle dans votre basse-cour, ne touchez pas aux animaux sans précaution et contactez rapidement un vétérinaire ou la direction départementale de la protection des populations. Une détention de volailles, même petite, doit être déclarée : renseignez-vous auprès de votre mairie."]};}},
+    {id:"incub",term:"incubation oeuf poule",sp:true,kw:{incubation:5,incuber:5,incubateur:5,couveuse:5,eclosion:4,eclore:4,eclos:4,"couv*":4,retournement:3,temperature:2,humidite:2},rx:[[/\bcombien de (temps|jours).*(oeuf|eclo|couv|incub)/,3]],
+     f:["Quelle température en couveuse ?","Et pour les canards ?","Que doivent manger les poussins ?"],
+     r:function(T,nq){
+       var sp=null;INC.forEach(function(s){if(!sp&&s.rx.test(nq))sp=s;});
+       var wantT=/temperature|degres|chaleur|chaud/.test(nq),wantH=/humidit|hygrometr/.test(nq),wantR=/retourn/.test(nq),P=[];
+       var poule=!sp||sp.id==="poule";
+       if(sp)P.push("Pour "+sp.n+", l’incubation dure environ "+sp.d+".");
+       else P.push("Un œuf de poule met environ 21 jours à éclore (une poule couveuse s’en charge naturellement).");
+       if(poule){
+         var t="La température se règle autour de 37,5 °C en couveuse ventilée, avec un thermomètre fiable.",
+             h="L’humidité visée est d’environ 50 % pendant l’incubation, puis 65 à 70 % pour les 3 derniers jours.",
+             r="Il faut retourner les œufs plusieurs fois par jour jusqu’au 18ᵉ jour, puis les laisser tranquilles jusqu’à l’éclosion.";
+         if(wantT||wantH||wantR){P=[];if(wantT)P.push(t);if(wantH)P.push(h);if(wantR)P.push(r);P.push("Durée totale : 21 jours pour la poule.");}
+         else P.push("Repères usuels en couveuse : 37,5 °C, humidité d’environ 50 % puis 65–70 % les 3 derniers jours, retournements réguliers jusqu’au 18ᵉ jour.");
+       }else{
+         P.push("La température et l’humidité varient un peu selon l’espèce : suivez la notice de votre couveuse.");
+       }
+       if(!sp&&!(wantT||wantH||wantR))P.push("Autres espèces : caille et pigeon 17–18 jours, canard 28 jours, oie 28–30 jours, canard de Barbarie 35 jours.");
+       return {paras:P};
+     }},
+    {id:"canard",term:"canard domestique",kw:{canard:5,oie:5,barbarie:5,cane:4,palmipede:5,mare:2,bassin:2},
+     f:["Combien de jours dure l’incubation ?","Comment loger mes poules ?"],
+     r:function(){return {paras:["Canards et oies sont des palmipèdes : ils ont besoin d’eau pour boire et se laver (un bassin ou un grand bac suffit, pas forcément une mare), d’un abri sec fermé la nuit contre les prédateurs, et d’un aliment adapté. L’eau doit être assez profonde pour y plonger le bec.","Incubation : canard environ 28 jours, canard de Barbarie 35 jours, oie 28 à 30 jours."]};}},
+    {id:"autres",term:"volaille de basse-cour",kw:{caille:5,dinde:5,dindon:5,pintade:5,faisan:4,paon:4},
+     r:function(T,nq){
+       var P=[];
+       if(/caille/.test(nq))P.push("Les cailles sont de petites volailles qui pondent beaucoup de petits œufs ; elles se logent dans une volière ou un clapier-volière bien abrité, au sec et sans courant d’air.");
+       if(/dind/.test(nq))P.push("Les dindes et dindons sont de grands oiseaux : ils demandent beaucoup de place, un abri solide et un parcours spacieux.");
+       if(/pintade/.test(nq))P.push("Les pintades sont vives, bruyantes et volent facilement ; elles aiment parcourir l’extérieur pour chercher des insectes.");
+       if(/faisan|paon/.test(nq))P.push("Faisans et paons sont des oiseaux d’ornement qui ont besoin d’une grande volière ; renseignez-vous sur la réglementation avant d’en détenir.");
+       P.push("Pour des conseils précis, nos éleveurs vous répondent via la page Aide.");
+       return {paras:P,actions:[{t:"Demander conseil",href:"#aide"}]};
+     }},
+    {id:"pigeon",term:"pigeon domestique",kw:{pigeon:5,colombe:4,colombier:5,pigeonnier:5,pigeonneau:5,voyageur:3},
+     f:["Combien de jours dure l’incubation ?","Quand est la prochaine exposition ?"],
+     r:function(){return {paras:["Le pigeon pond 2 œufs, couvés par les deux parents pendant 17 à 18 jours. Il lui faut un pigeonnier ou une volière propre, sèche, bien ventilée, avec de l’eau fraîche et un mélange de graines adapté. Les pigeons de race ont une belle place dans les expositions de la Société."]};}},
+    {id:"lapin",term:"lapin domestique",kw:{lapin:5,clapier:5,lapine:5,lapereau:5,lievre:3},
+     f:["Quand est la prochaine exposition ?","Demander conseil à un éleveur"],
+     r:function(){return {paras:["Pour un lapin de race : foin à volonté, granulés en quantité adaptée, eau propre et clapier abrité, spacieux et sec. La gestation dure environ 31 jours et le sevrage a lieu vers 6 à 8 semaines."]};}},
+    {id:"wyandotte",term:"Wyandotte poule",kw:{wyandotte:5},
+     f:["Quand est l’exposition de Wyandotte ?","Quelle race de poule choisir ?"],
+     r:function(){return {paras:["La Wyandotte est une race de poule d’origine américaine (fin du XIXᵉ siècle), rustique, calme, bonne pondeuse, reconnaissable à sa crête en rose et à son plumage arrondi. Elle existe en grande race et en naine, dans de nombreuses variétés de couleurs, dont la célèbre variété lacée."]};}},
+    {id:"coq",term:"coq",kw:{coq:5,cocorico:5,chante:3,chanter:3,chant:3,voisin:3,bruit:3,bruyant:3,tapage:3,sexage:3,sexer:3},
+     f:["Faut-il un coq pour avoir des œufs ?","Comment loger mes poules ?"],
+     r:function(T,nq){
+       var P=["Un coq est utile pour obtenir des œufs fécondés (comptez un coq pour 8 à 10 poules environ). Il chante surtout à l’aube mais aussi tout au long de la journée : pensez à vos voisins et au règlement local."];
+       if(/reconnaitre|difference|sexer|sexage|male ou femelle/.test(nq))P.unshift("On reconnaît généralement un jeune coq à sa crête et ses barbillons qui se développent plus tôt et plus gros, à ses plumes de cou et de queue plus longues et pointues, puis à ses ergots.");
+       return {paras:P};
+     }},
+    {id:"poussin",term:"poussin élevage",kw:{poussin:5,eleveuse:5,chauffante:3,couvee:3},
+     f:["Combien de jours dure l’incubation ?","Que doivent manger les poules ?"],
+     r:function(){return {paras:["Les poussins ont besoin d’une source de chaleur (environ 35 °C la première semaine, puis on baisse d’environ 3 °C par semaine), d’un aliment démarrage, d’eau propre et d’une litière sèche et propre. S’ils se serrent les uns contre les autres, ils ont froid ; s’ils s’écartent en haletant, c’est trop chaud."]};}},
+    {id:"ponte",term:"poule pondeuse",kw:{"pond*":4,ponte:4,pondeuse:4},rx:[[/\bcombien d oeufs\b/,3],[/\bplus d oeufs\b|\bpas d oeufs\b/,3]],
+     f:["Que doivent manger les poules ?","Comment loger mes poules ?"],
+     r:function(T,nq){
+       if(/ne pond(ent)? (plus|pas)|arrete\w* de pondre|plus d oeufs|pas d oeufs|plus de ponte|baisse de (la )?ponte|ne pondent plus/.test(nq)){
+         return {paras:["Une poule qui ne pond plus a le plus souvent une raison simple : les jours qui raccourcissent (hiver), la mue, l’âge, le stress ou un changement, une envie de couver, une alimentation ou un apport en calcium insuffisants, ou des parasites (poux, vers).","Passez en revue ces pistes ; si la poule a aussi l’air abattue, amaigrie ou si sa crête pâlit, consultez un vétérinaire."]};
+       }
+       return {paras:["Une poule pondeuse moderne peut donner 250 à 300 œufs par an ; les races de collection ou d’ornement pondent souvent moins (environ 100 à 200). La ponte diminue en hiver (jours courts), pendant la mue et avec l’âge. Une alimentation adaptée, du calcium (coquilles d’huîtres) et environ 14 h de lumière par jour aident à la maintenir.","Un coq n’est pas nécessaire pour avoir des œufs : seulement pour qu’ils soient fécondés."]};
+     }},
+    {id:"oeuf",term:"oeuf de poule",kw:{oeuf:4,coquille:2,jaune:2,feconde:3,conserver:2,frais:2,laver:2},
+     f:["Combien d’œufs pond une poule ?","Combien de jours dure l’incubation ?"],
+     r:function(){return {paras:["Un œuf fraîchement pondu et non lavé se garde environ 2 semaines dans un endroit frais, et plus longtemps au réfrigérateur : sa cuticule naturelle le protège, donc on évite de le laver avant de le stocker (un coup de chiffon sec suffit). Pour tester la fraîcheur, plongez-le dans l’eau : un œuf frais reste au fond.","La couleur de la coquille dépend de la race, pas de la qualité de l’œuf. Il n’est fécondé que s’il y a un coq."]};}},
+    {id:"mue",term:"mue des poules",kw:{mue:5,muer:5,perd:3,perdre:3},rx:[[/perd (ses )?plumes/,4]],
+     f:["Pourquoi ma poule ne pond plus ?","Que doivent manger les poules ?"],
+     r:function(){return {paras:["La mue est le renouvellement annuel du plumage, surtout à l’automne : la poule perd ses plumes et la ponte ralentit ou s’arrête pendant plusieurs semaines. C’est normal.","Pour l’aider : un aliment plus riche en protéines, du calme et pas de manipulation inutile. Si la peau est rouge ou abîmée, pensez aux poux, aux acariens ou au picage."]};}},
+    {id:"saison",term:"poules hiver été",kw:{hiver:4,froid:4,gel:3,neige:3,chaleur:4,canicule:5,chaud:3},
+     r:function(T,nq){
+       var hot=/chaleur|canicule|chaud|\bete\b/.test(nq),cold=/hiver|froid|gel|neige/.test(nq),P=[];
+       if(cold||!hot)P.push("Hiver : les poules supportent bien le froid sec, surtout les races rustiques. Ce qui les gêne, c’est l’humidité et les courants d’air : litière sèche, abri bien orienté, eau non gelée. Un chauffage n’est en général pas nécessaire.");
+       if(hot||!cold)P.push("Chaleur : de l’ombre, de l’eau fraîche en permanence et un abri bien aéré. Une poule qui halète, les ailes écartées, souffre de la chaleur.");
+       return {paras:P};
+     }},
+    {id:"poulailler",term:"poulailler",kw:{poulailler:5,abri:3,loger:4,logement:4,perchoir:4,nichoir:4,surface:3,parcours:3,enclos:3,grillage:3,litiere:3,cloture:3,predateur:4,proteger:2,protection:2,m2:3,renard:2,belette:3,fouine:3},rx:[[/\bcombien de poules\b/,4]],
+     f:["Que doivent manger mes poules ?","Grippe aviaire : que faire ?"],
+     r:function(T,nq){
+       var P=["Repères courants pour des poules : environ 3 à 4 poules par m² dans l’abri (moins pour les grandes races), 20 à 25 cm de perchoir par poule, 1 nichoir pour 4 à 5 poules, bonne aération sans courant d’air, litière sèche et un parcours extérieur le plus spacieux possible."];
+       P.push("Contre le renard, la fouine et les rongeurs : grillage solide à mailles fines, enterré ou rabattu au sol, fermeture du poulailler chaque soir et aucun trou.");
+       if(/renard|predateur|belette|fouine|rat/.test(nq))P.reverse();
+       return {paras:P};
+     }},
+    {id:"aliment",term:"alimentation poule",fn:function(T,nq){return /\b(donner|manger|mange\w*|nourrir|peut on|peuvent)\b/.test(nq)&&FOODS.some(function(x){return x[0].test(nq);})?4:0;},kw:{"alimen*":4,"nourr*":4,manger:3,mange:3,mangent:3,graine:3,grain:3,granule:3,ration:3,abreuvoir:3,boire:2,calcium:3,grit:3,complement:2},
+     f:["Peut-on donner du pain ?","Comment loger mes poules ?"],
+     r:function(T,nq){
+       var food=null;FOODS.forEach(function(x){if(!food&&x[0].test(nq))food=x[1];});
+       var P=[];
+       if(food){P.push(food);P.push("En base : un aliment complet adapté à l’âge, de l’eau propre à volonté et du grit ou des coquilles d’huîtres pour le calcium ; le reste n’est qu’un complément.");}
+       else{
+         P.push("Base : un aliment complet adapté à l’âge (démarrage pour les poussins, croissance, puis pondeuses), de l’eau propre à volonté, et du grit ou des coquilles d’huîtres pour le calcium. Les grains et les restes de cuisine ne doivent rester qu’un complément.");
+         P.push("À éviter : aliments salés, avocat, oignon et ail en quantité, pommes de terre crues ou verdies, aliments moisis.");
+       }
+       return {paras:P};
+     }},
+    {id:"maladie",term:"maladies des poules",kw:{malade:4,maladie:4,soigner:4,soin:2,poux:4,acarien:4,vermifuge:4,vermifuger:4,ver:2,coccidiose:5,marek:5,newcastle:5,variole:4,coryza:5,diarrhee:4,boiter:4,boite:3,prostre:4,parasite:4,vaccin:4,vaccination:4,veterinaire:4,meurt:3,mourir:3,eternuer:3,eternue:3,toux:3},
+     f:["Grippe aviaire : que faire ?","Comment loger mes poules ?"],
+     r:function(){return {paras:["Signes d’alerte : oiseau prostré ou isolé, plumes ébouriffées, baisse d’appétit ou de ponte, diarrhée, éternuements, crête pâle. Isolez l’animal, nettoyez et désinfectez, puis faites appel à un vétérinaire : je ne peux pas poser de diagnostic.","Prévention : litière sèche, propreté, quarantaine de 3 à 4 semaines pour tout nouvel arrivant, surveillance des poux rouges et des vers."]};}},
+    {id:"jury",kw:{jury:5,standard:4,juge:4,jugement:4,notation:4,critere:3,note:2},
+     r:function(){return {paras:["En exposition, un jury compare chaque sujet au standard de sa race (forme, plumage, couleur, port, taille, état général…) puis le note et le classe. C’est ce qui permet de conserver et d’améliorer les races."],actions:[{t:"Voir l’exposition",href:"#exposition"},{t:"Comment exposer",href:"#inscription",alt:true}]};}},
+    {id:"race",term:"race de poule",kw:{race:3,rustique:3,ornement:3,naine:3,silkie:4,sussex:4,marans:4,brahma:4,orpington:4,faverolles:4,cochin:4,gauloise:4,houdan:3,bantam:4},rx:[[/\bquelle (poule|race)\b/,4],[/\bchoisir (une|des) poules?\b/,4]],
+     f:["Quelle poule pour pondre beaucoup ?","Demander conseil à un éleveur"],
+     r:function(T,nq){
+       var P=[];
+       if(/pond|ponte|oeuf/.test(nq))P.push("Pour la ponte, on cite souvent la Sussex, la Rhode Island ou la Marans (œufs foncés) : elles sont rustiques et régulières.");
+       if(/enfant|calme|douce|famille/.test(nq))P.push("Pour une basse-cour familiale, les races calmes comme l’Orpington, la Faverolles, la Cochin ou la Wyandotte sont très appréciées.");
+       if(/ornement|beau|belle|deco|jolie/.test(nq))P.push("Pour l’ornement : la Soie (Silkie), la Cochin, la Brahma ou la Wyandotte lacée sont de vraies stars des expositions.");
+       if(!P.length)P.push("Le choix dépend de votre objectif : ponte, ornement, couvaison ou exposition. Pour une basse-cour familiale, on conseille des races rustiques et calmes.");
+       P.push("Les éleveurs de la Société seront ravis de vous guider : passez par la page Aide ou venez les rencontrer à l’exposition.");
+       return {paras:P,actions:[{t:"Demander conseil",href:"#aide"}]};
+     }},
+    {id:"reglement",term:"détention de volailles déclaration",kw:{declarer:4,declaration:4,reglementation:5,legal:3,legale:3,autorise:3,autorisee:3,permis:3,mairie:3,interdit:3,loi:3,obligatoire:3,cerfa:4},rx:[[/\bai je le droit\b/,3]],
+     f:["Grippe aviaire : que faire ?","Mon coq chante trop tôt"],
+     r:function(){return {paras:["En France, toute détention d’oiseaux, même quelques poules, doit être déclarée en mairie. Selon votre commune, le règlement sanitaire, le voisinage (bruit du coq, odeurs) ou le règlement d’urbanisme peuvent poser des conditions.","Renseignez-vous auprès de votre mairie et de la direction départementale de la protection des populations (DDPP) : les règles évoluent, surtout en période de grippe aviaire."]};}}
   ];
 
-  function kbAnswer(nq){
-    for(var i=0;i<KB.length;i++){
-      if(KB[i].rx.test(nq)){
-        var k=KB[i];
-        return {paras:k.paras,actions:(k.actions||[]).concat([{t:"Autres sources sur Google",href:gsearch(k.term),ext:true,alt:true}]),sources:src(k.term,k.extra)};
-      }
-    }
+  /* ---------- politesse ---------- */
+  function small(T,nq){
+    if(T.length>7)return null;
+    if(/\b(au revoir|a bientot|bonne journee|bonne soiree|ciao|a plus)\b/.test(nq))return {paras:["À bientôt ! Cot cot cot 🐔"]};
+    if(/^(bonjour|salut|coucou|hello|bonsoir|hey|allo|cot cot)\b/.test(nq)&&T.length<=4)return {paras:["Cot cot ! Bonjour 🐔 Je peux vous renseigner sur l’exposition, la Société d’Aviculture ou l’élevage (poules, pigeons, lapins…). Que voulez-vous savoir ?"]};
+    if(/\b(merci|super|genial|parfait|bravo|excellent)\b/.test(nq)&&T.length<=5)return {paras:["Avec plaisir ! Cot cot cot. N’hésitez pas si vous avez d’autres questions."]};
+    if(/\bca va\b|\bcomment vas tu\b|\btu vas bien\b/.test(nq))return {paras:["Cot cot, très bien, merci ! Et vous ? Que puis-je faire pour vous ?"]};
+    if(/^(oui|non|ok|d accord|daccord)$/.test(nq))return {paras:["D’accord ! Posez-moi votre question quand vous voulez."]};
     return null;
   }
 
-  /* ---------- recherche de sources sur Wikipédia ---------- */
+  function build(t,T,nq){
+    var r=t.r(T,nq)||{};
+    var out={paras:r.paras||[],actions:(r.actions||[]).slice(),sources:(r.sources||[]).slice(),tp:t,follow:r.follow||t.f};
+    if(t.term){
+      out.actions.push({t:"Autres sources sur Google",href:gsearch(t.term),ext:true,alt:true});
+      out.sources=out.sources.concat(src(t.term,t.extra));
+    }
+    return out;
+  }
+
+  /* ---------- recherche de sources sur Wikipédia (avec contrôle de pertinence) ---------- */
   function wiki(q){
     var kw=keywords(q);
     if(!kw)return Promise.resolve(null);
-    var url="https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&gsrsearch="+enc(kw)+
-      "&prop=extracts%7Cinfo&exintro=1&explaintext=1&exsentences=3&exlimit=3&inprop=url";
+    var url="https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=4&gsrsearch="+enc(kw)+
+      "&prop=extracts%7Cinfo&exintro=1&explaintext=1&exsentences=3&exlimit=4&inprop=url";
     return fetch(url).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(j){
       var p=j&&j.query&&j.query.pages;if(!p)return [];
       return Object.keys(p).map(function(k){return p[k];}).sort(function(a,b){return a.index-b.index;});
     });
+  }
+  function relevant(q,pg){
+    var kws=keywords(q).split(" ").filter(Boolean);
+    if(!kws.length||!pg.extract)return false;
+    var hay=" "+norm((pg.title||"")+" "+pg.extract)+" ",tt=" "+norm(pg.title||"")+" ",n=0,tn=0;
+    kws.forEach(function(w){
+      var s=w.length>5?w.slice(0,5):w;
+      if(hay.indexOf(" "+s)>-1)n++;
+      if(tt.indexOf(" "+s)>-1)tn++;
+    });
+    return tn>0&&n>=Math.ceil(kws.length/2);
   }
   function cut(s,n){
     s=(s||"").replace(/\s+/g," ").trim();
@@ -1425,18 +1763,18 @@ body.hen-hover{cursor:pointer}
     var c=s.slice(0,n),i=Math.max(c.lastIndexOf(". "),c.lastIndexOf("; "));
     return (i>n*.5?c.slice(0,i+1):c.replace(/\s+\S*$/,"")+"…");
   }
+  var DEFAULT_FOLLOW=["Quand est la prochaine exposition ?","Combien de jours dure l’incubation ?","Comment loger mes poules ?","Grippe aviaire : que faire ?","Que doivent manger mes poules ?","Quelle race de poule choisir ?"];
   function fallback(q){
-    var base={actions:[{t:"Chercher sur Google",href:gsearch(q+" aviculture"),ext:true},{t:"Demander aux éleveurs",href:"#aide",alt:true}]};
+    var acts=[{t:"Chercher sur Google",href:gsearch(q+" aviculture"),ext:true},{t:"Demander aux éleveurs",href:"#aide",alt:true}];
+    var none={paras:["Hmm, je n’ai pas de réponse fiable à cette question précise. Essayez avec d’autres mots, ou posez-la directement à nos éleveurs via la page Aide : ils connaissent bien mieux que moi 🐔"],actions:acts};
     return wiki(q).then(function(list){
-      if(!list||!list.length||!list[0].extract){
-        return {paras:["Hmm, je n’ai rien trouvé de fiable à ce sujet. Essayez avec d’autres mots, ou regardez directement sur Google ; nos éleveurs peuvent aussi vous répondre via la page Aide."],actions:base.actions};
-      }
-      var top=list[0];
-      return {paras:["Voici ce que j’ai trouvé sur Wikipédia à propos de « "+top.title+" » :",cut(top.extract,380)],
-        actions:base.actions,
-        sources:list.filter(function(x){return x.fullurl;}).map(function(x){return {t:"Wikipédia : "+x.title,u:x.fullurl};}).concat([{t:"Google : "+q,u:gsearch(q)}])};
+      var top=null;
+      (list||[]).forEach(function(pg){if(!top&&relevant(q,pg))top=pg;});
+      if(!top)return none;
+      return {paras:["Voici ce que dit Wikipédia à propos de « "+top.title+" » :",cut(top.extract,380)],actions:acts,
+        sources:[{t:"Wikipédia : "+top.title,u:top.fullurl||wsearch(top.title)},{t:"Google : "+q,u:gsearch(q)}]};
     }).catch(function(){
-      return {paras:["Je n’arrive pas à consulter mes sources en ligne pour le moment. Vous pouvez tenter une recherche Google ou poser la question à nos éleveurs."],actions:base.actions};
+      return {paras:["Je n’arrive pas à consulter mes sources en ligne pour le moment. Vous pouvez tenter une recherche Google ou poser la question à nos éleveurs."],actions:acts};
     });
   }
 
@@ -1450,16 +1788,40 @@ body.hen-hover{cursor:pointer}
       });
   }
 
+  var lastTopic=null;
   function answer(q){
-    var nq=norm(q);
-    for(var i=0;i<SITE.length;i++){if(SITE[i].rx.test(nq))return Promise.resolve(SITE[i].r());}
-    var kb=kbAnswer(nq);
-    if(kb)return Promise.resolve(kb);
+    var nq=norm(q),T=nq.split(" ").filter(Boolean);
+    if(!T.length)return Promise.resolve({paras:["Je n’ai pas bien entendu… Pouvez-vous répéter votre question ?"]});
+    /* un prix (hors entrée de l’exposition) : on ne l’invente pas */
+    if(/\b(prix|tarifs?|coute|couter|cout)\b/.test(nq)&&!/entree|billet|expo|inscri/.test(nq)){
+      return Promise.resolve({paras:["Je n’ai pas de prix à vous donner : cela dépend des éleveurs et des races. Pour acheter un animal ou demander un tarif, passez par la page Aide, votre message est transmis à l’association."],actions:[{t:"Aller à la page Aide",href:"#aide"}]});
+    }
+    var b=bestTopic(T,nq);
+    /* question de suite : « et pour les canards ? », « et le dimanche ? » */
+    if(lastTopic&&/^(et|aussi|mais|alors)\b/.test(nq)){
+      if(b.s<3||(lastTopic.sp&&b.t&&b.t!==lastTopic&&SPECIES.test(nq)))return Promise.resolve(build(lastTopic,T,nq));
+    }
+    if(b.s>=3)return Promise.resolve(build(b.t,T,nq));
+    var sm=small(T,nq);if(sm)return Promise.resolve(sm);
     if(HEN_API)return viaApi(q).catch(function(){return fallback(q);});
     return fallback(q);
   }
 
   /* ---------- envoi d'une question ---------- */
+  function setChips(list){
+    chips.innerHTML="";
+    (list||[]).slice(0,3).forEach(function(s){
+      var c=el("button","hc-chip",s);c.type="button";
+      c.addEventListener("click",function(){ask(s);});
+      chips.appendChild(c);
+    });
+    chips.hidden=!chips.childNodes.length;
+  }
+  function randomFollow(q){
+    var nq=norm(q),pool=DEFAULT_FOLLOW.filter(function(s){return norm(s)!==nq;});
+    for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=pool[i];pool[i]=pool[j];pool[j]=x;}
+    return pool.slice(0,3);
+  }
   function ask(q){
     q=(q||"").trim();
     if(!q||busy)return;
@@ -1467,29 +1829,27 @@ body.hen-hover{cursor:pointer}
     addMe(q);history.push({role:"user",content:q});
     var tp=typing(),t0=Date.now();
     answer(q).then(function(r){
-      var wait=Math.max(0,550-(Date.now()-t0));
+      var wait=Math.max(0,650-(Date.now()-t0));
       setTimeout(function(){
         tp.remove();addBot(r);busy=false;
+        lastTopic=r.tp||null;
         history.push({role:"assistant",content:(r.paras||[]).join(" ")});
+        setChips(r.follow&&r.follow.length?r.follow:randomFollow(q));
       },wait);
     }).catch(function(){
-      tp.remove();addBot({paras:["Oups, quelque chose s’est mal passé. Pouvez-vous reformuler votre question ?"]});busy=false;
+      tp.remove();addBot({paras:["Oups, quelque chose s’est mal passé. Pouvez-vous reformuler votre question ?"]});busy=false;setChips(randomFollow(q));
     });
   }
   form.addEventListener("submit",function(e){e.preventDefault();var v=input.value;input.value="";ask(v);input.focus();});
 
   var SUGG=["Quand est la prochaine exposition ?","Combien de jours dure l’incubation ?","Comment loger mes poules ?","Grippe aviaire : que faire ?"];
-  SUGG.forEach(function(s){
-    var c=el("button","hc-chip",s);c.type="button";
-    c.addEventListener("click",function(){ask(s);});
-    chips.appendChild(c);
-  });
+  setChips(SUGG);
 
   /* ---------- ouverture / fermeture ---------- */
   function openChat(){
     if(isOpen)return;
     isOpen=true;lastFocus=document.activeElement;
-    chat.classList.add("open");bubble.hidden=true;
+    chat.classList.add("open");hideBubble(true);
     if(!greeted){
       greeted=true;
       addBot({paras:["Cot cot ! Je suis la poule savante de la Société d’Aviculture de Bischwiller 🐔","Posez-moi vos questions sur l’aviculture (poules, pigeons, lapins, incubation, alimentation…) ou sur l’exposition : je cherche pour vous et je cite mes sources."]});
@@ -1508,30 +1868,49 @@ body.hen-hover{cursor:pointer}
   });
   chat.addEventListener("keydown",function(e){if(e.key==="Escape"){e.stopPropagation();closeChat();}});
 
-  var dismissed=false;
-  try{dismissed=sessionStorage.getItem("henBubbleOff")==="1";}catch(e){}
+  /* La bulle « Qu’est-ce que je peux faire pour vous ? » apparaît une fois, puis s’efface toute seule. */
+  var dismissed=false,shownOnce=false,hideT=null,readyAt=0;
+  function hideBubble(quick){
+    clearTimeout(hideT);dismissed=true;
+    if(bubble.hidden)return;
+    if(quick){bubble.hidden=true;bubble.classList.remove("bye");return;}
+    bubble.classList.add("bye");
+    setTimeout(function(){bubble.hidden=true;bubble.classList.remove("bye");},460);
+  }
+  function showBubble(){
+    shownOnce=true;bubble.classList.remove("bye");bubble.hidden=false;
+    clearTimeout(hideT);hideT=setTimeout(function(){hideBubble(false);},6500);
+  }
+  bubble.addEventListener("mouseenter",function(){clearTimeout(hideT);});
+  bubble.addEventListener("mouseleave",function(){
+    if(!bubble.hidden&&!dismissed){clearTimeout(hideT);hideT=setTimeout(function(){hideBubble(false);},2500);}
+  });
   bubble.addEventListener("click",function(e){
-    if(e.target.closest&&e.target.closest(".hb-x")){
-      dismissed=true;try{sessionStorage.setItem("henBubbleOff","1");}catch(x){}
-      bubble.hidden=true;return;
-    }
+    if(e.target.closest&&e.target.closest(".hb-x")){hideBubble(false);return;}
     playClucks();openChat();
   });
   bubble.addEventListener("keydown",function(e){
     if(e.target===bubble&&(e.key==="Enter"||e.key===" ")){e.preventDefault();playClucks();openChat();}
   });
 
-  /* la bulle n'apparaît que lorsque la poule 3D est affichée */
+  /* la bulle n'apparaît que lorsque la poule 3D est affichée (et un instant après) */
   function sync(){
     var ready=cv.isConnected&&cv.classList.contains("on")&&!body.classList.contains("intro")&&!body.classList.contains("gaming");
-    if(!ready&&isOpen&&(body.classList.contains("gaming")))closeChat();
-    bubble.hidden=!(ready&&!isOpen&&!dismissed);
+    if(!ready&&isOpen&&body.classList.contains("gaming"))closeChat();
+    if(ready){
+      if(!readyAt)readyAt=Date.now();
+      if(!isOpen&&!dismissed&&!shownOnce&&Date.now()-readyAt>900)showBubble();
+    }else{
+      readyAt=0;
+      if(!bubble.hidden){clearTimeout(hideT);bubble.hidden=true;bubble.classList.remove("bye");if(shownOnce)dismissed=true;}
+    }
   }
-  setInterval(sync,500);sync();
+  setInterval(sync,400);sync();
 
   /* appelé par la poule 3D quand on clique dessus */
   window.HenChat={
     speak:function(){playClucks();dismissed=false;openChat();input.focus({preventScroll:true});return SCHEDULE.map(function(c){return [c[0],c[1]];});},
+    open:function(){playClucks();openChat();input.focus({preventScroll:true});},
     isOpen:function(){return isOpen;}
   };
 })();
@@ -1541,6 +1920,7 @@ body.hen-hover{cursor:pointer}
 (function(){
   var src=document.querySelector(".affiche img"),im=document.querySelector("#v-actualite img[data-from]");
   if(src&&im){im.src=src.src;}
+  [].forEach.call(document.querySelectorAll("[data-hen]"),function(b){b.addEventListener("click",function(){if(window.HenChat)window.HenChat.open();});});
   var rv=[].slice.call(document.querySelectorAll("#v-actualite .rv"));
   function check(){var vh=innerHeight;rv.forEach(function(e){if(e.classList.contains("in"))return;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.9){e.classList.add("in");}});}
   addEventListener("scroll",check,{passive:true});addEventListener("resize",check);addEventListener("hashchange",function(){setTimeout(check,700);});
