@@ -525,6 +525,29 @@ a.tab{font-size:clamp(.6rem,3vw,.95rem)!important;padding:.5rem clamp(.28rem,1.3
 .tk-stub{padding:clamp(1.1rem,3vw,1.6rem)}.tk-stub a{width:min(100%,13rem)}
 @media (min-width:52rem){.ticket{grid-template-columns:1fr minmax(13rem,17rem)}}
 .map iframe{display:block}</style>
+<style>
+.ticket{max-width:46rem}.tk-main{padding:clamp(.9rem,2.6vw,1.5rem)}.tk-main h3{font-size:clamp(1.3rem,3vw,1.8rem)}
+.tk-day b{font-size:clamp(2rem,6vw,2.7rem)}.tk-main .cd-g b{font-size:clamp(1.4rem,5vw,1.8rem)}.tk-day{padding:.55rem .7rem}.tk-stub{padding:clamp(.9rem,2.5vw,1.2rem)}
+@media (min-width:52rem){.ticket{grid-template-columns:1fr minmax(11rem,14rem)}}
+.dl,.cl,.nx{position:relative;overflow:hidden;border-radius:1.4rem;margin:1.2rem 0;background:#101A3A;color:#FFF8EC;padding:1.1rem 1.2rem}
+.dl{display:flex;gap:1rem;align-items:center}
+.dl-date{flex:none;background:#FFC21A;color:#101A3A;border-radius:1rem;padding:.5rem .9rem;text-align:center;line-height:1;transform:rotate(-4deg);animation:dlwob 3.2s ease-in-out infinite;box-shadow:0 0 0 .2rem #FFF8EC33}
+.dl-date small{display:block;font:800 .65rem var(--text);letter-spacing:.14em}.dl-date b{display:block;font:800 2.6rem var(--display,var(--text));margin:.15rem 0}
+.dl-t{margin:0;font-size:1rem}.dl-t strong{display:block;font-size:1.2rem;margin-bottom:.2rem}
+.dl-t i{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:#FFC21A;margin-right:.45rem;animation:dlpulse 1.4s infinite}
+.dl::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,#ffffff22 50%,transparent 60%);transform:translateX(-100%);animation:dlshine 4s 1s infinite;pointer-events:none}
+.cl{text-align:center}.cl .ic{font-size:3rem;display:inline-block;animation:clshake 2.4s ease-in-out infinite}.cl h3,.nx h3{margin:.3rem 0;font-size:1.6rem}.cl p,.nx p{margin:.5rem auto;max-width:34rem}
+.cl .row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:.8rem}
+.cl .btn{background:#FFC21A;color:#101A3A;text-decoration:none}.cl .btn.alt{background:transparent;color:#FFF8EC}
+.nx{text-align:center;padding:2rem 1.2rem;background:linear-gradient(135deg,#101A3A,#26356e,#101A3A);background-size:200% 200%;animation:nxbg 8s ease infinite}
+.nx .hen{font-size:3.6rem;display:inline-block;animation:nxbounce 1.6s ease-in-out infinite}.nx h3{background:linear-gradient(90deg,#FFC21A,#FFF8EC,#FFC21A);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nxtxt 4s linear infinite}
+.nx .fl{position:absolute;bottom:-2rem;font-size:1.6rem;opacity:0;animation:nxrise 6s linear infinite;pointer-events:none}
+@keyframes dlwob{50%{transform:rotate(3deg) scale(1.05)}}@keyframes dlpulse{50%{transform:scale(1.6);opacity:.4}}@keyframes dlshine{to{transform:translateX(100%)}}
+@keyframes clshake{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-12deg)}85%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
+@keyframes nxbg{50%{background-position:100% 50%}}@keyframes nxbounce{50%{transform:translateY(-.6rem) rotate(6deg)}}@keyframes nxtxt{to{background-position:200% 0}}
+@keyframes nxrise{0%{transform:translateY(0) rotate(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-14rem) rotate(40deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.dl-date,.dl-t i,.dl::after,.cl .ic,.nx,.nx .hen,.nx h3,.nx .fl{animation:none}.nx .fl{opacity:.6}}
+</style>
 </head>
 <body data-tone="shell" class="intro">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -798,6 +821,9 @@ a.tab{font-size:clamp(.6rem,3vw,.95rem)!important;padding:.5rem clamp(.28rem,1.3
         <a class="back" href="#accueil">Retour à l’accueil</a>
         <h2>Inscription à l’exposition</h2>
         <p class="sub">Samedi 14 et dimanche 15 novembre, salle Adrien Zeller à Bischwiller. Remplissez ce formulaire pour inscrire vos animaux.</p>
+        <div class="dl" id="dl"><div class="dl-date" aria-hidden="true"><small>JUSQU’AU</small><b>10</b><small>NOVEMBRE</small></div><p class="dl-t"><strong>Date limite d’inscription : 10 novembre</strong><i aria-hidden="true"></i><span id="dl-left"></span></p></div>
+        <div class="cl" id="cl" hidden><span class="ic" aria-hidden="true">🔒</span><h3>Les inscriptions sont closes</h3><p>La date limite du 10 novembre est dépassée. Pour une inscription de dernière minute, contactez le président du club, Michel Hattermann.</p><div class="row"><a class="btn" href="tel:+33689087707">Appeler le 06 89 08 77 07</a><a class="btn alt" href="mailto:hattermannmichel@gmail.com">Écrire un e-mail</a></div></div>
+        <div class="nx" id="nx" hidden><span class="fl" style="left:8%;animation-delay:0s" aria-hidden="true">🥚</span><span class="fl" style="left:25%;animation-delay:1.5s" aria-hidden="true">🪶</span><span class="fl" style="left:45%;animation-delay:3s" aria-hidden="true">🐣</span><span class="fl" style="left:65%;animation-delay:.8s" aria-hidden="true">🪶</span><span class="fl" style="left:85%;animation-delay:2.2s" aria-hidden="true">🥚</span><span class="hen" aria-hidden="true">🐓</span><h3>Merci à tous les exposants !</h3><p>L’exposition est terminée. Les inscriptions seront ouvertes à la prochaine exposition : revenez sur cette page pour vous inscrire.</p></div>
         <form id="f-inscription" class="panel" data-subject="Inscription à l’exposition">
           <label for="i-nom">Nom</label><input id="i-nom" name="nom" autocomplete="family-name" required>
           <label for="i-prenom">Prénom</label><input id="i-prenom" name="prenom" autocomplete="given-name" required>
@@ -2117,6 +2143,22 @@ a.tab{font-size:clamp(.6rem,3vw,.95rem)!important;padding:.5rem clamp(.28rem,1.3
   function req(){if(!busy){busy=true;requestAnimationFrame(upd);}}
   addEventListener("scroll",req,{passive:true});addEventListener("resize",req);
   setInterval(req,300);req();
+})();
+</script>
+<script>
+(function(){
+var DL=Date.parse("2026-11-10T23:59:59+01:00"),END=Date.parse("2026-11-15T17:00:00+01:00");
+var f=document.getElementById("f-inscription"),dl=document.getElementById("dl"),cl=document.getElementById("cl"),nx=document.getElementById("nx"),left=document.getElementById("dl-left"),sub=f.parentNode.querySelector(".sub");
+function state(){var n=Date.now();return n<=DL?"open":(n<=END?"closed":"done")}
+function tick(){
+  var st=state(),n=Date.now();
+  dl.hidden=st!=="open";cl.hidden=st!=="closed";nx.hidden=st!=="done";f.hidden=st!=="open";sub.hidden=st==="done";
+  [].forEach.call(f.elements,function(e){e.disabled=st!=="open"});
+  if(st==="open"){var r=DL-n,d=Math.floor(r/864e5),h=Math.floor(r%864e5/36e5);
+    left.textContent=d>0?"Plus que "+d+" jour"+(d>1?"s":"")+" et "+h+" h pour vous inscrire.":(h>0?"Dernières heures : plus que "+h+" h !":"Dernières minutes pour vous inscrire !");}
+}
+document.addEventListener("submit",function(e){if(e.target===f&&state()!=="open"){e.preventDefault();e.stopImmediatePropagation();tick();}},true);
+tick();setInterval(tick,30000);
 })();
 </script>
 </body>
