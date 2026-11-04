@@ -874,8 +874,8 @@ a.tab{font-size:clamp(.6rem,3vw,.95rem)!important;padding:.5rem clamp(.28rem,1.3
 <table>
 <thead><tr><th>Traitement</th><th>Données</th><th>Finalité et base légale</th><th>Durée</th></tr></thead>
 <tbody>
-<tr><td>Formulaire « Aide »</td><td>Nom, prénom, motif, téléphone ou e-mail, message</td><td>Répondre à votre demande (intérêt légitime de l’association, et votre demande)</td><td>12 mois après le dernier échange <span class="todo">à confirmer</span></td></tr>
-<tr><td>Formulaire « Inscription à l’exposition »</td><td>Nom, prénom, adresse, téléphone, race et nombre d’animaux</td><td>Organiser votre participation à l’exposition (mesures précontractuelles)</td><td>Jusqu’à la fin de l’exposition, puis 12 mois <span class="todo">à confirmer</span></td></tr>
+<tr><td>Formulaire « Aide »</td><td>Nom, prénom, motif, téléphone ou e-mail, message</td><td>Répondre à votre demande (intérêt légitime de l’association, et votre demande)</td><td>12 mois après le dernier échange</td></tr>
+<tr><td>Formulaire « Inscription à l’exposition »</td><td>Nom, prénom, adresse, téléphone, race et nombre d’animaux</td><td>Organiser votre participation à l’exposition (mesures précontractuelles)</td><td>Jusqu’à la fin de l’exposition, puis 12 mois</td></tr>
 <tr><td>Poule savante (chat)</td><td>Votre question</td><td>Vous répondre. Elle n’est pas enregistrée par l’association. Si aucune réponse intégrée n’existe, des mots-clés sont envoyés à Wikipédia (Wikimedia Foundation, États-Unis). Ne saisissez aucune donnée personnelle.</td><td>Non conservée</td></tr>
 <tr><td>Journaux techniques</td><td>Adresse IP, date, navigateur</td><td>Sécurité et fonctionnement, conservés par l’hébergeur (obligation légale)</td><td>12 mois maximum</td></tr>
 </tbody></table>
@@ -2159,6 +2159,70 @@ function tick(){
 }
 document.addEventListener("submit",function(e){if(e.target===f&&state()!=="open"){e.preventDefault();e.stopImmediatePropagation();tick();}},true);
 tick();setInterval(tick,30000);
+})();
+</script>
+
+<style>
+/* ---------- Voyage dans le temps : année qui défile (onglet Histoire) ---------- */
+.yr{position:fixed;left:max(.4rem,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + .2rem);z-index:0;pointer-events:none;display:flex;
+  font:800 clamp(5rem,27vw,16rem)/1.1 var(--display);letter-spacing:-.05em;font-variant-numeric:tabular-nums;
+  color:transparent;-webkit-text-stroke:2px color-mix(in srgb,var(--fg) 30%,transparent);
+  opacity:0;transform:translateY(25%);
+  transition:opacity .7s var(--ease),transform .9s var(--ease),color .9s var(--ease-io),-webkit-text-stroke-color .9s var(--ease-io)}
+.yr.on{opacity:1;transform:none}
+.yr.now{color:color-mix(in srgb,var(--accent) 26%,transparent);-webkit-text-stroke-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+.yr .c{display:block;height:1.1em;overflow:hidden;padding:0 .03em}
+.yr .s{display:block;transform:translateY(calc(var(--d,0)*-1.1em));transition:transform 1.3s var(--ease-io)}
+.yr .s b{display:block;height:1.1em;font-weight:inherit}
+@media (prefers-reduced-motion:reduce){.yr,.yr .s{transition:none!important}}
+</style>
+<script>
+(function(){
+  var root=document.getElementById("v-histoire");
+  if(!root)return;
+  var yr=document.createElement("div");yr.className="yr";yr.setAttribute("aria-hidden","true");
+  var cols=[],i,d,c,s,b;
+  for(i=0;i<4;i++){
+    c=document.createElement("span");c.className="c";
+    s=document.createElement("span");s.className="s";
+    s.style.transitionDelay=(i*70)+"ms";s.style.transitionDuration=(1.1+i*.18)+"s";
+    for(d=0;d<10;d++){b=document.createElement("b");b.textContent=d;s.appendChild(b);}
+    c.appendChild(s);yr.appendChild(c);cols.push(s);
+  }
+  document.body.appendChild(yr);
+  /* années lues dans les titres de l'histoire : 1908, 2012, 2017, 2018… puis la frise (1908, 1912, 2026) */
+  var items=[];
+  [].forEach.call(root.querySelectorAll(".hx h3,.tl time"),function(h){
+    var t=h.lastChild&&h.lastChild.nodeType===3?h.lastChild.textContent:h.textContent;
+    var m=/\b(1[5-9]\d\d|20\d\d)\b/.exec(t);
+    var box=h.closest(".hx")||h.closest("li");
+    if(m&&box)items.push({el:box,y:+m[1]});
+  });
+  if(!items.length)return;
+  var cur=0,busy=false;
+  function show(y){
+    if(y===cur)return;cur=y;
+    var str=String(y);
+    for(var k=0;k<4;k++)cols[k].style.setProperty("--d",str.charAt(k));
+    yr.classList.toggle("now",y===2026);
+  }
+  function upd(){
+    busy=false;
+    var vh=innerHeight,pick=null,idx=-1;
+    if(!root.hidden&&!document.body.classList.contains("intro")&&!document.body.classList.contains("gaming")){
+      for(var n=0;n<items.length;n++){
+        var r=items[n].el.getBoundingClientRect();
+        if(r.height&&r.top<vh*.6){pick=items[n];idx=n;}
+      }
+      if(pick&&idx===items.length-1&&pick.el.getBoundingClientRect().bottom<vh*.1)pick=null;
+    }
+    if(pick)show(pick.y);
+    yr.classList.toggle("on",!!pick);
+  }
+  function req(){if(!busy){busy=true;requestAnimationFrame(upd);}}
+  addEventListener("scroll",req,{passive:true});addEventListener("resize",req);
+  addEventListener("hashchange",function(){setTimeout(req,100);setTimeout(req,800);});
+  setInterval(req,400);req();
 })();
 </script>
 </body>
