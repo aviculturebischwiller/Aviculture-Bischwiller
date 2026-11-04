@@ -516,6 +516,10 @@ body.hen-hover{cursor:pointer}
 </style>
 <style>.lg p,.lg table{max-width:46rem}.lg h2{font-size:clamp(2.2rem,8vw,4.5rem);margin-bottom:1rem}.lg h3{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.05;margin:3rem 0 .8rem;scroll-margin-top:6rem}.lg h4{font:700 1.15rem var(--text);margin:1.6rem 0 .3rem}
 .lg-nav{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;list-style:none;padding:0;margin:1rem 0}.lg table{border-collapse:collapse;width:100%;display:block;overflow-x:auto}.lg th,.lg td{border:1px solid currentColor;padding:.5rem;text-align:left;vertical-align:top;font-size:.95rem}.lg .todo{background:#FFC21A;color:#101A3A}</style>
+<style>.nav{max-width:calc(100vw - 1rem);gap:.2rem}.nav .mark{height:clamp(1.4rem,6vw,2.1rem);flex:none}
+a.tab{font-size:clamp(.6rem,3vw,.95rem)!important;padding:.5rem clamp(.28rem,1.3vw,.95rem)!important}.nav{padding:.3rem .3rem .3rem .35rem!important}
+.nw-feat .wrap{padding:0 1.75rem}.ticket{border-radius:1.6rem;max-width:100%}
+.map iframe{display:block}</style>
 </head>
 <body data-tone="shell" class="intro">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -619,7 +623,7 @@ body.hen-hover{cursor:pointer}
           <div><dt>Samedi</dt><dd>14 h à 20 h<small>Inauguration à 18 h</small></dd></div>
           <div><dt>Dimanche</dt><dd>9 h à 16 h 30</dd></div>
           <div><dt>Où</dt><dd>Salle Adrien Zeller, Bischwiller</dd></div>
-          <div class="info-map"><div class="map" id="mapBox"><div class="map-ph"><p>La carte est fournie par Google Maps. Elle ne se charge qu’avec votre accord, car Google reçoit alors votre adresse IP et peut déposer des cookies.</p><button type="button" class="btn" id="mapLoad">Afficher la carte</button></div></div><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Salle+Adrien+Zeller+10+rue+des+Casernes+67240+Bischwiller" target="_blank" rel="noopener">Ouvrir dans Google Maps ↗</a></div>
+          <div class="info-map"><div class="map" id="mapBox"><iframe title="Carte : salle Adrien Zeller, Bischwiller" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" src="https://www.google.com/maps?q=Salle+Adrien+Zeller,+10+rue+des+Casernes,+67240+Bischwiller&amp;output=embed"></iframe></div><a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Salle+Adrien+Zeller+10+rue+des+Casernes+67240+Bischwiller" target="_blank" rel="noopener">Ouvrir dans Google Maps ↗</a></div>
           <div><dt>Entrée</dt><dd>Libre, avec restauration sur place</dd></div>
         </dl>
         <div class="cd" data-cd role="timer" aria-live="off"><div class="cd-t">Ouverture dans</div><div class="cd-g"><div><b data-u="d">00</b><small>jours</small></div><div><b data-u="h">00</b><small>heures</small></div><div><b data-u="m">00</b><small>min</small></div><div><b data-u="s">00</b><small>sec</small></div></div></div>
@@ -633,7 +637,7 @@ body.hen-hover{cursor:pointer}
       <div class="wrap">
         <h2>Contact</h2>
         <dl>
-          <div><dt>Adresse</dt><dd><span class="todo">à compléter</span>, 67240 Bischwiller</dd></div>
+          <div><dt>Adresse</dt><dd>67240 Bischwiller</dd></div>
           <div><dt>Téléphone</dt><dd><span class="todo">à compléter</span></dd></div>
           <div><dt>E-mail</dt><dd><a class="mailto" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hattermannmichel@gmail.com&amp;su=Contact%20-%20Soci%C3%A9t%C3%A9%20d%E2%80%99Aviculture%20de%20Bischwiller" target="_blank" rel="noopener">hattermannmichel@gmail.com<span class="arr"> ↗</span></a></dd></div>
           <div><dt>Facebook</dt><dd><a class="mailto fblink" href="https://www.facebook.com/share/g/18Lyp25KPT/?mibextid=wwXIfr" target="_blank" rel="noopener">Rejoindre le groupe<span class="arr"> ↗</span></a></dd></div>
@@ -820,11 +824,11 @@ body.hen-hover{cursor:pointer}
 
 <section id="mentions">
 <h3>Mentions légales</h3>
-<p><strong>Éditeur :</strong> Société d’Aviculture de Bischwiller, association <span class="todo">à compléter : inscrite au registre des associations du tribunal judiciaire de … sous le n° …</span></p>
+<p><strong>Éditeur :</strong> Société d’Aviculture de Bischwiller, association de droit local d’Alsace-Moselle, inscrite au registre des associations du tribunal de Haguenau.</p>
 <p><strong>Adresse :</strong> <span class="todo">à compléter</span>, 67240 Bischwiller</p>
 <p><strong>Contact :</strong> <a href="mailto:hattermannmichel@gmail.com">hattermannmichel@gmail.com</a></p>
-<p><strong>Directeur de la publication :</strong> <span class="todo">à compléter (nom du président)</span></p>
-<p><strong>Hébergeur :</strong> <span class="todo">à compléter (nom, adresse, téléphone de l’hébergeur)</span></p>
+<p><strong>Directeur de la publication :</strong> Michel Hattermann</p>
+<p><strong>Hébergeur :</strong> GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis.</p>
 <p>Les textes et photographies du site appartiennent à l’association ou à leurs auteurs. Les articles de presse cités (DNA) ne sont que liés, jamais copiés.</p>
 </section>
 
@@ -848,7 +852,7 @@ body.hen-hover{cursor:pointer}
 
 <h4>Destinataires et transferts</h4>
 <p>Seuls les membres du bureau habilités reçoivent vos messages. Ils transitent par des prestataires : Google (feuille de calcul et messagerie Gmail) et l’hébergeur du site. Google peut traiter des données hors de l’Union européenne, dans le cadre des clauses contractuelles types ou du cadre de protection des données UE–États-Unis.</p>
-<p>Le site charge aussi la bibliothèque d’affichage 3D three.js depuis le réseau Cloudflare (cdnjs) : votre adresse IP lui est transmise pour livrer le fichier. Google Maps et Wikipédia ne reçoivent des données que si vous les utilisez (voir plus bas).</p>
+<p>Le site charge aussi la bibliothèque d’affichage 3D three.js depuis le réseau Cloudflare (cdnjs) : votre adresse IP lui est transmise pour livrer le fichier. Google (carte de la page d’accueil) reçoit aussi votre adresse IP à l’affichage de la carte. Wikipédia ne reçoit des données que si vous posez une question à la poule. Le site est hébergé par GitHub (GitHub Pages, États-Unis), qui traite votre adresse IP pour délivrer les pages.</p>
 
 <h4>Vos droits</h4>
 <p>Vous pouvez demander l’accès, la rectification, l’effacement, la limitation de vos données, vous opposer à leur traitement, ou demander leur portabilité, en écrivant à <a href="mailto:hattermannmichel@gmail.com">hattermannmichel@gmail.com</a>. Nous répondons sous un mois. Vous pouvez aussi saisir la CNIL : <a href="https://www.cnil.fr/fr/plaintes" rel="noopener">cnil.fr/plaintes</a>.</p>
@@ -857,13 +861,13 @@ body.hen-hover{cursor:pointer}
 
 <section id="cookies">
 <h3>Cookies et traceurs</h3>
-<p><strong>Ce site ne dépose aucun cookie de mesure d’audience, de publicité ou de réseaux sociaux.</strong> Il n’y a donc pas de bannière de consentement.</p>
+<p><strong>Ce site ne dépose aucun cookie de mesure d’audience ni de publicité.</strong> Seule la carte Google Maps de la page d’accueil peut déposer des cookies de Google (voir le tableau).</p>
 <table>
 <thead><tr><th>Élément</th><th>Rôle</th><th>Consentement</th></tr></thead>
 <tbody>
 <tr><td>Stockage local <code>henMute</code></td><td>Retient votre choix de couper le son de la poule (sur votre appareil uniquement)</td><td>Non requis : préférence choisie par vous</td></tr>
 <tr><td>Stockage local <code>avi-best</code></td><td>Retient votre meilleur score au petit jeu (sur votre appareil uniquement)</td><td>Non requis : fonction demandée par vous, jamais transmise</td></tr>
-<tr><td>Carte Google Maps</td><td>Affichage de la carte. Google peut déposer des cookies et reçoit votre adresse IP.</td><td><strong>Oui :</strong> la carte ne se charge qu’après votre clic sur « Afficher la carte »</td></tr>
+<tr><td>Carte Google Maps</td><td>Affichage de la carte de l’accueil. Google reçoit votre adresse IP et peut déposer des cookies.</td><td>Cookies tiers de Google : vous pouvez les refuser ou les supprimer dans les réglages de votre navigateur</td></tr>
 </tbody></table>
 <p>Les liens vers Facebook, Gmail, Google, Wikipédia et la ville de Bischwiller sont de simples liens : ces sites ne reçoivent rien tant que vous ne cliquez pas. Vous pouvez effacer le stockage local à tout moment dans les réglages de votre navigateur.</p>
 </section>
@@ -885,12 +889,7 @@ body.hen-hover{cursor:pointer}
 
 </div></section>
 </div>
-  <footer><div class="wrap">© Société d’Aviculture de Bischwiller<nav class="legal-links" aria-label="Informations légales"><a href="#mentions">Mentions légales</a><a href="#confidentialite">Confidentialité</a><a href="#cookies">Cookies</a><a href="#cgu">Conditions d’utilisation</a></nav></div></footer><script>
-document.getElementById("mapLoad").addEventListener("click",function(){var b=document.getElementById("mapBox"),f=document.createElement("iframe");
-f.title="Carte : salle Adrien Zeller, Bischwiller";f.referrerPolicy="strict-origin-when-cross-origin";
-f.src="https://www.google.com/maps?q=Salle+Adrien+Zeller,+10+rue+des+Casernes,+67240+Bischwiller&output=embed";b.textContent="";b.appendChild(f);});
-</script>
-
+  <footer><div class="wrap">© Société d’Aviculture de Bischwiller<nav class="legal-links" aria-label="Informations légales"><a href="#mentions">Mentions légales</a><a href="#confidentialite">Confidentialité</a><a href="#cookies">Cookies</a><a href="#cgu">Conditions d’utilisation</a></nav></div></footer>
 </main>
 
 <script>
