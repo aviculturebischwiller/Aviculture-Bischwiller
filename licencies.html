@@ -32,24 +32,24 @@ textarea{min-height:5rem;resize:vertical}
 .ok{color:#1f6b2e;font-weight:600}
 .tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
 .tabs button{background:transparent;color:var(--ink)}.tabs button[aria-selected="true"]{background:var(--ink);color:var(--shell)}
-.grid{display:grid;gap:2rem;grid-template-columns:1fr}
-@media(min-width:56rem){.grid{grid-template-columns:22rem 1fr;align-items:start}}
-.cal{border:2px solid var(--ink);border-radius:1rem;background:#fff;padding:.9rem}
+.grid{display:grid;gap:2rem;grid-template-columns:minmax(0,1fr)}
+@media(min-width:56rem){.grid{grid-template-columns:22rem minmax(0,1fr);align-items:start}}
+.cal{min-width:0;border:2px solid var(--ink);border-radius:1rem;background:#fff;padding:.9rem}
 .cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
 .cal-h strong{font:700 1.2rem var(--display);text-transform:capitalize}
 .cal-h button{padding:.25rem .8rem}
-.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.dow,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center}
 .dow{font-size:.8rem;color:#555;margin-bottom:.2rem}
-.d{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.95rem;border-radius:.6rem;position:relative}
+.d{min-width:0;padding:0;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.95rem;border-radius:.6rem;position:relative}
 .d.today{outline:2px solid var(--ink);outline-offset:-2px}
-.d.has{background:var(--yolk);font-weight:700;cursor:pointer;border:0}
+.d.has{background:var(--yolk);color:var(--ink);font-weight:700;cursor:pointer;border:0}
 .d.has:after{content:"";position:absolute;bottom:.3rem;width:.35rem;height:.35rem;border-radius:50%;background:var(--comb)}
 .d.off{opacity:.3}
-.ev{display:grid;grid-template-columns:4.2rem 1fr auto;gap:1rem;align-items:start;padding:1rem 0;border-bottom:1px solid var(--line)}
+.ev{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:1rem;align-items:start;padding:1rem 0;border-bottom:1px solid var(--line)}
 .ev.hl{background:rgba(255,194,26,.25);margin:0 -.6rem;padding:1rem .6rem;border-radius:.7rem}
 .date{text-align:center;background:var(--ink);color:var(--shell);border-radius:.8rem;padding:.4rem 0;line-height:1}
 .date b{display:block;font:700 1.9rem var(--display)}.date span{font-size:.8rem}
-.ev p{margin:.2rem 0 0;font-size:.98rem}
+.ev p{margin:.2rem 0 0;font-size:.98rem}.ev h3{overflow-wrap:anywhere}.chk{display:flex;gap:.6rem;align-items:center;margin:.9rem 0 0;font-weight:600}.chk input{width:1.4rem;height:1.4rem;flex:none;accent-color:var(--comb)}
 .tag{display:inline-block;font-size:.8rem;font-weight:700;padding:.1rem .6rem;border-radius:999px;background:var(--sage);margin-bottom:.25rem}
 .tag.Exposition{background:var(--yolk)}.tag.Assemblée{background:var(--comb);color:#fff}
 .past{opacity:.55}
@@ -116,6 +116,8 @@ textarea{min-height:5rem;resize:vertical}
           <div><label for="eType">Type</label><select id="eType"><option>Exposition</option><option>Assemblée</option><option>Réunion</option><option>Autre</option></select></div>
           <div><label for="eDate">Date</label><input id="eDate" type="date" required></div>
           <div><label for="eFin">Date de fin (facultatif)</label><input id="eFin" type="date"></div>
+          <div><label for="eHo">Ouverture / inauguration à</label><input id="eHo" type="time"></div>
+          <div><label for="eHl">Les licenciés doivent être là à</label><input id="eHl" type="time"></div>
         </div>
         <label for="eLieu">Lieu</label><input id="eLieu" maxlength="120">
         <label for="eDesc">Détails</label><textarea id="eDesc" maxlength="600"></textarea>
@@ -135,6 +137,7 @@ textarea{min-height:5rem;resize:vertical}
           <div><label for="nNom">Nom affiché</label><input id="nNom" maxlength="60"></div>
         </div>
         <label for="nPass">Mot de passe (8 caractères minimum)</label><input id="nPass" type="text" required minlength="8">
+        <label class="chk"><input id="nEd" type="checkbox"> Peut gérer les événements</label>
         <div class="actions"><button type="submit">Créer le compte</button><button type="button" class="alt" id="gen">Générer un mot de passe</button></div>
         <p class="note">Transmettez l’identifiant et le mot de passe au licencié. Le mot de passe n’est plus consultable ensuite, seulement réinitialisable.</p>
         <p class="err" id="eUs" role="alert"></p>
@@ -183,7 +186,7 @@ function start(){
   call("events").then(function(r){
     if(!r.ok){if(!r.expired)logout();return;}
     role=r.role;events=r.events;$("who").textContent="Connecté : "+r.user;
-    $("tabs").hidden=role!=="admin";show("app");tab("cal");render();
+    $("tabs").hidden=role!=="admin"&&role!=="editeur";$("tabs").querySelector('[data-t="us"]').hidden=role!=="admin";show("app");tab("cal");render();
     if(role==="admin")call("users").then(function(u){if(u.ok){users=u.users;renderUsers();}});
   });
 }
@@ -216,7 +219,7 @@ function evHtml(e,p){
   var d=new Date(e.date+"T12:00:00"),fin=e.fin&&e.fin>e.date?new Date(e.fin+"T12:00:00"):null;
   var range=fin?"Du "+d.getDate()+" "+MC[d.getMonth()]+" au "+fin.getDate()+" "+MC[fin.getMonth()]+" "+fin.getFullYear():"";
   return '<article class="ev'+(e.date===sel?" hl":"")+(p?" past":"")+'"><div class="date"><b>'+d.getDate()+'</b><span>'+MC[d.getMonth()]+" "+d.getFullYear()+'</span></div><div><span class="tag '+esc(e.type)+'">'+esc(e.type)+'</span><h3>'+esc(e.titre)+'</h3>'+
-   (range?'<p>'+range+'</p>':'')+(e.lieu?'<p>'+esc(e.lieu)+'</p>':'')+(e.description?'<p>'+esc(e.description)+'</p>':'')+'</div><span></span></article>';
+   (range?'<p>'+range+'</p>':'')+(e.lieu?'<p>'+esc(e.lieu)+'</p>':'')+(e.ho?'<p>Ouverture / inauguration : <b>'+hf(e.ho)+'</b></p>':'')+(e.hl?'<p>Licenciés présents dès : <b>'+hf(e.hl)+'</b></p>':'')+(e.description?'<p>'+esc(e.description)+'</p>':'')+(p?'':'<p><button class="alt sm" data-ics="'+esc(e.id)+'">Ajouter à mon téléphone</button></p>')+'</div></article>';
 }
 $("mPrev").onclick=function(){cur.setMonth(cur.getMonth()-1);render()};
 $("mNext").onclick=function(){cur.setMonth(cur.getMonth()+1);render()};
@@ -224,14 +227,14 @@ $("days").addEventListener("click",function(e){var b=e.target.closest("[data-d]"
 
 /* ----- Admin : événements ----- */
 function renderAdminEvents(){
-  if(role!=="admin")return;
+  if(role!=="admin"&&role!=="editeur")return;
   $("evAdmin").innerHTML=events.length?events.map(function(e){return '<div class="list-i"><span><b>'+esc(e.date)+'</b> – '+esc(e.titre)+'</span><span class="b"><button class="alt sm" data-edit="'+esc(e.id)+'">Modifier</button><button class="danger sm" data-del="'+esc(e.id)+'">Supprimer</button></span></div>'}).join(""):'<p class="empty">Aucun événement.</p>';
 }
 function resetEv(){$("fEv").reset();$("eId").value="";$("evTitle").textContent="Ajouter un événement";$("eCancel").hidden=true;$("eEv").textContent="";}
 $("eCancel").onclick=resetEv;
 $("fEv").addEventListener("submit",function(e){
   e.preventDefault();$("eEv").className="err";$("eEv").textContent="Enregistrement…";
-  call("saveEvent",{event:{id:$("eId").value,titre:$("eTitre").value,type:$("eType").value,date:$("eDate").value,fin:$("eFin").value,lieu:$("eLieu").value,description:$("eDesc").value}}).then(function(r){
+  call("saveEvent",{event:{id:$("eId").value,titre:$("eTitre").value,type:$("eType").value,date:$("eDate").value,fin:$("eFin").value,ho:$("eHo").value,hl:$("eHl").value,lieu:$("eLieu").value,description:$("eDesc").value}}).then(function(r){
     if(!r.ok){$("eEv").textContent=r.error;return;}
     events=r.events;resetEv();$("eEv").className="err ok";$("eEv").textContent="Événement enregistré.";render();
   });
@@ -239,19 +242,19 @@ $("fEv").addEventListener("submit",function(e){
 $("evAdmin").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
   if(b.dataset.edit){var v=events.filter(function(x){return x.id===b.dataset.edit})[0];if(!v)return;
-    $("eId").value=v.id;$("eTitre").value=v.titre;$("eType").value=v.type;$("eDate").value=v.date;$("eFin").value=v.fin;$("eLieu").value=v.lieu;$("eDesc").value=v.description;
+    $("eId").value=v.id;$("eTitre").value=v.titre;$("eType").value=v.type;$("eDate").value=v.date;$("eFin").value=v.fin;$("eHo").value=v.ho||"";$("eHl").value=v.hl||"";$("eLieu").value=v.lieu;$("eDesc").value=v.description;
     $("evTitle").textContent="Modifier l’événement";$("eCancel").hidden=false;$("fEv").scrollIntoView({behavior:"smooth"});}
   if(b.dataset.del&&confirm("Supprimer cet événement ?"))call("delEvent",{id:b.dataset.del}).then(function(r){if(r.ok){events=r.events;render();}else alert(r.error)});
 });
 
 /* ----- Admin : comptes ----- */
 function renderUsers(){
-  $("usList").innerHTML=users.length?users.map(function(u){return '<div class="list-i"><span><b>'+esc(u.login)+'</b> – '+esc(u.nom)+'</span><span class="b"><button class="alt sm" data-pw="'+esc(u.login)+'">Nouveau mot de passe</button><button class="danger sm" data-rm="'+esc(u.login)+'">Supprimer</button></span></div>'}).join(""):'<p class="empty">Aucun compte licencié pour le moment.</p>';
+  $("usList").innerHTML=users.length?users.map(function(u){return '<div class="list-i"><span><b>'+esc(u.login)+'</b> – '+esc(u.nom)+'</span><label class="chk" style="margin:0"><input type="checkbox" data-ed="'+esc(u.login)+'"'+(u.droits==="editeur"?" checked":"")+'> Gère les événements</label><span class="b"><button class="alt sm" data-pw="'+esc(u.login)+'">Nouveau mot de passe</button><button class="danger sm" data-rm="'+esc(u.login)+'">Supprimer</button></span></div>'}).join(""):'<p class="empty">Aucun compte licencié pour le moment.</p>';
 }
 $("gen").onclick=function(){var c="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",a=new Uint32Array(12),s="";crypto.getRandomValues(a);for(var i=0;i<12;i++)s+=c[a[i]%c.length];$("nPass").value=s;};
 $("fUs").addEventListener("submit",function(e){
   e.preventDefault();$("eUs").className="err";$("eUs").textContent="Création…";var l=$("nLogin").value,p=$("nPass").value;
-  call("addUser",{login:l,nom:$("nNom").value,pass:p}).then(function(r){
+  call("addUser",{login:l,nom:$("nNom").value,pass:p,droits:$("nEd").checked?"editeur":""}).then(function(r){
     if(!r.ok){$("eUs").textContent=r.error;return;}
     users=r.users;renderUsers();$("fUs").reset();$("eUs").className="err ok";$("eUs").textContent="Compte créé. Identifiant : "+l.toLowerCase()+" – Mot de passe : "+p;
   });
@@ -260,6 +263,36 @@ $("usList").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
   if(b.dataset.pw){var p=prompt("Nouveau mot de passe pour "+b.dataset.pw+" (8 caractères minimum) :");if(p)call("setPass",{login:b.dataset.pw,pass:p}).then(function(r){alert(r.ok?"Mot de passe modifié.":r.error)});}
   if(b.dataset.rm&&confirm("Supprimer le compte "+b.dataset.rm+" ?"))call("delUser",{login:b.dataset.rm}).then(function(r){if(r.ok){users=r.users;renderUsers();}else alert(r.error)});
+});
+
+function hf(t){return String(t).replace(":"," h ")}
+$("usList").addEventListener("change",function(e){var c=e.target;if(!c.dataset.ed)return;
+  call("setRights",{login:c.dataset.ed,droits:c.checked?"editeur":""}).then(function(r){if(r.ok){users=r.users;renderUsers();}else{alert(r.error);c.checked=!c.checked;}});});
+
+/* ----- Ajouter au calendrier du téléphone (.ics) ----- */
+function p2(n){return n<10?"0"+n:""+n}
+function icsText(s){return String(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n")}
+function makeIcs(e){
+  var d8=function(x){return x.replace(/-/g,"")},st=e.hl||e.ho,now=new Date(),
+  L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Aviculture Bischwiller//FR","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+e.id+"@aviculturebischwiller","DTSTAMP:"+now.getUTCFullYear()+p2(now.getUTCMonth()+1)+p2(now.getUTCDate())+"T"+p2(now.getUTCHours())+p2(now.getUTCMinutes())+"00Z"];
+  if(st){var m=st.split(":"),eh=+m[0]+2;L.push("DTSTART:"+d8(e.date)+"T"+m[0]+m[1]+"00","DTEND:"+d8(e.date)+"T"+(eh>23?"235900":p2(eh)+m[1]+"00"));}
+  else{var f=new Date((e.fin&&e.fin>e.date?e.fin:e.date)+"T12:00:00");f.setDate(f.getDate()+1);L.push("DTSTART;VALUE=DATE:"+d8(e.date),"DTEND;VALUE=DATE:"+d8(iso(f)));}
+  var desc=[];
+  if(e.fin&&e.fin>e.date)desc.push("Du "+e.date.split("-").reverse().join("/")+" au "+e.fin.split("-").reverse().join("/"));
+  if(e.ho)desc.push("Ouverture / inauguration : "+hf(e.ho));
+  if(e.hl)desc.push("Licenciés présents dès : "+hf(e.hl));
+  if(e.description)desc.push(e.description);
+  L.push("SUMMARY:"+icsText(e.titre));
+  if(e.lieu)L.push("LOCATION:"+icsText(e.lieu));
+  if(desc.length)L.push("DESCRIPTION:"+desc.map(icsText).join("\\n"));
+  L.push("END:VEVENT","END:VCALENDAR");
+  return L.join("\r\n");
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-ics]");if(!b)return;
+  var v=events.filter(function(x){return x.id===b.dataset.ics})[0];if(!v)return;
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([makeIcs(v)],{type:"text/calendar;charset=utf-8"}));a.download="evenement.ics";
+  document.body.appendChild(a);a.click();a.remove();
 });
 
 if(token)start();else show("login");
