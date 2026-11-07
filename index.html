@@ -652,7 +652,10 @@ a.tab:active{transform:scale(.94);transition:color .35s ease,transform .1s ease-
 .xp.full .xc{display:grid}.xc.d{color:transparent}
 @media (hover:none){.xp.full .xc{display:none}}
 .xr{position:fixed;inset:0;z-index:70;background:var(--yolk);display:none;pointer-events:none}
-body.xo .nav,body.xo .hen-chat{opacity:0!important;visibility:hidden!important;pointer-events:none}
+body.xo .nav,body.xo .hen-chat,body.xo #coq,body.xo .hen-bubble{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.xf{max-width:calc(100vw - 1.2rem)}
+@media (max-width:30rem){.xf{gap:0;padding:.25rem}.xf button{font-size:.82rem;padding:.5rem .62rem}}
+@media (max-width:23rem){.xf button{font-size:.74rem;padding:.45rem .5rem}}
 </style>
 <style id="ucss">
 /* ===== Style « studio » : blanc, noir, très grands titres, un seul accent ===== */
@@ -2539,7 +2542,8 @@ function mod(a,n){return ((a%n)+n)%n;}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function layout(){
   vw=xp.clientWidth;vh=xp.clientHeight;if(!vw)return;
-  c=Math.max(vw/3.1,vh/1.9,170);Px=c*4;Py=c*3;
+  if(full){c=Math.max(vw/3.1,vh/1.9,170);xp.style.height="";}else{c=Math.max(vw/2.1,170);xp.style.height=Math.round(Math.min(c*2.05,innerHeight*.85))+"px";vh=xp.clientHeight;}
+  Px=c*4;Py=c*3;
   tiles.forEach(function(t){
     t.w=Math.min(c*t.wr,vw*.78);t.h=Math.min(t.w*t.hr,c*.98);
     t.bx=t.col*c+t.jx*(c-t.w);t.by=t.row*c+t.jy*(c-t.h);
