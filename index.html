@@ -812,6 +812,36 @@ body[data-tone="yolk"],body[data-tone="ink"]{--bg:#ECEAE5}
 .hb-chips button:hover{background:#161616;color:#F5F4F0}
 @media (prefers-reduced-motion:reduce){.dc .cl{animation:none}.an{transition:none}}
 </style>
+<style id="hbcss2">
+.hb-act{display:flex;gap:.5rem}
+.k-d.mv .bd{animation:bob .34s ease-in-out infinite}
+.dc .wt{fill:#AEC3CC}.dc .rp{fill:none;stroke:#fff;stroke-opacity:.6;stroke-width:2;animation:rpl 3.5s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.dc .rp2{animation-delay:1.7s}
+@keyframes rpl{from{transform:scale(.4);opacity:1}to{transform:scale(1);opacity:0}}
+@media (max-width:640px){
+  .hb-bar{flex-direction:column;align-items:stretch;gap:.5rem}
+  .hb-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:.15rem;padding:.2rem;width:100%}
+  .hb button.pill{font-size:.76rem;padding:.5rem .1rem;letter-spacing:-.02em;text-align:center}
+  .hb-act{width:100%}.hb-act .pill{flex:1;font-size:.82rem;padding:.5rem .4rem}
+}
+.hb-card{position:fixed;inset:0;z-index:900;display:grid;justify-items:center;align-items:end;padding:.8rem}
+.hb-card[hidden]{display:none}
+.hbc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);animation:hbf .3s both}
+.hbc-in{position:relative;width:min(100%,28rem);max-height:86vh;max-height:86svh;overflow:auto;background:#fff;color:#161616;border-radius:1.4rem;padding:1.2rem 1.2rem 1.3rem;box-shadow:0 1.5rem 4rem -1rem rgba(0,0,0,.5);animation:hbu .4s var(--ease) both}
+@keyframes hbf{from{opacity:0}}@keyframes hbu{from{opacity:0;transform:translateY(2rem) scale(.97)}}
+@media (min-width:640px){.hb-card{align-items:center}}
+.hbc-x{position:absolute;top:.6rem;right:.6rem;width:2.4rem;height:2.4rem;border-radius:50%;border:0;background:#EFEDE8;color:#161616;font:400 1.5rem/1 var(--text);cursor:pointer}
+.hbc-top{display:flex;gap:.9rem;align-items:center;margin-bottom:.8rem;padding-right:2.4rem}
+.hbc-top img{width:4.6rem;height:4.6rem;object-fit:cover;border-radius:1rem;flex:none;background:#EFEDE8}
+.hbc-k{display:inline-block;font:700 .72rem var(--text);letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.hbc-top h3{font:700 1.6rem/1.05 var(--display);letter-spacing:-.03em;margin-top:.15rem}
+.hbc-in>p{margin:0 0 1rem;font-size:1rem;line-height:1.5}
+.hbc-w{display:block;text-decoration:none;color:#161616;background:#F5F4F0;border:1.5px solid rgba(22,22,22,.12);border-radius:1rem;padding:.8rem .9rem;transition:border-color .25s,background-color .25s}
+.hbc-w:hover{border-color:#161616;background:#ECEAE5}
+.hbc-wh{display:block;font:700 .72rem var(--text);letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:.3rem}
+#hbc-e{display:block;font-size:.92rem;line-height:1.45}
+.hbc-go{display:block;margin-top:.5rem;font:700 .88rem var(--text)}
+</style>
 </head>
 <body data-tone="shell" class="intro">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -951,21 +981,37 @@ body[data-tone="yolk"],body[data-tone="ink"]{--bg:#ECEAE5}
     </section>
 
     <section id="explorer" class="hb" data-tone="shell">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="a-d" viewBox="0 0 100 100"><g fill="currentColor"><path d="M18 58L4 46l20 4z"/><ellipse cx="46" cy="64" rx="31" ry="20"/><ellipse cx="68" cy="48" rx="8" ry="16"/><circle cx="73" cy="34" r="12"/></g><path d="M82 34l15 5-15 6z" fill="#D9A441"/><circle cx="76" cy="31" r="2.2" fill="#161616"/><path d="M40 82v11h-6M56 82v11h-6" stroke="#D9A441" stroke-width="4" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="a-o" viewBox="0 0 100 100"><g fill="currentColor"><path d="M14 62L2 52l20 2z"/><ellipse cx="44" cy="68" rx="33" ry="20"/><circle cx="76" cy="15" r="9"/></g><path d="M62 62C76 56 70 34 75 16" stroke="currentColor" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M83 13l14 4-14 5z" fill="#D9A441"/><circle cx="78" cy="12" r="2" fill="#161616"/><path d="M38 86v9h-6M54 86v9h-6" stroke="#D9A441" stroke-width="4" fill="none" stroke-linecap="round"/></symbol>
+  </svg>
   <div class="wrap">
     <h2>La basse-cour</h2>
-    <p class="hb-lead">Volailles, pigeons et lapins chez eux : touchez un animal pour le découvrir, touchez le sol pour leur jeter à manger.</p>
+    <p class="hb-lead">Volailles, pigeons, lapins et palmipèdes chez eux : touchez un animal pour ouvrir sa fiche, touchez le sol pour leur jeter à manger.</p>
     <div class="hb-bar">
       <div class="hb-tabs" role="group" aria-label="Choisir un lieu">
         <button class="pill" type="button" data-h="poule" aria-pressed="true">Poulailler</button>
         <button class="pill" type="button" data-h="pigeon" aria-pressed="false">Pigeonnier</button>
         <button class="pill" type="button" data-h="lapin" aria-pressed="false">Clapier</button>
+        <button class="pill" type="button" data-h="mare" aria-pressed="false">Mare</button>
       </div>
-      <button class="pill sec" type="button" id="hb-feed">Jeter du grain</button>
-      <button class="pill sec" type="button" id="hb-tg" aria-pressed="false">☾ Soirée</button>
+      <div class="hb-act">
+        <button class="pill sec" type="button" id="hb-feed">Jeter du grain</button>
+        <button class="pill sec" type="button" id="hb-tg" aria-pressed="false">☾ Soirée</button>
+      </div>
     </div>
     <div class="hb-scene" id="hb-scene" data-t="day"></div>
-    <p class="hb-info" id="hb-info" aria-live="polite">Touchez un animal pour faire connaissance.</p>
+    <p class="hb-info" id="hb-info" aria-live="polite">Touchez un animal pour ouvrir sa fiche.</p>
     <div class="hb-chips" id="hb-chips"></div>
+  </div>
+  <div class="hb-card" id="hb-card" role="dialog" aria-modal="true" aria-labelledby="hbc-t" hidden>
+    <div class="hbc-bg" data-x></div>
+    <div class="hbc-in">
+      <button class="hbc-x" type="button" aria-label="Fermer la fiche" data-x>×</button>
+      <div class="hbc-top"><img id="hbc-img" alt="" hidden><div><span class="hbc-k" id="hbc-k"></span><h3 id="hbc-t"></h3></div></div>
+      <p id="hbc-d"></p>
+      <a class="hbc-w" id="hbc-w" target="_blank" rel="noopener noreferrer"><span class="hbc-wh">Wikipédia</span><span id="hbc-e">Chargement du résumé…</span><span class="hbc-go">Lire l’article ↗</span></a>
+    </div>
   </div>
 </section>
 
@@ -2750,22 +2796,43 @@ else{var mo=new MutationObserver(function(){if(!b.classList.contains("intro")){m
 (function(){
 var scene=document.getElementById("hb-scene");if(!scene)return;
 var info=document.getElementById("hb-info"),chipsEl=document.getElementById("hb-chips");
+var card=document.getElementById("hb-card"),cImg=document.getElementById("hbc-img"),cK=document.getElementById("hbc-k"),cT=document.getElementById("hbc-t"),cD=document.getElementById("hbc-d"),cW=document.getElementById("hbc-w"),cE=document.getElementById("hbc-e");
 var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+/* [nom, accroche, couleur, x, bas, taille, mot-clé, recherche Wikipédia, description] */
 var H={
- poule:{k:"v",food:"🌾",w:"clamp(3.8rem,16cqw,8.5rem)",label:"Volaille",items:[
-  ["Orpington","Silhouette ronde, plumage dense","#C98B3C",22,10,1],["Houdan","Une huppe et cinq doigts","#2F2F33",45,6,.92],
-  ["Brahma","Grande taille, pattes emplumées","#E6DFCF",68,12,1.1],["Cochin","Un plumage touffu","#A9552A",84,7,1]]},
- pigeon:{k:"p",food:"🌾",w:"clamp(3rem,11cqw,6.2rem)",label:"Pigeon",items:[
-  ["Paon","Une queue en éventail","#F0EDE6",50,74,1],["Boulant","Le jabot gonflé","#8F8C88",40,59,1.05],
-  ["Culbutant","Capable de culbutes en plein vol","#B97A4B",15,33,.95],["Capucin","Une collerette de plumes autour du cou","#6E5A4A",85,33,1]]},
- lapin:{k:"l",food:"🥕",w:"clamp(3.4rem,13cqw,7rem)",label:"Lapin",items:[
-  ["Rex","Un pelage de velours","#8C5B3A",25,8,.95],["Géant des Flandres","Un des plus grands lapins","#A3A3A0",50,12,1.2],
-  ["Bélier","Des oreilles tombantes","#D9CFBF",72,7,1],["Papillon","Une robe tachetée","#F3F1EC",88,13,.95]]}
+ poule:{k:"v",sym:"a-v",food:"🌾",w:"clamp(3.2rem,14cqw,8rem)",label:"Volaille",items:[
+  ["Orpington","Silhouette ronde, plumage dense","#C98B3C",12,10,1,"orpington","Orpington poule","Race anglaise massive au plumage abondant, docile et bonne pondeuse. Elle existe en plusieurs couleurs : fauve, noir, blanc…"],
+  ["Houdan","Une huppe et cinq doigts","#2F2F33",28,6,.9,"houdan","Houdan poule","Race française originaire de Houdan (Yvelines), reconnaissable à sa huppe, sa barbe et ses cinq doigts. Son plumage est noir moucheté de blanc."],
+  ["Brahma","Grande taille, pattes emplumées","#E6DFCF",44,13,1.1,"brahma","Brahma poule","Grande race aux pattes emplumées, calme et rustique, qui supporte bien le froid."],
+  ["Cochin","Un plumage touffu","#A9552A",60,7,1,"cochin","Cochin poule","Race d’origine chinoise très duveteuse, aux pattes emplumées. Placide, elle couve volontiers."],
+  ["Sussex","Une poule anglaise rustique","#E9E3D3",76,12,1,"sussex","Sussex poule","Race anglaise rustique et familière, bonne pondeuse. La variété herminée, blanche à collier noir, est l’une des plus connues."],
+  ["Marans","Des œufs brun foncé","#6D6A66",90,6,.95,"marans","Marans poule","Race française originaire de Marans (Charente-Maritime), célèbre pour ses œufs d’un brun très foncé."]]},
+ pigeon:{k:"p",sym:"a-p",food:"🌾",w:"clamp(2.8rem,10.5cqw,6rem)",label:"Pigeon",items:[
+  ["Paon","Une queue en éventail","#F0EDE6",50,74,1,"paon","pigeon paon","Pigeon d’ornement dont la queue se redresse en éventail, comme celle d’un paon."],
+  ["Boulant","Le jabot gonflé","#8F8C88",40,59,1.05,"boulant","pigeon boulant","Pigeon qui gonfle fortement son jabot en se tenant bien droit."],
+  ["Culbutant","Capable de culbutes en plein vol","#B97A4B",15,33,.95,"culbutant","pigeon culbutant","Pigeon connu pour ses culbutes, en vol ou au sol selon les variétés."],
+  ["Capucin","Une collerette de plumes autour du cou","#6E5A4A",85,33,1,"capucin","pigeon capucin","Pigeon dont les plumes de la nuque forment une sorte de capuche."],
+  ["Mondain","Un pigeon de chair massif","#D8D2C6",60,59,1.15,"mondain","pigeon mondain","Grand pigeon de chair, robuste et massif, élevé pour sa chair comme pour l’exposition."],
+  ["Voyageur","Il retrouve toujours son pigeonnier","#7D8793",70,9,1,"voyageur","pigeon voyageur","Pigeon sélectionné pour retrouver son pigeonnier sur de longues distances."]]},
+ lapin:{k:"l",sym:"a-l",food:"🥕",w:"clamp(3rem,12cqw,6.8rem)",label:"Lapin",items:[
+  ["Rex","Un pelage de velours","#8C5B3A",10,8,.95,"rex","lapin Rex","Race connue pour son pelage court, dense et velouté, issue d’une mutation apparue en France au début du XXe siècle."],
+  ["Géant des Flandres","Un des plus grands lapins","#A3A3A0",28,13,1.2,"flandres","Géant des Flandres lapin","L’une des plus grandes races de lapins, qui peut dépasser 6 kg."],
+  ["Bélier","Des oreilles tombantes","#D9CFBF",46,7,1,"belier","lapin Bélier","Reconnaissable à ses oreilles tombantes de chaque côté de la tête."],
+  ["Papillon","Une robe tachetée","#F3F1EC",64,12,.95,"papillon","lapin Papillon","Robe blanche tachetée, avec un dessin en forme de papillon sur le nez."],
+  ["Fauve de Bourgogne","Une robe uniformément fauve","#C6803F",80,7,1,"bourgogne","Fauve de Bourgogne lapin","Race française au pelage uniformément fauve, robuste et rustique."],
+  ["Angora","De très longs poils soyeux","#EFEBE4",92,13,1.05,"angora","lapin angora","Lapin aux poils très longs et soyeux, dont la laine est peignée ou tondue."]]},
+ mare:{k:"d",sym:"a-d",food:"🌾",w:"clamp(3.2rem,13cqw,7rem)",label:"Palmipède",items:[
+  ["Pékin","Plumage blanc, bec orangé","#F5F1E6",16,9,1,"pekin","canard Pékin","Canard blanc d’origine chinoise, élevé pour sa chair et ses œufs."],
+  ["Coureur indien","Debout comme une bouteille","#9C8466",36,14,1,"coureur","canard coureur indien","Canard à la silhouette dressée, qui court plutôt qu’il ne se dandine. Bon pondeur."],
+  ["Barbarie","Face nue et rouge","#3F3F44",56,8,1.1,"barbarie","canard de Barbarie","Canard originaire d’Amérique du Sud, à la face nue et rouge. Il est peu bruyant."],
+  ["Oie de Toulouse","Grosse oie grise à fanon","#8D8A86",76,12,1.25,"toulouse","oie de Toulouse","Grande oie grise originaire du Sud-Ouest de la France, avec un fanon sous le bec.","a-o"],
+  ["Mandarin","Un plumage très coloré","#B0703B",90,7,.85,"mandarin","canard mandarin","Petit canard d’ornement au plumage très coloré, originaire d’Asie de l’Est."]]}
 };
 var SPOTS=[[50,74],[40,59],[60,59],[15,33],[85,33]];
-var cur="poule",gen=0,animals=[],tipT,tip;
+var cur="poule",gen=0,animals=[],lastFocus=null,cache={};
 function rnd(a,b){return a+Math.random()*(b-a);}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
 function tufts(n){var s="";for(var i=0;i<n;i++){var x=rnd(10,780),y=rnd(465,590);s+='<path class="tf" d="M'+x.toFixed(0)+' '+y.toFixed(0)+'q3 -13 6 0q3 -11 6 0"/>';}return s;}
 function flowers(n){var s="";for(var i=0;i<n;i++){s+='<circle cx="'+rnd(10,790).toFixed(0)+'" cy="'+rnd(470,590).toFixed(0)+'" r="3.5" fill="'+(i%2?"#F3EEDC":"#E7D7A3")+'"/>';}return s;}
 function sky(){return '<g class="sun"><circle cx="680" cy="95" r="34" fill="#F3E3B0"/></g><g class="moon"><circle cx="680" cy="95" r="28" fill="#EDEBE0"/><circle cx="692" cy="88" r="25" fill="#2B3247"/></g>'+
@@ -2773,18 +2840,21 @@ function sky(){return '<g class="sun"><circle cx="680" cy="95" r="34" fill="#F3E
  '<g class="cl cl2"><ellipse cx="470" cy="60" rx="52" ry="14" fill="#fff" opacity=".7"/><ellipse cx="500" cy="50" rx="30" ry="12" fill="#fff" opacity=".7"/></g>'+
  '<path class="hl" d="M0 430Q150 370 300 415T600 405T800 395V600H0Z"/><rect class="gd" y="450" width="800" height="150"/>';}
 function decor(k){var d='<svg class="dc" viewBox="0 0 800 600" aria-hidden="true">'+sky();
- if(k==="poule"){d+='<g class="fx"><rect x="70" y="300" width="210" height="150" fill="#B08A62"/><path d="M70 330h210M70 360h210M70 390h210M70 420h210" stroke="#9A7650" stroke-width="3"/>'+
+ if(k==="v"){d+='<g class="fx"><rect x="70" y="300" width="210" height="150" fill="#B08A62"/><path d="M70 330h210M70 360h210M70 390h210M70 420h210" stroke="#9A7650" stroke-width="3"/>'+
   '<polygon points="48 308 175 220 302 308" fill="#7A5A44"/><circle cx="175" cy="272" r="11" fill="#F1E7D3"/><rect x="148" y="372" width="54" height="78" rx="4" fill="#5E4533"/>'+
   '<polygon points="148 450 202 450 214 462 136 462" fill="#8B6B4E"/>'+
   '<g fill="#D8C7AE"><rect x="520" y="395" width="14" height="62"/><rect x="590" y="395" width="14" height="62"/><rect x="660" y="395" width="14" height="62"/><rect x="730" y="395" width="14" height="62"/><rect x="512" y="410" width="240" height="8"/><rect x="512" y="432" width="240" height="8"/></g>'+
   '<ellipse cx="420" cy="452" rx="46" ry="16" fill="#D9C58A"/></g>';}
- else if(k==="pigeon"){d+='<g class="fx"><rect x="340" y="240" width="120" height="210" fill="#D8CDBA"/><path d="M340 290h120M340 340h120M340 390h120" stroke="#C6B9A2" stroke-width="3"/>'+
+ else if(k==="p"){d+='<g class="fx"><rect x="340" y="240" width="120" height="210" fill="#D8CDBA"/><path d="M340 290h120M340 340h120M340 390h120" stroke="#C6B9A2" stroke-width="3"/>'+
   '<g fill="#6C5D4B"><circle cx="372" cy="280" r="9"/><circle cx="428" cy="280" r="9"/><circle cx="372" cy="330" r="9"/><circle cx="428" cy="330" r="9"/><path d="M382 450v-34a18 18 0 0 1 36 0v34z"/></g>'+
   '<polygon points="318 242 400 150 482 242" fill="#A66A55"/><path d="M400 150v-14" stroke="#7A5A44" stroke-width="4"/><circle cx="400" cy="132" r="6" fill="#7A5A44"/>'+
   '<g fill="#8B6B4E"><rect x="112" y="402" width="16" height="50"/><rect x="100" y="396" width="40" height="8"/><rect x="672" y="402" width="16" height="50"/><rect x="660" y="396" width="40" height="8"/></g></g>';}
- else{d+='<g class="fx"><g fill="#7A5A44"><rect x="84" y="420" width="10" height="34"/><rect x="266" y="420" width="10" height="34"/><rect x="524" y="420" width="10" height="34"/><rect x="706" y="420" width="10" height="34"/></g>'+
+ else if(k==="l"){d+='<g class="fx"><g fill="#7A5A44"><rect x="84" y="420" width="10" height="34"/><rect x="266" y="420" width="10" height="34"/><rect x="524" y="420" width="10" height="34"/><rect x="706" y="420" width="10" height="34"/></g>'+
   '<rect x="70" y="320" width="220" height="100" fill="#B08A62"/><rect x="88" y="336" width="130" height="68" fill="#fff" fill-opacity=".25" stroke="#6B6B6B" stroke-width="2"/><path d="M110 336v68M132 336v68M154 336v68M176 336v68M198 336v68" stroke="#6B6B6B" stroke-width="2"/><polygon points="58 322 302 322 290 292 70 292" fill="#7A5A44"/>'+
   '<rect x="510" y="320" width="220" height="100" fill="#B08A62"/><rect x="528" y="336" width="130" height="68" fill="#fff" fill-opacity=".25" stroke="#6B6B6B" stroke-width="2"/><path d="M550 336v68M572 336v68M594 336v68M616 336v68M638 336v68" stroke="#6B6B6B" stroke-width="2"/><polygon points="498 322 742 322 730 292 510 292" fill="#7A5A44"/></g>'+flowers(26);}
+ else{d+='<g class="fx"><ellipse class="wt" cx="400" cy="525" rx="270" ry="62"/><ellipse class="rp" cx="330" cy="525" rx="70" ry="16"/><ellipse class="rp rp2" cx="470" cy="520" rx="70" ry="16"/>'+
+  '<g stroke="#7E8B5E" stroke-width="4" stroke-linecap="round"><path d="M80 470v-60M92 470v-80M104 470v-55M700 470v-70M712 470v-55M724 470v-80"/></g>'+
+  '<g fill="#7A5A44"><rect x="60" y="360" width="150" height="90" rx="6"/><polygon points="50 366 135 310 220 366"/></g><rect x="120" y="396" width="30" height="54" fill="#5E4533"/></g>';}
  return d+tufts(26)+'</svg>';}
 function place(a,x,b,d){a.x=x;a.b=b;var s=a.el.style;s.setProperty("--d",d+"s");s.left=x+"%";s.bottom=b+"%";s.zIndex=100-Math.round(b);}
 function go(a,x,b,d,cb){var g=gen;a.el.style.setProperty("--f",x>=a.x?1:-1);place(a,x,b,d);a.el.classList.add("mv");
@@ -2799,21 +2869,45 @@ function think(a,g){
     if(r<.65){var sp=Math.random()<.65?SPOTS[(Math.random()*SPOTS.length)|0]:[rnd(10,90),rnd(5,14)];go(a,sp[0]+rnd(-2,2),sp[1],.9);wait+=900;}
     else peck(a);
   }else if(r<.6){var x=clamp(a.x+rnd(-35,35),8,92),b=a.k==="l"?rnd(5,15):rnd(4,16),d=Math.abs(x-a.x)/speed(a)+.3;go(a,x,b,d);wait+=d*1000;}
-  else if(a.k==="v"&&r<.85)peck(a);
+  else if(a.k!=="l"&&r<.85)peck(a);
   setTimeout(function(){think(a,g);},wait);
 }
-function showTip(a){
-  if(!tip)return;clearTimeout(tipT);
-  tip.innerHTML="<strong>"+a.name+"</strong>"+a.detail;tip.hidden=false;tip.style.animation="none";void tip.offsetWidth;tip.style.animation="";
-  tip.style.left=clamp(a.x,24,76)+"%";
-  if(a.b>50){tip.style.bottom="auto";tip.style.top="calc("+(100-a.b)+"% + .4rem)";}
-  else{tip.style.top="auto";tip.style.bottom="calc("+a.b+"% + "+(a.el.offsetHeight+8)+"px)";}
-  tipT=setTimeout(function(){tip.hidden=true;},4200);
+/* ---- fiche + résumé Wikipédia ---- */
+function trimText(t){t=(t||"").replace(/\s+/g," ").trim();if(t.length<=380)return t;var c=t.slice(0,380),i=Math.max(c.lastIndexOf(". "),c.lastIndexOf("; "));return (i>120?c.slice(0,i+1):c.replace(/\s\S*$/,"")+"…");}
+function wiki(a){
+  if(cache[a.name])return Promise.resolve(cache[a.name]);
+  var url="https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch="+encodeURIComponent(a.q)+"&gsrlimit=4&prop=extracts%7Cpageimages%7Cinfo&exintro=1&explaintext=1&exsentences=3&exlimit=4&piprop=thumbnail&pithumbsize=320&inprop=url";
+  return fetch(url).then(function(r){return r.json();}).then(function(j){
+    var ps=j&&j.query&&j.query.pages?Object.keys(j.query.pages).map(function(k){return j.query.pages[k];}).sort(function(x,y){return x.index-y.index;}):[];
+    var hit=ps.filter(function(p){return p.extract&&norm(p.title+" "+p.extract.slice(0,300)).indexOf(a.key)>-1;})[0];
+    var res=hit?{t:hit.title,e:trimText(hit.extract),u:hit.fullurl,i:hit.thumbnail&&hit.thumbnail.source}:null;
+    if(res)cache[a.name]=res;return res;
+  }).catch(function(){return null;});
 }
+function openCard(a){
+  lastFocus=document.activeElement;a.busy=1;card.dataset.who=a.name;
+  cK.textContent=H[cur].label;cT.textContent=a.name;cD.textContent=a.desc;
+  cImg.hidden=true;cImg.removeAttribute("src");
+  var search="https://fr.wikipedia.org/w/index.php?search="+encodeURIComponent(a.q);
+  cW.href=search;cE.textContent="Chargement du résumé…";
+  card.hidden=false;document.documentElement.style.overflow="hidden";
+  card.querySelector(".hbc-x").focus({preventScroll:true});
+  wiki(a).then(function(r){
+    if(card.hidden||card.dataset.who!==a.name)return;
+    if(r){cE.textContent=r.e;cW.href=r.u;cW.querySelector(".hbc-go").textContent="Lire « "+r.t+" » ↗";if(r.i){cImg.src=r.i;cImg.hidden=false;}}
+    else{cE.textContent="Pas de résumé automatique pour cette fiche : la recherche Wikipédia s’ouvre dans un nouvel onglet.";cW.querySelector(".hbc-go").textContent="Chercher sur Wikipédia ↗";}
+  });
+}
+function closeCard(){
+  if(card.hidden)return;card.hidden=true;document.documentElement.style.overflow="";
+  animals.forEach(function(a){a.busy=0;});if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
+}
+card.addEventListener("click",function(e){if(e.target.closest("[data-x]"))closeCard();});
+addEventListener("keydown",function(e){if(e.key==="Escape")closeCard();});
 function pick(a){
   var el=a.el;el.classList.remove("joy");void el.offsetWidth;el.classList.add("joy");
-  a.busy=1;setTimeout(function(){a.busy=0;},4200);
-  showTip(a);info.textContent=a.name+" : "+a.detail.charAt(0).toLowerCase()+a.detail.slice(1)+" ("+H[cur].label.toLowerCase()+").";
+  info.textContent=a.name+" : "+a.detail.charAt(0).toLowerCase()+a.detail.slice(1)+".";
+  openCard(a);
 }
 function feed(x){
   var h=H[cur],g=gen;
@@ -2828,23 +2922,24 @@ function feed(x){
   info.textContent=cur==="lapin"?"Des carottes ! Tout le monde accourt.":"À table ! Ils ont tous accouru.";
 }
 function build(key){
-  gen++;var g=gen;clearTimeout(tipT);var h=H[key];animals=[];
-  scene.innerHTML=decor(key)+'<div class="hb-tip" hidden></div>';tip=scene.querySelector(".hb-tip");chipsEl.innerHTML="";
-  h.items.forEach(function(it,i){
-    var el=document.createElement("button");el.type="button";el.className="an k-"+h.k;el.setAttribute("aria-label",it[0]+" : "+it[1]);
-    el.innerHTML='<span class="fl"><span class="bd"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#a-'+h.k+'"/></svg></span></span>';
+  gen++;var g=gen;var h=H[key];animals=[];
+  scene.innerHTML=decor(h.k);chipsEl.innerHTML="";
+  h.items.forEach(function(it){
+    var el=document.createElement("button");el.type="button";el.className="an k-"+h.k;el.setAttribute("aria-label","Fiche : "+it[0]);
+    el.innerHTML='<span class="fl"><span class="bd"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#'+(it[9]||h.sym)+'"/></svg></span></span>';
     el.style.setProperty("--w","calc("+h.w+" * "+it[5]+")");el.style.setProperty("--c",it[2]);
-    var a={el:el,name:it[0],detail:it[1],k:h.k,busy:0,x:it[3],b:it[4]};place(a,a.x,a.b,0);scene.appendChild(el);animals.push(a);
+    var a={el:el,name:it[0],detail:it[1],desc:it[8],key:it[6],q:it[7],k:h.k,busy:0,x:it[3],b:it[4]};place(a,a.x,a.b,0);scene.appendChild(el);animals.push(a);
     el.addEventListener("click",function(e){e.stopPropagation();pick(a);});
     var c=document.createElement("button");c.type="button";c.textContent=it[0];chipsEl.appendChild(c);
     c.addEventListener("click",function(){a.busy=1;var tb=h.k==="p"?9:10,d=h.k==="p"?1:Math.abs(50-a.x)/speed(a)+.3;go(a,50+rnd(-4,4),tb,d,function(){pick(a);});});
     if(!reduce)setTimeout(function(){think(a,g);},rnd(400,2000));
   });
-  info.textContent=h.k==="v"?"Au poulailler : touchez le sol pour jeter du grain.":h.k==="p"?"Au pigeonnier : certains se perchent, d’autres descendent picorer.":"Au clapier : les lapins sautillent dans la prairie.";
+  info.textContent=h.k==="v"?"Au poulailler : touchez le sol pour jeter du grain.":h.k==="p"?"Au pigeonnier : certains se perchent, d’autres descendent picorer.":h.k==="l"?"Au clapier : les lapins sautillent dans la prairie.":"À la mare : canards et oies se promènent au bord de l’eau.";
 }
 function swap(key){scene.classList.add("sw");setTimeout(function(){cur=key;build(key);scene.classList.remove("sw");},300);}
-[].slice.call(document.querySelectorAll(".hb-tabs button")).forEach(function(b){b.addEventListener("click",function(){
-  if(b.dataset.h===cur)return;[].slice.call(document.querySelectorAll(".hb-tabs button")).forEach(function(o){o.setAttribute("aria-pressed",o===b);});swap(b.dataset.h);});});
+var tabs=[].slice.call(document.querySelectorAll(".hb-tabs button"));
+tabs.forEach(function(b){b.addEventListener("click",function(){
+  if(b.dataset.h===cur)return;tabs.forEach(function(o){o.setAttribute("aria-pressed",o===b);});swap(b.dataset.h);});});
 scene.addEventListener("click",function(e){var r=scene.getBoundingClientRect();feed(clamp((e.clientX-r.left)/r.width*100,6,94));});
 document.getElementById("hb-feed").addEventListener("click",function(){feed(rnd(25,75));});
 var tg=document.getElementById("hb-tg");
