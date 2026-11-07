@@ -711,35 +711,40 @@ body.xo .cur{opacity:0}
 .ldw{display:flex;overflow:hidden;font:600 clamp(2.4rem,12.5vw,10rem)/1.05 var(--text);letter-spacing:-.07em}
 .ldw span{display:block;transform:translateY(105%);animation:up 1s var(--ease) forwards;animation-delay:calc(var(--i)*.06s)}
 #ld b{position:absolute;left:1.25rem;bottom:1rem;font:600 clamp(1.4rem,4vw,2.4rem)/1 var(--text);letter-spacing:-.05em}
-.hero .ln span{animation-delay:calc(var(--i)*.13s + 2.1s)}
-.fade{animation-delay:calc(var(--d,0)*1s + 2.5s)}
-.nav{animation-delay:2.6s}
+.hero .ln span{animation-delay:calc(var(--i)*.06s + .02s);animation-duration:.7s}
+.fade{animation-delay:calc(var(--d,0)*.3s + .15s)}
+.nav{animation-delay:.2s}
 /* curseur */
 .cur{position:fixed;left:0;top:0;width:.9rem;height:.9rem;margin:-.45rem 0 0 -.45rem;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:1500;display:none;will-change:transform;transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),opacity .3s}
 .cur.big{width:4.2rem;height:4.2rem;margin:-2.1rem 0 0 -2.1rem}
 @media (hover:hover) and (pointer:fine){.cur{display:block}body,a,button,.btn{cursor:none}input,textarea,select{cursor:text}.xp.full button,.xp.full{cursor:none}}
 </style>
 <style id="ucol">
-/* ===== Couleurs : une teinte franche par section ===== */
-:root{--ink:#101A3A;--comb:#E8412A;--yolk:#FFC21A;--sage:#B9D4AE;--lime:#D9FF3F}
-body[data-tone="shell"]{--bg:var(--lime);--fg:#0b0b0b;--accent:#0b0b0b;--accent-fg:var(--lime)}
-body[data-tone="yolk"]{--bg:var(--yolk);--fg:#0b0b0b;--accent:#0b0b0b;--accent-fg:var(--yolk)}
-body[data-tone="ink"]{--bg:var(--ink);--fg:#fff;--accent:var(--lime);--accent-fg:#0b0b0b}
-body[data-tone="comb"]{--bg:var(--comb);--fg:#fff;--accent:#fff;--accent-fg:var(--comb)}
-body[data-tone="sage"]{--bg:var(--sage);--fg:#0b0b0b;--accent:#0b0b0b;--accent-fg:var(--sage)}
-.nav{background:color-mix(in srgb,var(--bg) 70%,transparent)}
-.btn:hover{background:#fff!important;color:#0b0b0b!important}
-.egg{background:currentColor}
-.xin{color:#fff}
-.xs .btn{background:var(--lime);color:#0b0b0b}
-.xp{background:var(--ink)}
-.xh{color:#fff}
-#ld{background:var(--lime)}
-.xr{background:var(--lime)}
-.xc{background:var(--lime);color:#0b0b0b}
-.xf button[aria-pressed=true]{background:var(--lime);color:#0b0b0b}
-.xf button,.xclose{color:#0b0b0b}
+/* ===== Couleurs : fond uni, noir et blanc cassé, aucun accent vif ===== */
+:root{--shell:#F5F4F0;--ink:#161616;--comb:#161616;--yolk:#ECEAE5;--sage:#F5F4F0;--lime:#161616}
+body,body[data-tone]{--bg:#F5F4F0;--fg:#161616;--accent:#161616;--accent-fg:#F5F4F0}
+body[data-tone="yolk"],body[data-tone="ink"]{--bg:#ECEAE5}
+.hero,.hero *{color:#161616}
+.hero .btn{background:#161616;color:#F5F4F0}
+.hero .btn:hover,.btn:hover{background:#333!important;color:#F5F4F0!important}
+.nav{background:rgba(245,244,240,.8);border-color:rgba(22,22,22,.15)}
+.egg{background:#161616}
+.xin,.xh,.xf button,.xclose{color:#161616}
+.xs .btn{background:#161616;color:#F5F4F0}
+.xp{background:#F5F4F0}
+.xc,.xr,#ld{background:#F5F4F0;color:#161616}
+.xf button[aria-pressed=true]{background:#161616;color:#F5F4F0}
 .cur{background:#fff}
+.skip-link{background:#161616;color:#F5F4F0}
+/* encarts sombres → gris foncé uni */
+.dl,.cl,.nx{background:#161616!important;color:#F5F4F0;animation:none!important}
+.nx h3{background:none!important;color:#F5F4F0!important;animation:none!important}
+.dl-date,.cl .btn{background:#ECEAE5;color:#161616;box-shadow:none}
+.ticket{box-shadow:none;border:1.5px solid rgba(22,22,22,.15)}
+/* animation d’ouverture : fond sombre neutre */
+#intro{background:#161616}
+#intro .dawn{background:linear-gradient(180deg,#161616 0%,#232323 60%,#343434 100%)}
+#intro .it{color:#F5F4F0}
 </style>
 </head>
 <body data-tone="shell" class="intro">
@@ -1314,7 +1319,7 @@ body[data-tone="sage"]{--bg:var(--sage);--fg:#0b0b0b;--accent:#0b0b0b;--accent-f
          la page change dessous, puis le disque se dissout pendant que la page monte ---- */
   var wipe=document.querySelector(".wipe"),wlabel=wipe.querySelector("span"),
       wipeLabels={accueil:"Accueil",histoire:"Histoire",actualite:"Actualité",aide:"Aide",inscription:"S’inscrire",legal:"Infos légales"},
-      wipeTheme={accueil:["#FFF8EC","#101A3A"],actualite:["#101A3A","#FFC21A"],histoire:["#101A3A","#FFC21A"],aide:["#B9D4AE","#101A3A"],inscription:["#FFC21A","#101A3A"],legal:["#FFF8EC","#101A3A"]};
+      wipeTheme={accueil:["#F5F4F0","#111"],actualite:["#F5F4F0","#111"],histoire:["#F5F4F0","#111"],aide:["#F5F4F0","#111"],inscription:["#F5F4F0","#111"],legal:["#F5F4F0","#111"]};
   function wipeTo(v,h){
     if(!wipe.animate){show(v,h,false);return;}
     busyT=true;
@@ -1548,7 +1553,7 @@ body[data-tone="sage"]{--bg:var(--sage);--fg:#0b0b0b;--accent:#0b0b0b;--accent-f
   if(intro){
     if(reduce){intro.remove();body.classList.remove("intro");}
     else{
-      var cols=["#D42A1F","#FFF8EC","#FFC21A","#FFF8EC","#B9D4AE"];
+      var cols=["#F5F4F0","#BDBBB5","#F5F4F0","#8E8C87","#F5F4F0"];
       for(var ci=0;ci<16;ci++){
         var c=document.createElement("i");
         c.className="fe";
@@ -2512,7 +2517,7 @@ var xp=document.getElementById("xp"),W=document.getElementById("xw"),C=document.
 if(!xp||!go)return;
 var close=xp.querySelector(".xclose"),chips=[].slice.call(xp.querySelectorAll(".xf button")),body=document.body;
 var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
-var COL=[["#D9FF3F","#0b0b0b","#0b0b0b"],["#FFB3D1","#0b0b0b","#0b0b0b"],["#F3EBDD","#0b0b0b","#E8412A"],["#FF6B3D","#0b0b0b","#ffffff"]];
+var COL=[["#ECEAE5","#111","#111"],["#E2E0DA","#111","#111"],["#F3F2EE","#111","#111"],["#D9D7D1","#111","#111"]];
 var KIND={v:"Volaille",p:"Pigeon",l:"Lapin"};
 /* [type, nom, détail, couleur, largeur, hauteur, décalage x, décalage y, profondeur, inclinaison de l’œuf] */
 var D=[
