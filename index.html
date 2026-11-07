@@ -826,8 +826,8 @@ body[data-tone="yolk"],body[data-tone="ink"]{--bg:#ECEAE5}
 }
 .hb-card{position:fixed;inset:0;z-index:900;display:grid;justify-items:center;align-items:end;padding:.8rem}
 .hb-card[hidden]{display:none}
-.hbc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);animation:hbf .3s both}
-.hbc-in{position:relative;width:min(100%,28rem);max-height:86vh;max-height:86svh;overflow:auto;background:#fff;color:#161616;border-radius:1.4rem;padding:1.2rem 1.2rem 1.3rem;box-shadow:0 1.5rem 4rem -1rem rgba(0,0,0,.5);animation:hbu .4s var(--ease) both}
+.hbc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);animation:hbf .15s both}
+.hbc-in{position:relative;width:min(100%,28rem);max-height:86vh;max-height:86svh;overflow:auto;background:#fff;color:#161616;border-radius:1.4rem;padding:1.2rem 1.2rem 1.3rem;box-shadow:0 1.5rem 4rem -1rem rgba(0,0,0,.5);animation:hbu .22s ease-out both}
 @keyframes hbf{from{opacity:0}}@keyframes hbu{from{opacity:0;transform:translateY(2rem) scale(.97)}}
 @media (min-width:640px){.hb-card{align-items:center}}
 .hbc-x{position:absolute;top:.6rem;right:.6rem;width:2.4rem;height:2.4rem;border-radius:50%;border:0;background:#EFEDE8;color:#161616;font:400 1.5rem/1 var(--text);cursor:pointer}
@@ -2829,7 +2829,7 @@ var H={
   ["Mandarin","Un plumage très coloré","#B0703B",90,7,.85,"mandarin","canard mandarin","Petit canard d’ornement au plumage très coloré, originaire d’Asie de l’Est."]]}
 };
 var SPOTS=[[50,74],[40,59],[60,59],[15,33],[85,33]];
-var cur="poule",gen=0,animals=[],lastFocus=null,cache={};
+var cur="poule",gen=0,animals=[],lastFocus=null,cache={},done={};
 function rnd(a,b){return a+Math.random()*(b-a);}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
@@ -2875,14 +2875,19 @@ function think(a,g){
 /* ---- fiche + résumé Wikipédia ---- */
 function trimText(t){t=(t||"").replace(/\s+/g," ").trim();if(t.length<=380)return t;var c=t.slice(0,380),i=Math.max(c.lastIndexOf(". "),c.lastIndexOf("; "));return (i>120?c.slice(0,i+1):c.replace(/\s\S*$/,"")+"…");}
 function wiki(a){
-  if(cache[a.name])return Promise.resolve(cache[a.name]);
+  if(cache[a.name])return cache[a.name];
   var url="https://fr.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch="+encodeURIComponent(a.q)+"&gsrlimit=4&prop=extracts%7Cpageimages%7Cinfo&exintro=1&explaintext=1&exsentences=3&exlimit=4&piprop=thumbnail&pithumbsize=320&inprop=url";
-  return fetch(url).then(function(r){return r.json();}).then(function(j){
+  cache[a.name]=fetch(url).then(function(r){return r.json();}).then(function(j){
     var ps=j&&j.query&&j.query.pages?Object.keys(j.query.pages).map(function(k){return j.query.pages[k];}).sort(function(x,y){return x.index-y.index;}):[];
     var hit=ps.filter(function(p){return p.extract&&norm(p.title+" "+p.extract.slice(0,300)).indexOf(a.key)>-1;})[0];
     var res=hit?{t:hit.title,e:trimText(hit.extract),u:hit.fullurl,i:hit.thumbnail&&hit.thumbnail.source}:null;
-    if(res)cache[a.name]=res;return res;
-  }).catch(function(){return null;});
+    if(res)done[a.name]=res;else delete cache[a.name];return res;
+  }).catch(function(){delete cache[a.name];return null;});
+  return cache[a.name];
+}
+function fill(a,r){
+  if(r){cE.textContent=r.e;cW.href=r.u;cW.querySelector(".hbc-go").textContent="Lire « "+r.t+" » ↗";if(r.i){cImg.src=r.i;cImg.hidden=false;}}
+  else{cE.textContent="Pas de résumé automatique pour cette fiche : la recherche Wikipédia s’ouvre dans un nouvel onglet.";cW.querySelector(".hbc-go").textContent="Chercher sur Wikipédia ↗";}
 }
 function openCard(a){
   lastFocus=document.activeElement;a.busy=1;card.dataset.who=a.name;
@@ -2892,11 +2897,8 @@ function openCard(a){
   cW.href=search;cE.textContent="Chargement du résumé…";
   card.hidden=false;document.documentElement.style.overflow="hidden";
   card.querySelector(".hbc-x").focus({preventScroll:true});
-  wiki(a).then(function(r){
-    if(card.hidden||card.dataset.who!==a.name)return;
-    if(r){cE.textContent=r.e;cW.href=r.u;cW.querySelector(".hbc-go").textContent="Lire « "+r.t+" » ↗";if(r.i){cImg.src=r.i;cImg.hidden=false;}}
-    else{cE.textContent="Pas de résumé automatique pour cette fiche : la recherche Wikipédia s’ouvre dans un nouvel onglet.";cW.querySelector(".hbc-go").textContent="Chercher sur Wikipédia ↗";}
-  });
+  if(done[a.name]){fill(a,done[a.name]);return;}
+  wiki(a).then(function(r){if(!card.hidden&&card.dataset.who===a.name)fill(a,r);});
 }
 function closeCard(){
   if(card.hidden)return;card.hidden=true;document.documentElement.style.overflow="";
@@ -2929,11 +2931,12 @@ function build(key){
     el.innerHTML='<span class="fl"><span class="bd"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#'+(it[9]||h.sym)+'"/></svg></span></span>';
     el.style.setProperty("--w","calc("+h.w+" * "+it[5]+")");el.style.setProperty("--c",it[2]);
     var a={el:el,name:it[0],detail:it[1],desc:it[8],key:it[6],q:it[7],k:h.k,busy:0,x:it[3],b:it[4]};place(a,a.x,a.b,0);scene.appendChild(el);animals.push(a);
-    el.addEventListener("click",function(e){e.stopPropagation();pick(a);});
+    el.addEventListener("click",function(e){e.stopPropagation();pick(a);});el.addEventListener("pointerdown",function(){wiki(a);});
     var c=document.createElement("button");c.type="button";c.textContent=it[0];chipsEl.appendChild(c);
-    c.addEventListener("click",function(){a.busy=1;var tb=h.k==="p"?9:10,d=h.k==="p"?1:Math.abs(50-a.x)/speed(a)+.3;go(a,50+rnd(-4,4),tb,d,function(){pick(a);});});
+    c.addEventListener("click",function(){pick(a);var tb=h.k==="p"?9:10,d=h.k==="p"?1:Math.abs(50-a.x)/speed(a)+.3;go(a,50+rnd(-4,4),tb,d);});c.addEventListener("pointerdown",function(){wiki(a);});
     if(!reduce)setTimeout(function(){think(a,g);},rnd(400,2000));
   });
+  var list=animals.slice();(function pre(){var a=list.shift();if(!a||g!==gen)return;wiki(a);setTimeout(pre,350);})();
   info.textContent=h.k==="v"?"Au poulailler : touchez le sol pour jeter du grain.":h.k==="p"?"Au pigeonnier : certains se perchent, d’autres descendent picorer.":h.k==="l"?"Au clapier : les lapins sautillent dans la prairie.":"À la mare : canards et oies se promènent au bord de l’eau.";
 }
 function swap(key){scene.classList.add("sw");setTimeout(function(){cur=key;build(key);scene.classList.remove("sw");},300);}
