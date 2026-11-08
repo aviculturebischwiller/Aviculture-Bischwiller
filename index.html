@@ -877,17 +877,15 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
 .orb::before{content:"";position:absolute;left:-38%;bottom:-6%;width:46%;aspect-ratio:1;border-radius:50%;background:#C9421C}
 </style>
 <style id="round2">
-/* ===== Texte plein écran qui défile (section épinglée) ===== */
-.stm{height:340vh;padding:0}
-.stm-pin{position:sticky;top:0;height:100vh;height:100svh;display:grid;align-items:center;padding:0 clamp(1.25rem,5vw,4rem)}
-.stm-l{grid-area:1/1;margin:0;max-width:16ch;font:600 clamp(2.6rem,10.5vw,9.5rem)/.88 var(--display);letter-spacing:-.065em}
-.stm-l em{font-style:normal;color:var(--accent)}
-.stm-n{position:absolute;left:clamp(1.25rem,5vw,4rem);bottom:clamp(1.5rem,5vh,3rem);font:600 1rem var(--text);letter-spacing:-.02em;opacity:.7}
-.stm:not(.stm-on){height:auto;padding:5rem 0}
-.stm:not(.stm-on) .stm-pin{position:static;height:auto;display:block}
-.stm:not(.stm-on) .stm-l{margin-bottom:2rem}
-.stm:not(.stm-on) .stm-n{display:none}
-@media (prefers-reduced-motion:reduce){.stm{height:auto!important;padding:5rem 0}.stm-pin{position:static;height:auto;display:block}.stm-l{opacity:1!important;translate:none!important;margin-bottom:2rem}.stm-n{display:none}}
+/* ===== Phrases fluides : les mots montent, les lignes dérivent avec la page ===== */
+.stm{position:relative;overflow:hidden;display:grid;gap:clamp(2rem,8vw,6rem);padding:clamp(5rem,12vw,9rem) 0}
+.stm-l{position:relative;z-index:1;margin:0;max-width:none;padding:0 clamp(1.25rem,5vw,4rem);font:600 clamp(2.8rem,12vw,10.5rem)/.9 var(--display);letter-spacing:-.065em;will-change:translate}
+.stm-l[data-dir="1"]{text-align:right}
+.sw{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .06em .12em 0;margin:0 -.06em -.12em 0}
+.si{display:inline-block;will-change:translate,rotate}
+.stm-l em{font-style:normal;color:var(--accent);background:linear-gradient(currentColor,currentColor) 0 94%/var(--u,100%) .07em no-repeat}
+.stm-ring{position:absolute;z-index:0;right:-14vw;top:6%;width:min(58vw,36rem);aspect-ratio:1;border-radius:50%;border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);pointer-events:none;will-change:translate,rotate}
+.stm-ring::after{content:"";position:absolute;top:-.65rem;left:50%;width:1.3rem;height:1.3rem;margin-left:-.65rem;border-radius:50%;background:var(--accent)}
 /* ===== Mode sombre ===== */
 .dm{position:fixed;z-index:60;left:1rem;bottom:calc(env(safe-area-inset-bottom,0px) + 1rem);font:600 .9rem var(--text);letter-spacing:-.01em;
   padding:.6rem 1rem;border-radius:999px;cursor:pointer;color:var(--fg);background:color-mix(in srgb,var(--bg) 78%,transparent);
@@ -1022,12 +1020,10 @@ html[data-theme=dark] .hb-info,html[data-theme=dark] .hb-lead{color:var(--fg)}
     </div>
 
     <section class="stm" data-tone="ink" aria-label="Notre passion">
-      <div class="stm-pin">
-        <p class="stm-l" style="--i:0">Des plumes, des voix, des <em>passionnés.</em></p>
-        <p class="stm-l" style="--i:1">Chaque race raconte une <em>histoire.</em></p>
-        <p class="stm-l" style="--i:2">Et si vous veniez la <em>découvrir ?</em></p>
-        <span class="stm-n" aria-hidden="true">Continuez à faire défiler ↓</span>
-      </div>
+      <div class="stm-ring" aria-hidden="true"></div>
+      <p class="stm-l" data-dir="-1">Des plumes, des voix, des <em>passionnés.</em></p>
+      <p class="stm-l" data-dir="1">Chaque race raconte une <em>histoire.</em></p>
+      <p class="stm-l" data-dir="-1">Et si vous veniez la <em>découvrir ?</em></p>
     </section>
 
     <section id="association" data-tone="yolk">
@@ -3101,24 +3097,53 @@ function set(d,save){root.dataset.theme=d?"dark":"light";b.setAttribute("aria-pr
 var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
 set(saved==="dark",false);
 b.addEventListener("click",function(){set(root.dataset.theme!=="dark",true);});
-/* section épinglée : une phrase après l'autre selon le défilement */
-var sec=document.querySelector(".stm");if(!sec||reduce)return;
-var ls=[].slice.call(sec.querySelectorAll(".stm-l")),n=ls.length;sec.classList.add("stm-on");
+})();
+</script>
+<script id="stm-js">
+(function(){
+var sec=document.querySelector(".stm");if(!sec||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+var ring=sec.querySelector(".stm-ring"),vh=innerHeight,vw=innerWidth;
+addEventListener("resize",function(){vh=innerHeight;vw=innerWidth;});
 function c(v,a,z){return Math.max(a,Math.min(z,v));}
-(function f(){
-  if(sec.getClientRects().length){
-    var r=sec.getBoundingClientRect(),p=c(-r.top/Math.max(1,r.height-innerHeight),0,1)*n;
-    ls.forEach(function(el,i){
-      var t=p-i,o,y;
-      if(t<0){o=0;y=70;}
-      else if(t<.22){o=t/.22;y=70*(1-o);}
-      else if(i===n-1||t<.78){o=1;y=0;}
-      else if(t<1){o=(1-t)/.22;y=-70*(1-o);}
-      else{o=0;y=-70;}
-      el.style.opacity=o.toFixed(3);el.style.translate="0 "+y.toFixed(1)+"px";
+var lines=[].slice.call(sec.querySelectorAll(".stm-l")).map(function(p){
+  p.setAttribute("aria-label",p.textContent.trim());
+  var words=[];
+  function wrap(node){
+    [].slice.call(node.childNodes).forEach(function(n){
+      if(n.nodeType===3){
+        var f=document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(t){
+          if(!t)return;
+          if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(" "));return;}
+          var w=document.createElement("span"),i=document.createElement("span");
+          w.className="sw";w.setAttribute("aria-hidden","true");i.className="si";i.textContent=t;w.appendChild(i);f.appendChild(w);words.push(i);
+        });
+        node.replaceChild(f,n);
+      }else if(n.nodeType===1){wrap(n);}
     });
   }
-  requestAnimationFrame(f);
+  wrap(p);
+  return {el:p,words:words,dir:+p.dataset.dir||1,em:p.querySelector("em"),lp:null,x:0};
+});
+(function frame(){
+  if(sec.getClientRects().length){
+    lines.forEach(function(L){
+      var r=L.el.getBoundingClientRect(),mid=r.top+r.height/2-vh/2;
+      var tp=c((vh*.92-r.top)/(vh*.6),0,1),tx=mid/vh*vw*.12*L.dir;
+      if(L.lp===null){L.lp=tp;L.x=tx;}else{L.lp+=(tp-L.lp)*.09;L.x+=(tx-L.x)*.09;}
+      L.el.style.translate=L.x.toFixed(1)+"px 0";
+      var m=L.words.length;
+      L.words.forEach(function(w,j){
+        var t=c(L.lp*(1+m*.2)-j*.2,0,1),e=1-Math.pow(1-t,3);
+        w.style.translate="0 "+((1-e)*108).toFixed(1)+"%";
+        w.style.rotate=((1-e)*7*L.dir).toFixed(2)+"deg";
+      });
+      if(L.em)L.em.style.setProperty("--u",(c(L.lp*1.4-.4,0,1)*100).toFixed(1)+"%");
+    });
+    if(ring){var sr=sec.getBoundingClientRect(),sm=sr.top+sr.height/2-vh/2;
+      ring.style.translate="0 "+(sm*-.25).toFixed(1)+"px";ring.style.rotate=(sm*-.12).toFixed(1)+"deg";}
+  }
+  requestAnimationFrame(frame);
 })();
 })();
 </script>
