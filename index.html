@@ -978,7 +978,15 @@ html[data-theme=dark] .hb-info,html[data-theme=dark] .hb-lead{color:var(--fg)}
 .hs-on .ch.in,.hs-on .st.in,.hs-on .dts li.in{opacity:1;translate:none}
 #v-histoire>section:last-child .wrap{width:calc(100% - 2.5rem);max-width:46rem;padding:clamp(1.6rem,5vw,3rem);border:2.5px dashed currentColor;border-radius:1.8rem;rotate:-1.2deg;transition:rotate .6s var(--ease)}
 #v-histoire>section:last-child .wrap:hover{rotate:0deg}
-@media (prefers-reduced-motion:reduce){.ch::before,.ch-yr,.ch-fig{transition:none}}
+.ch::after{content:"";position:absolute;left:-2.15rem;top:.5rem;width:1.1rem;height:1.1rem;border-radius:50%;border:2px solid var(--accent);opacity:0;pointer-events:none}
+.ch-yr{transform-origin:left center}
+.ch.hit .ch-yr{animation:yhit .75s both}
+.ch.hit::after{animation:ring .8s ease-out}
+@keyframes yhit{0%{scale:1.5;translate:0 -.12em}40%{scale:.93;translate:0 .03em}65%{scale:1.05;translate:0 0}100%{scale:1;translate:0 0}}
+@keyframes ring{from{opacity:.9;scale:1}to{opacity:0;scale:5}}
+.yp-y{display:inline-block}.yp-y.pop{animation:ypop .45s cubic-bezier(.2,1.5,.3,1)}
+@keyframes ypop{from{scale:1.6;translate:0 -.2em}}
+@media (prefers-reduced-motion:reduce){.ch::before,.ch-yr,.ch-fig{transition:none}.ch.hit .ch-yr,.ch.hit::after,.yp-y.pop{animation:none}}
 </style>
 </head>
 <body data-tone="shell" class="intro">
@@ -3204,14 +3212,15 @@ if(tl&&arts.length){
     yr.className="ch-yr";yr.setAttribute("aria-hidden","true");yr.textContent=m?m[1]:"…";a.dataset.y=m?m[1]:"…";a.insertBefore(yr,a.firstChild);
   });
   pill.addEventListener("click",function(){var a=arts[cur+1];if(a)a.scrollIntoView({behavior:rm?"auto":"smooth",block:"start"});});
+  function hit(n){if(rm)return;var a=arts[n];a.classList.remove("hit");void a.offsetWidth;a.classList.add("hit");setTimeout(function(){a.classList.remove("hit");},900);try{navigator.vibrate&&navigator.vibrate(10);}catch(e){}}
   function upd(){busy=false;
     if(root.hidden){pill.hidden=true;return;}
     var vh=innerHeight,r=tl.getBoundingClientRect(),n=-1;
     tl.style.setProperty("--lp",Math.min(1,Math.max(0,(vh*.6-r.top)/r.height)).toFixed(3));
     arts.forEach(function(a,i){if(a.getBoundingClientRect().top<vh*.55)n=i;});
-    if(n!==cur){cur=n;arts.forEach(function(a,i){a.classList.toggle("act",i===n);});}
+    if(n!==cur){cur=n;arts.forEach(function(a,i){a.classList.toggle("act",i===n);});if(n>=0)hit(n);}
     var vis=n>=0&&r.top<vh*.5&&r.bottom>vh*.45;pill.hidden=!vis;
-    if(vis){py.textContent=arts[n].dataset.y;pn.textContent=(n+1)+"/"+arts.length;pa.hidden=n===arts.length-1;}
+    if(vis){if(py.textContent!==arts[n].dataset.y){py.textContent=arts[n].dataset.y;if(!rm){py.classList.remove("pop");void py.offsetWidth;py.classList.add("pop");}}pn.textContent=(n+1)+"/"+arts.length;pa.hidden=n===arts.length-1;}
   }
   function req(){if(!busy){busy=true;requestAnimationFrame(upd);}}
   addEventListener("scroll",req,{passive:true});addEventListener("resize",req);
