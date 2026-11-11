@@ -892,22 +892,10 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
 .stm-l em{font-style:normal;color:var(--accent);background:linear-gradient(currentColor,currentColor) 0 94%/var(--u,100%) .07em no-repeat}
 .stm-ring{position:absolute;z-index:0;right:-14vw;top:6%;width:min(58vw,36rem);aspect-ratio:1;border-radius:50%;border:2px solid color-mix(in srgb,var(--fg) 28%,transparent);pointer-events:none;will-change:translate,rotate}
 .stm-ring::after{content:"";position:absolute;top:-.65rem;left:50%;width:1.3rem;height:1.3rem;margin-left:-.65rem;border-radius:50%;background:var(--accent)}
-/* ===== Mode sombre ===== */
-.dm{position:fixed;z-index:60;left:1rem;bottom:calc(env(safe-area-inset-bottom,0px) + 1rem);font:600 .9rem var(--text);letter-spacing:-.01em;
-  padding:.6rem 1rem;border-radius:999px;cursor:pointer;color:var(--fg);background:color-mix(in srgb,var(--bg) 78%,transparent);
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1.5px solid color-mix(in srgb,var(--fg) 25%,transparent);
-  transition:background-color .9s,color .9s,border-color .9s}
-.dm:hover{border-color:var(--fg)}
-html[data-theme=dark] body,html[data-theme=dark] body[data-tone]{--bg:#0E1914;--fg:#F6F1E7;--accent:#FFC83D;--accent-fg:#0E1914}
-html[data-theme=dark] body[data-tone="yolk"]{--bg:#FFC83D;--fg:#0E1914;--accent:#0E1914;--accent-fg:#FFC83D}
-html[data-theme=dark] body[data-tone="ink"]{--bg:#1F4A34;--fg:#F6F1E7;--accent:#FFC83D;--accent-fg:#0E1914}
-html[data-theme=dark] body[data-tone="comb"]{--bg:#C9421C;--fg:#FFF6E8;--accent:#FFF6E8;--accent-fg:#173626}
-html[data-theme=dark] body[data-tone="sage"]{--bg:#16281E;--fg:#BFD8B8;--accent:#BFD8B8;--accent-fg:#16281E}
-html[data-theme=dark] .xin,html[data-theme=dark] .xs h2{color:var(--fg)}
-html[data-theme=dark] .hb button.pill,html[data-theme=dark] .hb-chips button{color:var(--fg);border-color:color-mix(in srgb,var(--fg) 30%,transparent)}
-html[data-theme=dark] .hb-tabs{background:color-mix(in srgb,var(--fg) 12%,transparent)}
-html[data-theme=dark] .hb button.pill[aria-pressed=true],html[data-theme=dark] .hb-chips button:hover{background:var(--fg);color:var(--bg)}
-html[data-theme=dark] .hb-info,html[data-theme=dark] .hb-lead{color:var(--fg)}
+/* ===== Messages de l’exposition (avant / pendant / après) ===== */
+.cd-m{margin:.7rem 0 0;font-weight:600;max-width:34rem}
+.cd.done .cd-t{font:800 clamp(1.6rem,5vw,2.4rem)/1.1 var(--display);letter-spacing:-.02em;opacity:1;margin:0 0 .5rem}
+.cd.done .cd-m{font-size:1.1rem;margin:0}
 </style>
 <style id="intro3">
 #intro{background:#173626}
@@ -2557,17 +2545,28 @@ html[data-theme=dark] .hb-info,html[data-theme=dark] .hb-lead{color:var(--fg)}
 
 <script>
 (function(){
-  var start=new Date("2026-11-14T14:00:00+01:00").getTime(),end=new Date("2026-11-15T16:30:00+01:00").getTime();
+  function T(x){return new Date(x).getTime();}
+  var SAM={a:T("2026-11-14T14:00:00+01:00"),b:T("2026-11-14T20:00:00+01:00")},
+      DIM={a:T("2026-11-15T09:00:00+01:00"),b:T("2026-11-15T16:30:00+01:00")};
   var boxes=[].slice.call(document.querySelectorAll("[data-cd]"));
+  boxes.forEach(function(b){if(!b.querySelector(".cd-m")){var p=document.createElement("p");p.className="cd-m";b.appendChild(p);}});
   function pad(n){return n<10?"0"+n:""+n;}
+  function setT(el,x){if(el&&el.textContent!==x)el.textContent=x;}
+  function state(now){
+    if(now>=DIM.b)return{st:"after",t:"La dernière exposition est terminée.",m:"On se retrouve en janvier 2027 pour l’exposition de pigeons !"};
+    if(now>=SAM.a&&now<SAM.b)return{st:"open",t:"L’exposition est ouverte !",m:"Venez voir nos beaux sujets : volailles, pigeons et lapins de race. Ouvert jusqu’à 20 h aujourd’hui, entrée libre, restauration sur place."};
+    if(now>=DIM.a&&now<DIM.b)return{st:"open",t:"L’exposition est ouverte !",m:"Venez voir nos beaux sujets : volailles, pigeons et lapins de race. Ouvert jusqu’à 16 h 30 aujourd’hui, entrée libre, restauration sur place."};
+    if(now>=SAM.b)return{st:"wait",target:DIM.a,t:"Réouverture dans",m:"Rendez-vous demain, dimanche 15 novembre, dès 9 h."};
+    return{st:"wait",target:SAM.a,t:"Ouverture dans",m:"Rendez-vous samedi 14 novembre à 14 h, puis dimanche 15 novembre à 9 h. Entrée libre !"};
+  }
   function tick(){
-    var now=Date.now(),left=start-now;
+    var now=Date.now(),s=state(now);
     boxes.forEach(function(b){
-      var t=b.querySelector(".cd-t");
-      if(left<=0){b.classList.add("done");t.textContent=now<end?"L’exposition est en cours, venez nombreux !":"Merci à tous les visiteurs, à l’année prochaine !";return;}
-      b.classList.remove("done");t.textContent="Ouverture dans";
-      var v={d:Math.floor(left/864e5),h:Math.floor(left%864e5/36e5),m:Math.floor(left%36e5/6e4),s:Math.floor(left%6e4/1e3)};
-      for(var k in v){var e=b.querySelector('[data-u="'+k+'"]'),x=pad(v[k]);if(e.textContent!==x){e.textContent=x;e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump");}}
+      setT(b.querySelector(".cd-t"),s.t);setT(b.querySelector(".cd-m"),s.m);
+      b.classList.toggle("done",s.st!=="wait");
+      if(s.st!=="wait")return;
+      var left=s.target-now,v={d:Math.floor(left/864e5),h:Math.floor(left%864e5/36e5),m:Math.floor(left%36e5/6e4),s:Math.floor(left%6e4/1e3)};
+      for(var k in v){var e=b.querySelector('[data-u="'+k+'"]'),x=pad(v[k]);if(e&&e.textContent!==x){e.textContent=x;e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump");}}
     });
   }
   tick();setInterval(tick,1000);
@@ -3111,19 +3110,6 @@ if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
 var c=0;(function f(){var y=Math.min(scrollY,innerHeight*1.5);c+=(y-c)*.12;
 o.style.translate="0 "+(c*.45).toFixed(1)+"px";o.style.rotate=(c*.05-8).toFixed(2)+"deg";o.style.scale=(1+c/innerHeight*.35).toFixed(3);
 requestAnimationFrame(f);})();
-})();
-</script>
-<script id="round2-js">
-(function(){
-var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-/* mode sombre */
-var root=document.documentElement,b=document.createElement("button");
-b.type="button";b.className="dm";document.body.appendChild(b);
-function set(d,save){root.dataset.theme=d?"dark":"light";b.setAttribute("aria-pressed",d);b.textContent=d?"☀ Mode clair":"☾ Mode sombre";
-  if(save){try{localStorage.setItem("theme",d?"dark":"light");}catch(e){}}}
-var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
-set(saved==="dark",false);
-b.addEventListener("click",function(){set(root.dataset.theme!=="dark",true);});
 })();
 </script>
 <script id="stm-js">
