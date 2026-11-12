@@ -975,6 +975,8 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
 .yp-y{display:inline-block}.yp-y.pop{animation:ypop .45s cubic-bezier(.2,1.5,.3,1)}
 @keyframes ypop{from{scale:1.6;translate:0 -.2em}}
 @media (prefers-reduced-motion:reduce){.ch::before,.ch-yr,.ch-fig{transition:none}.ch.hit .ch-yr,.ch.hit::after,.yp-y.pop{animation:none}}
+#f-aide label.opt{border-radius:1.1rem;line-height:1.3}
+#f-aide input::placeholder,#f-aide textarea::placeholder{color:inherit;opacity:.65;font-weight:500}
 </style>
 </head>
 <body data-tone="shell" class="intro">
@@ -1264,26 +1266,26 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
     <section data-tone="sage" style="padding-top:clamp(7rem,14vw,10rem)">
       <div class="wrap">
         <a class="back" href="#accueil">Retour à l’accueil</a>
-        <h2>Une question ? Écrivez-nous</h2>
-        <p class="sub">Conseil d’élevage, achat d’un animal, souvenirs à partager… Choisissez votre sujet et laissez-nous un moyen de vous répondre : votre message part directement à l’association.</p>
+        <h2>Écrivez-nous, on vous répond</h2>
+        <p class="sub">Un conseil pour vos poules, un animal à acheter, de vieilles photos du club ? Racontez-nous en quelques lignes : votre message est transmis directement à l’association.</p>
         <form id="f-aide" class="panel" data-subject="Demande d’aide">
-          <label for="a-nom">Nom</label><input id="a-nom" name="nom" autocomplete="family-name" required>
-          <label for="a-prenom">Prénom</label><input id="a-prenom" name="prenom" autocomplete="given-name" required>
+          <label for="a-nom">Votre nom</label><input id="a-nom" name="nom" autocomplete="family-name" required>
+          <label for="a-prenom">Votre prénom</label><input id="a-prenom" name="prenom" autocomplete="given-name" required>
+          <label for="a-contact">Votre téléphone ou e-mail</label><input id="a-contact" name="contact" placeholder="06 12 34 56 78 ou nom@exemple.fr" required>
+          <label for="a-msg">Votre message</label><textarea id="a-msg" name="msg" placeholder="Dites-nous ce que vous cherchez, posez votre question ou racontez votre souvenir…"></textarea>
           <fieldset>
-            <legend>De quoi s’agit-il ?</legend>
+            <legend>Sujet de votre message</legend>
             <label class="opt"><input type="radio" name="motif" value="Conseils sur l’élevage" checked>Un conseil sur l’élevage</label>
             <label class="opt"><input type="radio" name="motif" value="Demande pour l’achat d’un animal">Acheter un animal</label>
-            <label class="opt"><input type="radio" name="motif" value="J’ai de vieilles photos, souvenirs, diplômes, anciens présidents">Partager des photos, souvenirs, diplômes ou des infos sur d’anciens présidents</label>
+            <label class="opt"><input type="radio" name="motif" value="J’ai de vieilles photos, souvenirs, diplômes, anciens présidents">Photos et souvenirs du club</label>
             <label class="opt"><input type="radio" name="motif" value="Autres">Autre question</label>
           </fieldset>
-          <label for="a-contact">Téléphone ou e-mail</label><input id="a-contact" name="contact" required>
-          <label for="a-msg">Votre message</label><textarea id="a-msg" name="msg"></textarea>
           <label class="consent" for="a-consent"><input type="checkbox" id="a-consent" name="consent" required><span>J’accepte que l’association utilise ces informations pour me répondre (voir la <a href="#confidentialite" target="_blank" rel="noopener">politique de confidentialité</a>).</span></label>
           
           <button class="btn" type="submit">Envoyer mon message</button>
           <div class="out" hidden><p><strong>Votre message est prêt dans Gmail.</strong> Rien ne s’est ouvert ? Touchez « Ouvrir Gmail » ou copiez le message.</p><pre></pre><a class="btn mail">Ouvrir Gmail</a><button type="button" class="btn alt copy">Copier le message</button></div>
         </form>
-        <p class="fine">Un animal est malade ? Consultez d’abord un vétérinaire. Pour tout le reste, nous lisons chaque message avec plaisir.</p>
+        <p class="fine">Un animal est malade ? Consultez d’abord un vétérinaire. Vous préférez parler à quelqu’un ? Appelez Michel Hattermann, président du club : <a href="tel:+33689087707">06 89 08 77 07</a>.</p>
       </div>
     </section>
   </div>
