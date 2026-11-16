@@ -60,6 +60,8 @@ textarea{min-height:5rem;resize:vertical}
 .list-i{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.7rem 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .list-i .b{display:flex;gap:.4rem}
 .note{font-size:.92rem;color:#444;margin:.5rem 0 0}
+a.btn{display:inline-block;text-decoration:none;text-align:center}.btn.sm{padding:.35rem .85rem;font-size:.9rem}
+.fn{min-width:0;overflow-wrap:anywhere}.fn small{color:#444}
 </style>
 </head>
 <body>
@@ -83,12 +85,13 @@ textarea{min-height:5rem;resize:vertical}
 <!-- Espace connecté -->
 <section id="vApp" hidden>
   <header class="top">
-    <h1>Calendrier de la société</h1>
+    <h1>Espace licenciés</h1>
     <div class="who"><span id="who"></span><button class="alt sm" id="bOut">Se déconnecter</button></div>
   </header>
 
   <div class="tabs" id="tabs" hidden role="tablist">
     <button role="tab" data-t="cal" aria-selected="true">Calendrier</button>
+    <button role="tab" data-t="doc" aria-selected="false">Documents</button>
     <button role="tab" data-t="ev" aria-selected="false">Gérer les événements</button>
     <button role="tab" data-t="us" aria-selected="false">Gérer les comptes</button>
   </div>
@@ -104,6 +107,20 @@ textarea{min-height:5rem;resize:vertical}
       <div id="listNext"></div>
       <details id="pastBox" style="margin-top:1.4rem" hidden><summary style="cursor:pointer;font-weight:600">Événements passés</summary><div id="listPast"></div></details>
     </div>
+  </div>
+
+  <div id="tDoc" hidden>
+    <div class="panel" id="pDoc" hidden>
+      <h2>Ajouter des documents</h2>
+      <form id="fDoc">
+        <label for="dFile">Fichiers (10 Mo maximum chacun)</label>
+        <input id="dFile" type="file" multiple required>
+        <div class="actions"><button type="submit">Envoyer</button></div>
+        <p class="note">Tous les licenciés connectés pourront ouvrir ces documents. Seul l’administrateur peut en ajouter ou en supprimer.</p>
+        <p class="err" id="eDoc" role="alert"></p>
+      </form>
+    </div>
+    <h2>Documents</h2><div id="fList"></div>
   </div>
 
   <div id="tEv" hidden>
@@ -154,7 +171,7 @@ var API = "https://script.google.com/macros/s/AKfycbzXZheIRaaCH-msaG_6Hy6JaYqNBY
 /* ========================================================================== */
 (function(){
 var $=function(i){return document.getElementById(i)};
-var token=sessionStorage.getItem("sab_t")||"",role="",events=[],users=[],cur=new Date(),sel="";
+var token=sessionStorage.getItem("sab_t")||"",role="",events=[],users=[],files=[],cur=new Date(),sel="";
 cur.setDate(1);
 var MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 var MC=["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
@@ -186,14 +203,15 @@ function start(){
   call("events").then(function(r){
     if(!r.ok){if(!r.expired)logout();return;}
     role=r.role;events=r.events;$("who").textContent="Connecté : "+r.user;
-    $("tabs").hidden=role!=="admin"&&role!=="editeur";$("tabs").querySelector('[data-t="us"]').hidden=role!=="admin";show("app");tab("cal");render();
+    $("tabs").hidden=false;$("tabs").querySelector('[data-t="ev"]').hidden=role!=="admin"&&role!=="editeur";$("tabs").querySelector('[data-t="us"]').hidden=role!=="admin";$("pDoc").hidden=role!=="admin";show("app");tab("cal");render();
+    call("files").then(function(f){if(f.ok){files=f.files||[];renderFiles();}else if(!f.expired)$("fList").innerHTML='<p class="empty">Les documents ne sont pas disponibles pour le moment.</p>';});
     if(role==="admin")call("users").then(function(u){if(u.ok){users=u.users;renderUsers();}});
   });
 }
 
 /* ----- Onglets ----- */
 function tab(t){
-  $("tCal").hidden=t!=="cal";$("tEv").hidden=t!=="ev";$("tUs").hidden=t!=="us";
+  $("tCal").hidden=t!=="cal";$("tDoc").hidden=t!=="doc";$("tEv").hidden=t!=="ev";$("tUs").hidden=t!=="us";
   [].forEach.call($("tabs").querySelectorAll("button"),function(b){b.setAttribute("aria-selected",b.dataset.t===t)});
 }
 $("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(b)tab(b.dataset.t)});
@@ -245,6 +263,36 @@ $("evAdmin").addEventListener("click",function(e){
     $("eId").value=v.id;$("eTitre").value=v.titre;$("eType").value=v.type;$("eDate").value=v.date;$("eFin").value=v.fin;$("eHo").value=v.ho||"";$("eHl").value=v.hl||"";$("eLieu").value=v.lieu;$("eDesc").value=v.description;
     $("evTitle").textContent="Modifier l’événement";$("eCancel").hidden=false;$("fEv").scrollIntoView({behavior:"smooth"});}
   if(b.dataset.del&&confirm("Supprimer cet événement ?"))call("delEvent",{id:b.dataset.del}).then(function(r){if(r.ok){events=r.events;render();}else alert(r.error)});
+});
+
+/* ----- Documents ----- */
+var MAXB=10*1024*1024;
+function fmtSize(n){n=+n||0;return n<1024?n+" o":n<1048576?Math.round(n/1024)+" Ko":(n/1048576).toFixed(1).replace(".",",")+" Mo"}
+function fmtDate(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");return m?m[3]+"/"+m[2]+"/"+m[1]:""}
+function renderFiles(){
+  $("fList").innerHTML=files.length?files.map(function(f){
+    var ok=/^https:\/\//.test(f.url||"");
+    return '<div class="list-i"><span class="fn"><b>'+esc(f.name)+'</b><br><small>'+fmtSize(f.size)+(f.date?" – ajouté le "+fmtDate(f.date):"")+'</small></span><span class="b">'+(ok?'<a class="btn sm" href="'+esc(f.url)+'" target="_blank" rel="noopener">Ouvrir</a>':"")+(role==="admin"?'<button class="danger sm" data-fdel="'+esc(f.id)+'">Supprimer</button>':"")+'</span></div>';
+  }).join(""):'<p class="empty">Aucun document pour le moment.</p>';
+}
+function readB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1]||"")};r.onerror=function(){rej()};r.readAsDataURL(f)})}
+$("fDoc").addEventListener("submit",function(e){
+  e.preventDefault();var fl=[].slice.call($("dFile").files),b=e.target.querySelector("button"),m=$("eDoc"),i=0;
+  if(!fl.length)return;
+  for(var k=0;k<fl.length;k++)if(fl[k].size>MAXB){m.className="err";m.textContent="« "+fl[k].name+" » dépasse 10 Mo.";return;}
+  b.disabled=true;
+  (function next(){
+    if(i>=fl.length){b.disabled=false;$("fDoc").reset();m.className="err ok";m.textContent=fl.length>1?"Documents ajoutés.":"Document ajouté.";return;}
+    var f=fl[i];m.className="err";m.textContent="Envoi de « "+f.name+" » ("+(i+1)+" sur "+fl.length+")…";
+    readB64(f).then(function(d){return call("uploadFile",{name:f.name,mime:f.type||"application/octet-stream",data:d})}).then(function(r){
+      if(!r.ok){b.disabled=false;m.textContent=r.error||"L’envoi a échoué.";return;}
+      files=r.files||[];renderFiles();i++;next();
+    }).catch(function(){b.disabled=false;m.textContent="Impossible de lire « "+f.name+" ».";});
+  })();
+});
+$("fList").addEventListener("click",function(e){
+  var b=e.target.closest("[data-fdel]");if(!b)return;
+  if(confirm("Supprimer ce document pour tous les licenciés ?"))call("delFile",{id:b.dataset.fdel}).then(function(r){if(r.ok){files=r.files||[];renderFiles();}else alert(r.error||"Suppression impossible.")});
 });
 
 /* ----- Admin : comptes ----- */
