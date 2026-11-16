@@ -19,6 +19,7 @@
 .expo-act{display:flex;flex-wrap:wrap;gap:.7rem;margin:1.6rem 0 0}.expo-act .btn{margin:0;padding:.8rem 1.35rem;font-size:1rem}.expo-act .btn[hidden]{display:none}
 .legal-links{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;margin-top:.6rem}
 .consent{display:flex!important;gap:.7rem;align-items:flex-start;font-weight:500!important;font-size:1rem}.consent input{width:1.4rem!important;height:1.4rem;margin:.15rem 0 0!important;flex:none;accent-color:var(--accent)}
+.cl.big{padding:2.6rem 1.3rem;border-radius:1.8rem}.cl.big .ic{font-size:4.8rem}.cl.big h3{font-size:clamp(2rem,8vw,3.6rem);line-height:1.02;letter-spacing:-.02em;margin:.6rem 0 .8rem}.cl.big p{font-size:1.15rem}
 .expo{position:relative;overflow:hidden}.expo .wrap{position:relative;z-index:1}
 .pg-badge{display:inline-flex;align-items:center;gap:.5rem;margin:0 0 1rem;padding:.5rem 1.1rem .5rem .8rem;border-radius:999px;background:var(--yolk);color:var(--ink);font:800 .95rem var(--text);letter-spacing:.08em;text-transform:uppercase}
 .expo .pg-lede{font-size:clamp(1.2rem,3.4vw,1.6rem);line-height:1.35;font-weight:500;max-width:34rem;margin:0 0 1.6rem}
@@ -1197,7 +1198,7 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
         <h2>En bref</h2>
         <ul class="feed">
           <li class="rv"><a class="fi" href="#exposition"><span class="fi-tag">Exposition</span><h3>Exposition de pigeons les 16 et 17 janvier</h3><p>Rendez-vous salle Adrien Zeller, à Bischwiller, pour découvrir les pigeons de race.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
-          <li class="rv" style="--d:.06"><a class="fi" href="#inscription"><span class="fi-tag">Inscriptions</span><h3>Exposez vos plus beaux sujets</h3><p>Un formulaire suffit : nom, adresse, race et nombre d’animaux.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
+          <li class="rv" style="--d:.06"><a class="fi" href="#inscription"><span class="fi-tag">Inscriptions</span><h3>Inscriptions fermées pour le moment</h3><p>Revenez sur cette page plus tard pour inscrire vos sujets.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
           <li class="rv" style="--d:.12"><button class="fi" type="button" data-hen><span class="fi-tag">Poule savante</span><h3>Une question sur l’élevage ?</h3><p>Elle répond sur l’exposition, l’incubation, l’alimentation, le poulailler…</p><span class="fi-go" aria-hidden="true">↗</span></button></li>
           <li class="rv" style="--d:.18"><a class="fi" href="#aide"><span class="fi-tag">Histoire</span><h3>Des pages manquent à notre histoire</h3><p>Vieilles photos, souvenirs, diplômes : écrivez-nous.</p><span class="fi-go" aria-hidden="true">↗</span></a></li>
         </ul>
@@ -1307,6 +1308,7 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
         <a class="back" href="#accueil">Retour à l’accueil</a>
         <h2>Inscription à l’exposition</h2>
         <p class="sub">Exposition de pigeons, samedi 16 et dimanche 17 janvier 2027, salle Adrien Zeller à Bischwiller. Remplissez ce formulaire pour inscrire vos animaux.</p>
+        <div class="cl big" id="cl" hidden role="status"><span class="ic" aria-hidden="true">🔒</span><h3>Les inscriptions sont fermées pour le moment</h3><p>Revenez sur cette page plus tard. Pour toute question, vous pouvez contacter le président du club, Michel Hattermann.</p><div class="row"><a class="btn" href="tel:+33689087707">Appeler le 06 89 08 77 07</a><a class="btn alt" href="mailto:hattermannmichel@gmail.com">Écrire un e-mail</a></div></div>
         <div class="nx" id="nx" hidden><span class="fl" style="left:8%;animation-delay:0s" aria-hidden="true">🥚</span><span class="fl" style="left:25%;animation-delay:1.5s" aria-hidden="true">🪶</span><span class="fl" style="left:45%;animation-delay:3s" aria-hidden="true">🐣</span><span class="fl" style="left:65%;animation-delay:.8s" aria-hidden="true">🪶</span><span class="fl" style="left:85%;animation-delay:2.2s" aria-hidden="true">🥚</span><span class="hen" aria-hidden="true">🐓</span><h3>Merci à tous les exposants !</h3><p>L’exposition est terminée. Les inscriptions seront ouvertes à la prochaine exposition : revenez sur cette page pour vous inscrire.</p></div>
         <form id="f-inscription" class="panel" data-subject="Inscription à l’exposition">
           <label for="i-nom">Nom</label><input id="i-nom" name="nom" autocomplete="family-name" required>
@@ -2187,7 +2189,7 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
          if(f.resto){P.push("Je n’ai pas encore d’information sur la restauration : elle sera précisée sur le site.");srcs=SRC_AGENDA;}
        }
        if(f.quoi)P.push("Il s’agit d’une exposition de pigeons : les éleveurs y présentent leurs plus beaux sujets au public et à un jury.");
-       if(f.inscr){P.push("Pour exposer vos animaux, remplissez le formulaire d’inscription du site (nom, adresse, téléphone, race et nombre d’animaux).");acts.push({t:"S’inscrire à l’exposition",href:"#inscription"});}
+       if(f.inscr){P.push("Les inscriptions sont fermées pour le moment : revenez sur la page Inscription plus tard.");acts.push({t:"S’inscrire à l’exposition",href:"#inscription"});}
        if(f.vente)P.push("Je n’ai pas d’information sur la vente d’animaux pendant l’exposition : posez la question aux éleveurs via la page Aide.");
        if(f.vente)acts.push({t:"Page Aide",href:"#aide",alt:true});
        if(!acts.length)acts=A_EXPO;else acts.push({t:"Voir l’exposition",href:"#exposition",alt:true});
@@ -2196,7 +2198,7 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
      }},
     {id:"inscr",kw:{"inscri*":5,exposant:4,engager:3,engagement:3,participer:2,exposer:3},
      f:["Quand est l’exposition ?","Où se trouve la salle ?"],
-     r:function(){return {paras:["Pour exposer vos sujets, remplissez le formulaire d’inscription du site (nom, adresse, téléphone, race et nombre d’animaux). L’exposition de pigeons a lieu les 16 et 17 janvier 2027 à Bischwiller. "+expoStatus()],
+     r:function(){return {paras:["Les inscriptions sont fermées pour le moment. L’exposition de pigeons a lieu les 16 et 17 janvier 2027 à Bischwiller. "+expoStatus()],
        actions:[{t:"S’inscrire à l’exposition",href:"#inscription"},{t:"Infos exposition",href:"#exposition",alt:true}]};}},
 
     /* ===== la société ===== */
@@ -2640,10 +2642,11 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
 </script>
 <script>
 (function(){
+var CLOSED=true; /* mettre false pour rouvrir les inscriptions */
 var END=Date.parse("2027-01-17T23:59:59+01:00");
-var f=document.getElementById("f-inscription"),nx=document.getElementById("nx"),sub=f.parentNode.querySelector(".sub");
-function state(){return Date.now()<=END?"open":"done"}
-function tick(){var st=state();nx.hidden=st!=="done";f.hidden=st!=="open";sub.hidden=st==="done";[].forEach.call(f.elements,function(e){e.disabled=st!=="open"});}
+var f=document.getElementById("f-inscription"),cl=document.getElementById("cl"),nx=document.getElementById("nx"),sub=f.parentNode.querySelector(".sub");
+function state(){return Date.now()>END?"done":(CLOSED?"closed":"open")}
+function tick(){var st=state();cl.hidden=st!=="closed";nx.hidden=st!=="done";f.hidden=st!=="open";sub.hidden=st!=="open";[].forEach.call(f.elements,function(e){e.disabled=st!=="open"});}
 document.addEventListener("submit",function(e){if(e.target===f&&state()!=="open"){e.preventDefault();e.stopImmediatePropagation();tick();}},true);
 tick();setInterval(tick,30000);
 })();
