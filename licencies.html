@@ -26,8 +26,36 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 label{display:block;font-weight:600;margin:.8rem 0 .25rem}
 input,select,textarea{width:100%;font:inherit;padding:.7rem .8rem;border:2px solid var(--ink);border-radius:.7rem;background:#fff;color:var(--ink)}
 textarea{min-height:5rem;resize:vertical}
-.login{max-width:26rem;margin:8vh auto 0}
-.login h1{margin-bottom:.4rem}.login .btn,.login button{width:100%;margin-top:1.3rem;background:var(--comb);border-color:var(--comb);color:#fff}
+body:has(#vLogin:not([hidden])){background:radial-gradient(circle at 15% 8%,rgba(255,194,26,.38),transparent 45%),radial-gradient(circle at 90% 95%,rgba(185,212,174,.6),transparent 50%),var(--shell)}
+.login{max-width:26rem;margin:5vh auto 0}
+.lg-card{background:#fff;border:2px solid var(--ink);border-radius:1.4rem;padding:1.8rem 1.5rem 1.4rem;box-shadow:6px 6px 0 var(--ink);animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.lg-card h1{font-size:clamp(1.9rem,8vw,2.5rem);margin:.1rem 0 .5rem}.lg-sub{margin:0 0 .4rem;color:#444;font-size:.98rem}
+.egg{width:3rem;height:3.8rem;margin-bottom:.7rem;background:var(--yolk);border:2px solid var(--ink);border-radius:50% 50% 50% 50%/62% 62% 38% 38%;position:relative;transform-origin:50% 100%;animation:wob 4.5s ease-in-out 1.2s infinite}
+.egg:after{content:"";position:absolute;left:.65rem;top:.75rem;width:.6rem;height:1rem;border-radius:50%;background:rgba(255,255,255,.7);transform:rotate(18deg)}
+.lg-card.busy .egg{animation:wob .5s ease-in-out infinite}
+.pw{position:relative}.pw input{padding-right:5.2rem}.pw button{position:absolute;right:.45rem;top:.5rem}
+button.go{width:100%;margin-top:1.3rem;background:var(--comb);border-color:var(--comb);color:#fff}
+button.go.load span:after{content:"";display:inline-block;width:1em;height:1em;margin-left:.6rem;border:2px solid #fff;border-right-color:transparent;border-radius:50%;vertical-align:-.15em;animation:spin .7s linear infinite}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes wob{0%,82%,100%{transform:rotate(0)}87%{transform:rotate(-8deg)}93%{transform:rotate(6deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.in{animation:pop .32s cubic-bezier(.2,.8,.2,1) both}
+button,.btn,input,select{transition:transform .15s,background-color .2s,color .2s,box-shadow .2s,border-color .2s}
+button:not(:disabled):hover,.btn:hover{transform:translateY(-2px)}
+button:not(:disabled):active,.btn:active{transform:scale(.96)}
+input:focus,select:focus{box-shadow:0 0 0 4px rgba(255,194,26,.55)}
+.list-i{transition:background-color .2s}.list-i:hover{background:rgba(255,194,26,.18)}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin-bottom:1.1rem}.crumbs button{padding:.3rem .85rem;font-size:.95rem}.crumbs i{font-style:normal;opacity:.5}
+.inl{display:flex;gap:.6rem}.inl input{flex:1;min-width:0}
+.fm{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr))}.fm .empty{grid-column:1/-1}
+.fm-i{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.45rem;padding:1rem .8rem;background:#fff;border:2px solid var(--ink);border-radius:1rem;animation:pop .35s ease both;transition:transform .18s,box-shadow .18s}
+.fm-i:hover{transform:translateY(-3px);box-shadow:0 5px 0 var(--ink)}
+.fm-i svg{width:3.4rem;height:2.9rem}.fm-n{font-weight:700;line-height:1.25;overflow-wrap:anywhere}.fm-i small{color:#444}
+.fm-open{background:none;border:0;color:inherit;display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:0;border-radius:.6rem;max-width:100%}
+.ft{width:2.9rem;height:3.4rem;border:2px solid var(--ink);border-radius:.5rem;background:var(--sage);display:grid;place-items:center;font:800 .8rem var(--text)}
+.acts{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-top:auto}.fm-i select{padding:.3rem;font-size:.85rem;border-width:2px;max-width:100%}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 .err{color:var(--comb);font-weight:600;min-height:1.5rem;margin:.8rem 0 0}
 .ok{color:#1f6b2e;font-weight:600}
 .tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
@@ -69,17 +97,20 @@ a.btn{display:inline-block;text-decoration:none;text-align:center}.btn.sm{paddin
 
 <!-- Connexion -->
 <section id="vLogin" class="login" hidden>
-  <h1>Espace licenciés</h1>
-  <p>Réservé aux membres de la Société d’Aviculture de Bischwiller.</p>
-  <form id="fLogin" autocomplete="on">
-    <label for="u">Identifiant</label>
-    <input id="u" name="username" autocomplete="username" autocapitalize="none" required>
-    <label for="p">Mot de passe</label>
-    <input id="p" name="password" type="password" autocomplete="current-password" required>
-    <button type="submit">Se connecter</button>
-    <p class="err" id="eLogin" role="alert"></p>
-  </form>
-  <p><a href="index.html">Retour au site</a></p>
+  <div class="lg-card">
+    <div class="egg" aria-hidden="true"></div>
+    <h1>Espace licenciés</h1>
+    <p class="lg-sub">Réservé aux membres de la Société d’Aviculture de Bischwiller.</p>
+    <form id="fLogin" autocomplete="on">
+      <label for="u">Identifiant</label>
+      <input id="u" name="username" autocomplete="username" autocapitalize="none" required>
+      <label for="p">Mot de passe</label>
+      <div class="pw"><input id="p" name="password" type="password" autocomplete="current-password" required><button type="button" class="alt sm" id="pwT" aria-label="Afficher le mot de passe">Voir</button></div>
+      <button type="submit" class="go"><span>Se connecter</span></button>
+      <p class="err" id="eLogin" role="alert"></p>
+    </form>
+    <p><a href="index.html">Retour au site</a></p>
+  </div>
 </section>
 
 <!-- Espace connecté -->
@@ -110,17 +141,20 @@ a.btn{display:inline-block;text-decoration:none;text-align:center}.btn.sm{paddin
   </div>
 
   <div id="tDoc" hidden>
+    <nav class="crumbs" id="crumbs" aria-label="Chemin du dossier"></nav>
     <div class="panel" id="pDoc" hidden>
-      <h2>Ajouter des documents</h2>
+      <form id="fFo" autocomplete="off">
+        <label for="foName">Nouveau dossier ici</label>
+        <div class="inl"><input id="foName" maxlength="60" required><button type="submit">Créer</button></div>
+      </form>
       <form id="fDoc">
-        <label for="dFile">Fichiers (10 Mo maximum chacun)</label>
+        <label for="dFile">Ajouter des fichiers ici (10 Mo maximum chacun)</label>
         <input id="dFile" type="file" multiple required>
         <div class="actions"><button type="submit">Envoyer</button></div>
-        <p class="note">Tous les licenciés connectés pourront ouvrir ces documents. Seul l’administrateur peut en ajouter ou en supprimer.</p>
         <p class="err" id="eDoc" role="alert"></p>
       </form>
     </div>
-    <h2>Documents</h2><div id="fList"></div>
+    <div id="fList" class="fm"></div>
   </div>
 
   <div id="tEv" hidden>
@@ -187,13 +221,17 @@ function show(v){$("vLogin").hidden=v!=="login";$("vApp").hidden=v!=="app"}
 function logout(exp){token="";sessionStorage.removeItem("sab_t");show("login");$("eLogin").textContent=exp===true?"Session expirée, reconnectez-vous.":"";}
 function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
 function todayIso(){return iso(new Date())}
+function rm(){return window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches}
+function shake(el){if(rm()||!el.animate)return;el.animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],{duration:420})}
+function pop(el){if(!el)return;el.classList.remove("in");void el.offsetWidth;el.classList.add("in")}
+$("pwT").onclick=function(){var p=$("p"),h=p.type==="password";p.type=h?"text":"password";this.textContent=h?"Cacher":"Voir";this.setAttribute("aria-label",h?"Cacher le mot de passe":"Afficher le mot de passe")};
 
 /* ----- Connexion ----- */
 $("fLogin").addEventListener("submit",function(e){
-  e.preventDefault();var b=e.target.querySelector("button");b.disabled=true;$("eLogin").textContent="Connexion…";
+  e.preventDefault();var b=e.target.querySelector("button.go"),c=document.querySelector(".lg-card");b.disabled=true;b.classList.add("load");c.classList.add("busy");$("eLogin").textContent="";
   call("login",{user:$("u").value,pass:$("p").value}).then(function(r){
     b.disabled=false;
-    if(!r.ok){$("eLogin").textContent=r.error||"Erreur.";return;}
+    b.classList.remove("load");c.classList.remove("busy");if(!r.ok){$("eLogin").textContent=r.error||"Erreur.";shake(c);return;}
     token=r.token;sessionStorage.setItem("sab_t",token);$("p").value="";start();
   });
 });
@@ -204,14 +242,14 @@ function start(){
     if(!r.ok){if(!r.expired)logout();return;}
     role=r.role;events=r.events;$("who").textContent="Connecté : "+r.user;
     $("tabs").hidden=false;$("tabs").querySelector('[data-t="ev"]').hidden=role!=="admin"&&role!=="editeur";$("tabs").querySelector('[data-t="us"]').hidden=role!=="admin";$("pDoc").hidden=role!=="admin";show("app");tab("cal");render();
-    call("files").then(function(f){if(f.ok){files=f.files||[];renderFiles();}else if(!f.expired)$("fList").innerHTML='<p class="empty">Les documents ne sont pas disponibles pour le moment.</p>';});
+    loadDocs("");
     if(role==="admin")call("users").then(function(u){if(u.ok){users=u.users;renderUsers();}});
   });
 }
 
 /* ----- Onglets ----- */
 function tab(t){
-  $("tCal").hidden=t!=="cal";$("tDoc").hidden=t!=="doc";$("tEv").hidden=t!=="ev";$("tUs").hidden=t!=="us";
+  $("tCal").hidden=t!=="cal";$("tDoc").hidden=t!=="doc";$("tEv").hidden=t!=="ev";$("tUs").hidden=t!=="us";pop($({cal:"tCal",doc:"tDoc",ev:"tEv",us:"tUs"}[t]));
   [].forEach.call($("tabs").querySelectorAll("button"),function(b){b.setAttribute("aria-selected",b.dataset.t===t)});
 }
 $("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(b)tab(b.dataset.t)});
@@ -266,14 +304,25 @@ $("evAdmin").addEventListener("click",function(e){
 });
 
 /* ----- Documents ----- */
-var MAXB=10*1024*1024;
+var MAXB=10*1024*1024,curF="",docs={folders:[],files:[],path:[],tree:[]};
+var SVGF='<svg viewBox="0 0 48 40" aria-hidden="true"><path d="M2 8a4 4 0 0 1 4-4h12l5 6h19a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#FFC21A" stroke="#101A3A" stroke-width="2.5" stroke-linejoin="round"/></svg>';
 function fmtSize(n){n=+n||0;return n<1024?n+" o":n<1048576?Math.round(n/1024)+" Ko":(n/1048576).toFixed(1).replace(".",",")+" Mo"}
 function fmtDate(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");return m?m[3]+"/"+m[2]+"/"+m[1]:""}
-function renderFiles(){
-  $("fList").innerHTML=files.length?files.map(function(f){
-    var ok=/^https:\/\//.test(f.url||"");
-    return '<div class="list-i"><span class="fn"><b>'+esc(f.name)+'</b><br><small>'+fmtSize(f.size)+(f.date?" – ajouté le "+fmtDate(f.date):"")+'</small></span><span class="b">'+(ok?'<a class="btn sm" href="'+esc(f.url)+'" target="_blank" rel="noopener">Ouvrir</a>':"")+(role==="admin"?'<button class="danger sm" data-fdel="'+esc(f.id)+'">Supprimer</button>':"")+'</span></div>';
-  }).join(""):'<p class="empty">Aucun document pour le moment.</p>';
+function setDocs(r){
+  if(!r.ok){if(!r.expired)$("fList").innerHTML='<p class="empty">Les documents ne sont pas disponibles pour le moment.</p>';return r;}
+  docs=r;curF=r.folder||"";renderDocs();return r;
+}
+function loadDocs(id){if(id!==undefined)curF=id;return call("files",{folder:curF}).then(setDocs)}
+function act(a,d){d=d||{};d.folder=curF;return call(a,d).then(function(r){if(r.ok)setDocs(r);else alert(r.error||"Action impossible.");return r})}
+function moveSel(id){return '<select data-mv="'+esc(id)+'" aria-label="Déplacer ce document"><option value="">Déplacer vers…</option><option value="/">Documents (racine)</option>'+(docs.tree||[]).map(function(t){return '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>'}).join("")+'</select>'}
+function renderDocs(){
+  var adm=role==="admin",n=0,h="",dl=function(){return ' style="animation-delay:'+(Math.min(n++,12)*40)+'ms"'};
+  $("crumbs").innerHTML='<button class="alt sm" data-go="">Documents</button>'+docs.path.map(function(p){return '<i>›</i><button class="alt sm" data-go="'+esc(p.id)+'">'+esc(p.name)+'</button>'}).join("");
+  docs.folders.forEach(function(f){h+='<div class="fm-i"'+dl()+'><button class="fm-open" data-go="'+esc(f.id)+'">'+SVGF+'<span class="fm-n">'+esc(f.name)+'</span></button>'+(adm?'<div class="acts"><button class="danger sm" data-dfo="'+esc(f.id)+'">Supprimer</button></div>':"")+'</div>'});
+  docs.files.forEach(function(f){
+    var ok=/^https:\/\//.test(f.url||""),x=(/\.([A-Za-z0-9]{1,4})$/.exec(f.name)||[0,"•"])[1].toUpperCase();
+    h+='<div class="fm-i"'+dl()+'><div class="ft">'+esc(x)+'</div><span class="fm-n">'+esc(f.name)+'</span><small>'+fmtSize(f.size)+(f.date?" – "+fmtDate(f.date):"")+'</small><div class="acts">'+(ok?'<a class="btn sm" href="'+esc(f.url)+'" target="_blank" rel="noopener">Ouvrir</a>':"")+(adm?'<button class="danger sm" data-dfi="'+esc(f.id)+'">Supprimer</button>':"")+'</div>'+(adm?moveSel(f.id):"")+'</div>'});
+  $("fList").innerHTML=h||'<p class="empty">Ce dossier est vide.</p>';
 }
 function readB64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1]||"")};r.onerror=function(){rej()};r.readAsDataURL(f)})}
 $("fDoc").addEventListener("submit",function(e){
@@ -284,16 +333,20 @@ $("fDoc").addEventListener("submit",function(e){
   (function next(){
     if(i>=fl.length){b.disabled=false;$("fDoc").reset();m.className="err ok";m.textContent=fl.length>1?"Documents ajoutés.":"Document ajouté.";return;}
     var f=fl[i];m.className="err";m.textContent="Envoi de « "+f.name+" » ("+(i+1)+" sur "+fl.length+")…";
-    readB64(f).then(function(d){return call("uploadFile",{name:f.name,mime:f.type||"application/octet-stream",data:d})}).then(function(r){
+    readB64(f).then(function(d){return call("uploadFile",{name:f.name,mime:f.type||"application/octet-stream",data:d,folder:curF})}).then(function(r){
       if(!r.ok){b.disabled=false;m.textContent=r.error||"L’envoi a échoué.";return;}
-      files=r.files||[];renderFiles();i++;next();
+      setDocs(r);i++;next();
     }).catch(function(){b.disabled=false;m.textContent="Impossible de lire « "+f.name+" ».";});
   })();
 });
-$("fList").addEventListener("click",function(e){
-  var b=e.target.closest("[data-fdel]");if(!b)return;
-  if(confirm("Supprimer ce document pour tous les licenciés ?"))call("delFile",{id:b.dataset.fdel}).then(function(r){if(r.ok){files=r.files||[];renderFiles();}else alert(r.error||"Suppression impossible.")});
+$("fFo").addEventListener("submit",function(e){e.preventDefault();var n=$("foName").value.trim();if(n)act("newFolder",{name:n}).then(function(r){if(r.ok)$("fFo").reset()})});
+$("tDoc").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.go!==undefined)loadDocs(b.dataset.go);
+  else if(b.dataset.dfi){if(confirm("Supprimer ce document pour tous les licenciés ?"))act("delFile",{id:b.dataset.dfi});}
+  else if(b.dataset.dfo){if(confirm("Supprimer ce dossier et tout ce qu’il contient ?"))act("delFolder",{id:b.dataset.dfo});}
 });
+$("tDoc").addEventListener("change",function(e){var s=e.target;if(s.dataset.mv&&s.value)act("moveFile",{id:s.dataset.mv,to:s.value==="/"?"":s.value})});
 
 /* ----- Admin : comptes ----- */
 function renderUsers(){
