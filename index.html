@@ -997,7 +997,7 @@ body[data-tone="sage"]{--bg:#BFD8B8;--fg:#173626;--accent:#173626;--accent-fg:#B
 #vol .v-bg{position:absolute;inset:-12%;transform-origin:50% 64%;will-change:transform}
 #vol .v-fg{position:absolute;inset:0;display:grid;align-content:center;justify-items:start;gap:1.1rem;
 padding:calc(env(safe-area-inset-top,0px) + 4.5rem) clamp(1.4rem,7vw,6rem) calc(env(safe-area-inset-bottom,0px) + 4rem);
-will-change:transform,opacity}
+will-change:transform}
 #vol .v-lt .v-fg{color:var(--ink)}
 #vol .v-h,#vol .v-big{font:400 clamp(2.4rem,8.5vw,7.5rem)/.98 var(--display);letter-spacing:-.02em;max-width:14ch}
 #vol .v-h2{font-size:clamp(2.2rem,6vw,5rem);max-width:16ch}
@@ -1037,13 +1037,46 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
 #vol .v-skip{position:absolute;z-index:6;top:calc(env(safe-area-inset-top,0px) + 1rem);right:max(1rem,env(safe-area-inset-right,0px));padding:.45rem 1rem;border:1.5px solid rgba(255,255,255,.75);border-radius:99px;background:rgba(16,26,58,.4);color:#fff;font-weight:600;font-size:.85rem;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #vol .v-skip:hover{background:rgba(16,26,58,.75)}
 #vol .v-skip:focus-visible{outline:3px solid var(--yolk);outline-offset:3px}
+#vol .v-dl>div{padding:1rem 1.2rem;border-radius:1.4rem;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 1px rgba(255,255,255,.18),inset 0 0 16px rgba(255,255,255,.12),0 12px 28px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+#vol .v-b{background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 1px rgba(255,255,255,.18),inset 0 0 16px rgba(255,255,255,.12),0 12px 28px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+#vol .v-b.v-y{background:linear-gradient(135deg,rgba(255,214,90,.95),rgba(255,194,26,.7));color:var(--ink)}
+#vol .v-skip,#vol #v-dots{background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 1px rgba(255,255,255,.18),inset 0 0 16px rgba(255,255,255,.12),0 12px 28px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+#vol #v-dots{padding:.3rem .1rem;border-radius:99px}
+#vol .v-cd{display:inline-block;padding:.4rem 1rem;border-radius:99px;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 1px rgba(255,255,255,.18),inset 0 0 16px rgba(255,255,255,.12),0 12px 28px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+#vol .v-fg{grid-template-columns:minmax(0,1fr)}
+#vol .v-dl{width:100%;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr))}
+#vol .v-h,#vol p{text-shadow:0 2px 20px rgba(10,15,38,.55)}
+#vol .v-lt .v-h,#vol .v-lt p{text-shadow:none}
+@media(max-width:760px){#vol #v-dots{display:none}}
+#vol .v-fx{position:absolute;inset:0;width:100%;height:100%;z-index:10;pointer-events:none;mix-blend-mode:screen}
+#vol .v-skip,#vol #v-dots{z-index:30}
+#vol .v-rays{position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 80%,rgba(255,224,150,.26) 0 3deg,transparent 3deg 13deg);-webkit-mask:radial-gradient(circle at 50% 80%,#000,transparent 70%);mask:radial-gradient(circle at 50% 80%,#000,transparent 70%)}
+</style>
+<style id="lg-css">
+:root{--glb:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.06));--glr:rgba(255,255,255,.5);
+--gls:inset 0 1px 1px rgba(255,255,255,.85),inset 0 -1px 1px rgba(255,255,255,.22),inset 0 0 20px rgba(255,255,255,.14),0 14px 34px -14px rgba(16,26,58,.5);
+--glf:blur(18px) saturate(190%) brightness(1.06)}
+.lg-amb{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.lg-amb i{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.42;animation:lgf 28s ease-in-out infinite alternate}
+.lg-amb i:nth-child(1){left:-18vmax;top:-14vmax;background:radial-gradient(circle,var(--yolk),transparent 65%)}
+.lg-amb i:nth-child(2){right:-24vmax;top:22vh;background:radial-gradient(circle,#ff7a59,transparent 65%);animation-delay:-9s}
+.lg-amb i:nth-child(3){left:12vw;bottom:-30vmax;background:radial-gradient(circle,#fff1c9,transparent 65%);animation-delay:-17s}
+@keyframes lgf{to{transform:translate3d(9vmax,-7vmax,0) scale(1.18)}}
+html body .nav{background:var(--glb),color-mix(in srgb,var(--bg) 40%,transparent);border:1px solid var(--glr);box-shadow:var(--gls);-webkit-backdrop-filter:var(--glf);backdrop-filter:var(--glf)}
+html body .btn{background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,.04)),color-mix(in srgb,var(--accent) 80%,transparent);border:1px solid var(--glr);box-shadow:var(--gls);-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%)}
+html body .btn.alt{background:var(--glb);color:inherit}
+html body .rows li{margin-bottom:.7rem;border:1px solid var(--glr);border-radius:1.6rem;padding-left:1.4rem;padding-right:1.4rem;background:var(--glb),color-mix(in srgb,var(--bg) 35%,transparent);box-shadow:var(--gls);-webkit-backdrop-filter:var(--glf);backdrop-filter:var(--glf)}
+html body .rows li:last-child{border-bottom:1px solid var(--glr)}
+html body :is(input,textarea,select){background:var(--glb),color-mix(in srgb,var(--bg) 30%,transparent);border:1px solid var(--glr);border-radius:1rem;box-shadow:var(--gls);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%)}
+html body .gbox{background:linear-gradient(135deg,rgba(255,214,90,.92),rgba(255,194,26,.7));border:1px solid var(--glr);box-shadow:var(--gls),0 1.5rem 4rem -1rem #000;-webkit-backdrop-filter:var(--glf);backdrop-filter:var(--glf)}
+@media(prefers-reduced-motion:reduce){.lg-amb i{animation:none}}
 </style>
 </head>
-<body data-tone="shell" class="intro">
+<body data-tone="shell" class="intro"><div class="lg-amb" aria-hidden="true"><i></i><i></i><i></i></div>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <noscript><style>#vol{display:none}html:has(body.intro){overflow:auto}</style></noscript>
 <div id="vol" tabindex="0" role="region" aria-label="Introduction"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="v-pg" viewBox="0 0 48 24"><path d="M2 8C12 2 20 6 24 14 28 6 36 2 46 8 38 8 30 14 26 20L24 23 22 20C18 14 10 8 2 8Z"/></symbol></svg><div class="v-rail"><div class="v-stage"><div role="region" class="v-sc" aria-label="Accueil">
- <div class="v-bg" style="background:radial-gradient(circle at 50% 80%,#FFC21A 0,#f08a52 14%,transparent 38%),linear-gradient(#101A3A 0%,#343b76 48%,#e58a5c 80%,#FFC21A 100%)"></div>
+ <div class="v-bg" style="background:radial-gradient(circle at 50% 80%,#FFC21A 0,#f08a52 14%,transparent 38%),linear-gradient(#101A3A 0%,#343b76 48%,#e58a5c 80%,#FFC21A 100%)"><div class="v-rays"></div></div>
  <div class="v-fg">
   <div class="v-h">Société d’Aviculture de Bischwiller</div>
   <p class="v-sub">Éleveurs de volailles, de pigeons et de lapins de race.</p>
@@ -1067,7 +1100,7 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
 </div>
 
 <div role="region" class="v-sc" aria-label="Ce que nous faisons">
- <div class="v-bg" style="background:linear-gradient(#101A3A 0%,#2b3a6e 52%,#d98a62 100%)"><svg id="vil" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg></div>
+ <div class="v-bg" style="background:linear-gradient(#101A3A 0%,#2b3a6e 52%,#d98a62 100%)"><svg id="v-vil" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg></div>
  <div class="v-fg" style="align-content:start;padding-top:calc(env(safe-area-inset-top,0px) + 5.5rem)">
   <div class="v-h v-h2">Ce que nous faisons</div>
   <div class="v-dl">
@@ -1080,7 +1113,7 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
 </div>
 
 <div role="region" class="v-sc" aria-label="Le pigeonnier">
- <div class="v-bg" style="background:radial-gradient(circle at 50% 50%,#2a2146,#0a0f26 70%)"><div class="v-lg" id="lg"></div></div>
+ <div class="v-bg" style="background:radial-gradient(circle at 50% 50%,#2a2146,#0a0f26 70%)"><div class="v-lg" id="v-lg"></div></div>
  <div class="v-fg" style="justify-items:center;text-align:center">
   <div class="v-h v-h2" style="max-width:18ch">Les plus beaux pigeons de la région</div>
   <p>Une fois par an, les éleveurs sortent leurs meilleurs sujets du pigeonnier pour les montrer au public.</p>
@@ -1093,7 +1126,7 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
   <p class="v-sub">Prochaine exposition de pigeons</p>
   <p class="v-big">16–17 janvier 2027</p>
   <p>Salle Adrien Zeller, 10 rue des Casernes, Bischwiller. Horaires à venir.</p>
-  <p class="v-cd" id="cd"></p>
+  <p class="v-cd" id="v-cd"></p>
   <div class="v-row"><a class="v-b v-y" href="https://www.google.com/maps/search/?api=1&query=Salle+Adrien+Zeller+Bischwiller" target="_blank" rel="noopener">Voir l’itinéraire</a></div>
   <p class="v-hint">Les inscriptions sont fermées pour le moment.</p>
  </div>
@@ -1111,7 +1144,7 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
   </div>
   <div class="v-row"><button type="button" class="v-b v-y" data-enter>Entrer sur le site</button></div>
  </div>
-</div><nav id="v-dots" aria-label="Scènes"></nav><button type="button" class="v-skip">Passer</button></div></div></div>
+</div><canvas class="v-fx" aria-hidden="true"></canvas><nav id="v-dots" aria-label="Scènes"></nav><button type="button" class="v-skip">Passer</button></div></div></div>
 <div class="wipe" aria-hidden="true"><span></span></div>
 <div class="glow" aria-hidden="true"></div>
 
@@ -3356,7 +3389,16 @@ function count(){const s=Math.max(0,(T-Date.now())/1e3|0),d=s/86400|0,h=s%86400/
 cd.textContent=`Ouverture dans ${d} jour${d>1?'s':''}, ${h} h ${m} min`}
 count();setInterval(count,30000);
 
-let cur=0,done=false;
+let cur=0,pv=0,done=false,mx=0,my=0,tx=0,ty=0;
+addEventListener('pointermove',e=>{tx=e.clientX/innerWidth*2-1;ty=e.clientY/innerHeight*2-1});
+const cv=vol.querySelector('.v-fx'),cx=cv.getContext('2d'),PT=Array.from({length:90},()=>({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random()}));
+let W=0,H=0;
+function fx(v){if(W!==stage.clientWidth||H!==stage.clientHeight){W=cv.width=stage.clientWidth;H=cv.height=stage.clientHeight}
+ cx.clearRect(0,0,W,H);cx.strokeStyle='#fff6e1';cx.lineCap='round';
+ const sp=.0012+Math.min(.05,Math.abs(v)*.5),k=Math.min(W,H)*.22;
+ PT.forEach(q=>{const z0=q.z;q.z-=sp;if(q.z<=.03){q.x=Math.random()*2-1;q.y=Math.random()*2-1;q.z=1;return}
+  cx.globalAlpha=(1-q.z)*.8;cx.lineWidth=(1-q.z)*2.4+.4;cx.beginPath();
+  cx.moveTo(W/2+q.x*k/z0,H/2+q.y*k/z0);cx.lineTo(W/2+q.x*k/q.z,H/2+q.y*k/q.z);cx.stroke()})}
 function finish(){if(done)return;done=true;
  stage.style.transition='transform .95s cubic-bezier(.65,0,.35,1)';stage.style.transform='translateY(-101%)';
  vol.style.overflow='hidden';
@@ -3370,13 +3412,13 @@ function draw(p){
  sc.forEach((s,i)=>{const d=p-i,a=Math.abs(d);
   s.el.style.visibility=a<1.05?'visible':'hidden';s.el.style.zIndex=i;
   s.el.style.opacity=d<0?cl(1+d*1.7):1;
-  s.bg.style.transform=`scale(${d<0?1+d*.45:1+d*1.6})`;
-  s.fg.style.opacity=cl(1-a*2.4);
+  s.bg.style.transform=`translate3d(${mx*-16}px,${my*-12}px,0) scale(${d<0?1+d*.45:1+d*1.6})`;
+  {const o=cl(1-a*2.4);s.fg.style.opacity=o>.97?'':o}
   s.fg.style.transform=`scale(${d<0?1+d*.3:1+d*.9})`;
   s.k.forEach(e=>e.style.transform=`translate3d(${d*+e.dataset.k}vw,0,0)`)});
  const n=Math.round(p);[...dots.children].forEach((b,i)=>b.setAttribute('aria-current',i===n))}
 function tick(){if(done)return;const g=geo(),st=vol.scrollTop,t=cl(st/g.S)*(N-1);
- cur+=(t-cur)*.085;if(Math.abs(t-cur)<.0005)cur=t;draw(cur);
+ cur+=(t-cur)*.085;if(Math.abs(t-cur)<.0005)cur=t;mx+=(tx-mx)*.06;my+=(ty-my)*.06;draw(cur);fx(cur-pv);pv=cur;
  const q=cl((st-g.S)/g.T);stage.style.transform=q>0?`translateY(${-q*101}%)`:'';
  if(q>.25)finish();else requestAnimationFrame(tick)}
 tick();vol.focus({preventScroll:true});
