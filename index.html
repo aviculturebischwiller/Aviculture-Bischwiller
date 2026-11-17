@@ -1076,9 +1076,10 @@ html body :is(input,textarea,select){background:var(--glb),color-mix(in srgb,var
 html body .gbox{background:linear-gradient(135deg,rgba(255,214,90,.92),rgba(255,194,26,.7));border:1px solid var(--glr);box-shadow:var(--gls),0 1.5rem 4rem -1rem #000;-webkit-backdrop-filter:var(--glf);backdrop-filter:var(--glf)}
 }
 @media(prefers-reduced-motion:reduce){.lg-amb i{animation:none}}
+body.vol-on .nav,body.vol-on #coq,body.vol-on .hen-bubble,body.vol-on .hen-chat,body.vol-on .yr-pill,body.vol-on .fx-p{opacity:0!important;pointer-events:none!important;transition:opacity .35s ease}
 </style>
 </head>
-<body data-tone="shell"><div class="lg-amb" aria-hidden="true"><i></i><i></i><i></i></div>
+<body data-tone="shell"><div class="lg-amb" aria-hidden="true"><i></i><i></i><i></i></div><script>document.body.classList.add("vol-on");setTimeout(function(){if(!window.__vol)document.body.classList.remove("vol-on")},4000)</script>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <noscript><style>#intro{display:none}html:has(body.intro){overflow:auto}</style></noscript>
 
@@ -3361,7 +3362,8 @@ if("IntersectionObserver" in window){
 (function(){
 var vol=document.getElementById('vol');if(!vol)return;
 try{
-if(matchMedia('(prefers-reduced-motion:reduce)').matches){vol.style.display='none';return}
+window.__vol=1;
+if(matchMedia('(prefers-reduced-motion:reduce)').matches){vol.style.display='none';document.body.classList.remove('vol-on');return}
 const N=5,cl=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),
 stage=vol.querySelector('.v-stage'),dots=document.getElementById('v-dots'),bar=vol.querySelector('.v-bar'),
 sc=[...vol.querySelectorAll('.v-sc')].map(el=>({el,bg:el.querySelector('.v-bg'),fg:el.querySelector('.v-fg'),k:[...el.querySelectorAll('[data-k]')]}));
@@ -3385,7 +3387,7 @@ count();setInterval(count,30000);
 
 const skip=()=>scrollBy({top:vol.getBoundingClientRect().bottom,behavior:'smooth'});
 vol.querySelector('.v-skip').onclick=skip;vol.querySelector('[data-enter]').onclick=skip;
-let cur=0,pv=0,mx=0,my=0,tx=0,ty=0,fb=0;
+let cur=0,pv=0,mx=0,my=0,tx=0,ty=0,fb=0,wasOn=null;
 addEventListener('pointermove',e=>{tx=e.clientX/innerWidth*2-1;ty=e.clientY/innerHeight*2-1});
 const cv=vol.querySelector('.v-fx'),cx=cv.getContext('2d'),PT=Array.from({length:80},()=>({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random()}));
 let W=0,H=0;
@@ -3406,6 +3408,7 @@ function draw(p){
  const n=Math.round(p);[...dots.children].forEach((b,i)=>b.setAttribute('aria-current',i===n))}
 function step(){
  const r=vol.getBoundingClientRect(),h=stage.offsetHeight;
+ const on=r.height>0&&r.top<innerHeight*.65&&r.bottom>innerHeight*.35;if(on!==wasOn){wasOn=on;document.body.classList.toggle('vol-on',on)}
  if(r.bottom>-60&&r.top<innerHeight+60){
   const S=span(),st=cl(-r.top,0,S),t=st/S*(N-1);
   if(!fb&&r.top<-20&&r.bottom>h+20&&Math.abs(stage.getBoundingClientRect().top)>3){fb=1;stage.style.position='relative'}
@@ -3415,7 +3418,7 @@ function step(){
   draw(cur);fx(cur-pv);pv=cur;bar.style.width=(cur/(N-1)*100)+'%'}
  requestAnimationFrame(step)}
 requestAnimationFrame(step);
-}catch(e){vol.style.display='none'}
+}catch(e){vol.style.display='none';document.body.classList.remove('vol-on')}
 })();
 </script>
 </body>
