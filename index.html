@@ -1032,7 +1032,7 @@ background:radial-gradient(circle at 50% 70%,rgba(255,194,26,var(--o)),#0a0f26 7
 #vol *{margin:0;box-sizing:border-box}
 #vol .v-stage{position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
 #vol a,#vol button{font:inherit}
-#vol .v-skip{position:absolute;z-index:6;bottom:calc(env(safe-area-inset-bottom,0px) + 1.2rem);right:max(1rem,env(safe-area-inset-right,0px));padding:.45rem 1rem;border:1.5px solid rgba(255,255,255,.75);border-radius:99px;background:rgba(16,26,58,.4);color:#fff;font-weight:600;font-size:.85rem;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#vol .v-skip{position:absolute;z-index:6;top:calc(env(safe-area-inset-top,0px) + 1rem);right:max(1rem,env(safe-area-inset-right,0px));padding:.45rem 1rem;border:1.5px solid rgba(255,255,255,.75);border-radius:99px;background:rgba(16,26,58,.4);color:#fff;font-weight:600;font-size:.85rem;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #vol .v-skip:hover{background:rgba(16,26,58,.75)}
 #vol .v-skip:focus-visible{outline:3px solid var(--yolk);outline-offset:3px}
 #vol .v-dl>div{padding:1rem 1.2rem;border-radius:1.4rem;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -1px 1px rgba(255,255,255,.18),inset 0 0 16px rgba(255,255,255,.12),0 12px 28px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
@@ -2010,7 +2010,7 @@ body.vol-on .nav,body.vol-on #coq,body.vol-on .hen-bubble,body.vol-on .hen-chat,
     }
     function overHen(e){
       if(e.target&&e.target.closest&&e.target.closest(".hen-chat,.hen-bubble"))return false;
-      if(document.body.classList.contains("intro")||document.body.classList.contains("gaming")||!cv.classList.contains("on"))return false;
+      if(document.body.classList.contains("intro")||document.body.classList.contains("vol-on")||document.body.classList.contains("gaming")||!cv.classList.contains("on"))return false;
       var rc=cv.getBoundingClientRect();
       if(e.clientX<rc.left||e.clientX>rc.right||e.clientY<rc.top||e.clientY>rc.bottom)return false;
       var ux=((e.clientX-rc.left)/rc.width-.5)/.44,uy=((e.clientY-rc.top)/rc.height-.55)/.5;
